@@ -10,9 +10,10 @@
 		54EFC90B2A96026E00C193E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC90A2A96026E00C193E6 /* AppDelegate.swift */; };
 		54EFC90D2A96026E00C193E6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC90C2A96026E00C193E6 /* SceneDelegate.swift */; };
 		54EFC90F2A96026E00C193E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC90E2A96026E00C193E6 /* ViewController.swift */; };
-		54EFC9122A96026E00C193E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54EFC9102A96026E00C193E6 /* Main.storyboard */; };
 		54EFC9142A96026F00C193E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54EFC9132A96026F00C193E6 /* Assets.xcassets */; };
 		54EFC9172A96026F00C193E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54EFC9152A96026F00C193E6 /* LaunchScreen.storyboard */; };
+		54EFC9202A96027B00C193E6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 54EFC91F2A96027A00C193E6 /* SnapKit */; };
+		54EFC9232A96031F00C193E6 /* Fetchup in Frameworks */ = {isa = PBXBuildFile; productRef = 54EFC9222A96031F00C193E6 /* Fetchup */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,7 +21,6 @@
 		54EFC90A2A96026E00C193E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54EFC90C2A96026E00C193E6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		54EFC90E2A96026E00C193E6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		54EFC9112A96026E00C193E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		54EFC9132A96026F00C193E6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54EFC9162A96026F00C193E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		54EFC9182A96026F00C193E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -31,6 +31,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54EFC9232A96031F00C193E6 /* Fetchup in Frameworks */,
+				54EFC9202A96027B00C193E6 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,15 +58,46 @@
 		54EFC9092A96026E00C193E6 /* TinkoffStocks */ = {
 			isa = PBXGroup;
 			children = (
+				54EFC9242A96035400C193E6 /* Application */,
+				54EFC9262A96038300C193E6 /* Screens */,
+				54EFC9252A96037B00C193E6 /* Support */,
+			);
+			path = TinkoffStocks;
+			sourceTree = "<group>";
+		};
+		54EFC9242A96035400C193E6 /* Application */ = {
+			isa = PBXGroup;
+			children = (
 				54EFC90A2A96026E00C193E6 /* AppDelegate.swift */,
 				54EFC90C2A96026E00C193E6 /* SceneDelegate.swift */,
-				54EFC90E2A96026E00C193E6 /* ViewController.swift */,
-				54EFC9102A96026E00C193E6 /* Main.storyboard */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		54EFC9252A96037B00C193E6 /* Support */ = {
+			isa = PBXGroup;
+			children = (
 				54EFC9132A96026F00C193E6 /* Assets.xcassets */,
 				54EFC9152A96026F00C193E6 /* LaunchScreen.storyboard */,
 				54EFC9182A96026F00C193E6 /* Info.plist */,
 			);
-			path = TinkoffStocks;
+			path = Support;
+			sourceTree = "<group>";
+		};
+		54EFC9262A96038300C193E6 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				54EFC9272A96048300C193E6 /* FirstScreen */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		54EFC9272A96048300C193E6 /* FirstScreen */ = {
+			isa = PBXGroup;
+			children = (
+				54EFC90E2A96026E00C193E6 /* ViewController.swift */,
+			);
+			path = FirstScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +116,10 @@
 			dependencies = (
 			);
 			name = TinkoffStocks;
+			packageProductDependencies = (
+				54EFC91F2A96027A00C193E6 /* SnapKit */,
+				54EFC9222A96031F00C193E6 /* Fetchup */,
+			);
 			productName = TinkoffStocks;
 			productReference = 54EFC9072A96026E00C193E6 /* TinkoffStocks.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +148,10 @@
 				Base,
 			);
 			mainGroup = 54EFC8FE2A96026E00C193E6;
+			packageReferences = (
+				54EFC91E2A96027A00C193E6 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				54EFC9212A96031F00C193E6 /* XCRemoteSwiftPackageReference "Fetchup" */,
+			);
 			productRefGroup = 54EFC9082A96026E00C193E6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -127,7 +168,6 @@
 			files = (
 				54EFC9172A96026F00C193E6 /* LaunchScreen.storyboard in Resources */,
 				54EFC9142A96026F00C193E6 /* Assets.xcassets in Resources */,
-				54EFC9122A96026E00C193E6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,14 +187,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		54EFC9102A96026E00C193E6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				54EFC9112A96026E00C193E6 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		54EFC9152A96026F00C193E6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -285,22 +317,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = S8MQ8U94R3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TinkoffStocks/Info.plist;
+				INFOPLIST_FILE = TinkoffStocks/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sleepcha.TinkoffStocks;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yigitcakir90800.sleepcha.TinkoffStocks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "sleepchaa@gmail.com_00008110-000C798034D1801E";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -312,22 +348,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = S8MQ8U94R3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TinkoffStocks/Info.plist;
+				INFOPLIST_FILE = TinkoffStocks/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sleepcha.TinkoffStocks;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yigitcakir90800.sleepcha.TinkoffStocks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "sleepchaa@gmail.com_00008110-000C798034D1801E";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -356,6 +396,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		54EFC91E2A96027A00C193E6 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		54EFC9212A96031F00C193E6 /* XCRemoteSwiftPackageReference "Fetchup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sleepcha/Fetchup";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		54EFC91F2A96027A00C193E6 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54EFC91E2A96027A00C193E6 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		54EFC9222A96031F00C193E6 /* Fetchup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54EFC9212A96031F00C193E6 /* XCRemoteSwiftPackageReference "Fetchup" */;
+			productName = Fetchup;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 54EFC8FF2A96026E00C193E6 /* Project object */;
 }
