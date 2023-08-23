@@ -14,6 +14,240 @@
 		54EFC9172A96026F00C193E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54EFC9152A96026F00C193E6 /* LaunchScreen.storyboard */; };
 		54EFC9202A96027B00C193E6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 54EFC91F2A96027A00C193E6 /* SnapKit */; };
 		54EFC9232A96031F00C193E6 /* Fetchup in Frameworks */ = {isa = PBXBuildFile; productRef = 54EFC9222A96031F00C193E6 /* Fetchup */; };
+		54EFCA132A96065C00C193E6 /* Trade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC92A2A96065B00C193E6 /* Trade.swift */; };
+		54EFCA142A96065C00C193E6 /* AccountSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC92B2A96065B00C193E6 /* AccountSubscriptionStatus.swift */; };
+		54EFCA152A96065C00C193E6 /* StopOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC92C2A96065B00C193E6 /* StopOrder.swift */; };
+		54EFCA162A96065C00C193E6 /* GetFavoritesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC92D2A96065B00C193E6 /* GetFavoritesResponse.swift */; };
+		54EFCA172A96065C00C193E6 /* GenerateDividendsForeignIssuerReportResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC92E2A96065B00C193E6 /* GenerateDividendsForeignIssuerReportResponse.swift */; };
+		54EFCA182A96065C00C193E6 /* GetBrokerReportResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC92F2A96065B00C193E6 /* GetBrokerReportResponse.swift */; };
+		54EFCA192A96065C00C193E6 /* TradingDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9302A96065B00C193E6 /* TradingDay.swift */; };
+		54EFCA1A2A96065C00C193E6 /* EditFavoritesActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9312A96065B00C193E6 /* EditFavoritesActionType.swift */; };
+		54EFCA1B2A96065C00C193E6 /* GetFavoritesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9322A96065B00C193E6 /* GetFavoritesRequest.swift */; };
+		54EFCA1C2A96065C00C193E6 /* GetCountriesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9332A96065B00C193E6 /* GetCountriesResponse.swift */; };
+		54EFCA1D2A96065C00C193E6 /* TradeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9342A96065B00C193E6 /* TradeDirection.swift */; };
+		54EFCA1E2A96065C00C193E6 /* OperationsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9352A96065B00C193E6 /* OperationsResponse.swift */; };
+		54EFCA1F2A96065C00C193E6 /* AssetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9362A96065B00C193E6 /* AssetResponse.swift */; };
+		54EFCA202A96065C00C193E6 /* OperationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9372A96065B00C193E6 /* OperationsRequest.swift */; };
+		54EFCA212A96065C00C193E6 /* PortfolioRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9382A96065B00C193E6 /* PortfolioRequest.swift */; };
+		54EFCA222A96065C00C193E6 /* GetClosePricesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9392A96065B00C193E6 /* GetClosePricesResponse.swift */; };
+		54EFCA232A96065C00C193E6 /* FindInstrumentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC93A2A96065B00C193E6 /* FindInstrumentResponse.swift */; };
+		54EFCA242A96065C00C193E6 /* OperationTrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC93B2A96065B00C193E6 /* OperationTrade.swift */; };
+		54EFCA252A96065C00C193E6 /* SubscriptionInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC93C2A96065B00C193E6 /* SubscriptionInterval.swift */; };
+		54EFCA262A96065C00C193E6 /* GetFuturesMarginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC93D2A96065B00C193E6 /* GetFuturesMarginResponse.swift */; };
+		54EFCA272A96065C00C193E6 /* GetLastTradesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC93E2A96065B00C193E6 /* GetLastTradesRequest.swift */; };
+		54EFCA282A96065C00C193E6 /* GetBrandsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC93F2A96065B00C193E6 /* GetBrandsResponse.swift */; };
+		54EFCA292A96065C00C193E6 /* PostOrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9402A96065B00C193E6 /* PostOrderResponse.swift */; };
+		54EFCA2A2A96065C00C193E6 /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9412A96065B00C193E6 /* Coupon.swift */; };
+		54EFCA2B2A96065C00C193E6 /* CloseSandboxAccountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9422A96065B00C193E6 /* CloseSandboxAccountRequest.swift */; };
+		54EFCA2C2A96065C00C193E6 /* PostOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9432A96065B00C193E6 /* PostOrderRequest.swift */; };
+		54EFCA2D2A96065C00C193E6 /* GetUserTariffRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9442A96065B00C193E6 /* GetUserTariffRequest.swift */; };
+		54EFCA2E2A96065C00C193E6 /* OperationItemTrades.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9452A96065B00C193E6 /* OperationItemTrades.swift */; };
+		54EFCA2F2A96065C00C193E6 /* GetLastPricesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9462A96065B00C193E6 /* GetLastPricesRequest.swift */; };
+		54EFCA302A96065C00C193E6 /* UnaryLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9472A96065B00C193E6 /* UnaryLimit.swift */; };
+		54EFCA312A96065C00C193E6 /* GetUserTariffResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9482A96065B00C193E6 /* GetUserTariffResponse.swift */; };
+		54EFCA322A96065C00C193E6 /* PriceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9492A96065B00C193E6 /* PriceType.swift */; };
+		54EFCA332A96065C00C193E6 /* InfoInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC94A2A96065B00C193E6 /* InfoInstrument.swift */; };
+		54EFCA342A96065C00C193E6 /* GetLastTradesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC94B2A96065B00C193E6 /* GetLastTradesResponse.swift */; };
+		54EFCA352A96065C00C193E6 /* PositionsMoney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC94C2A96065B00C193E6 /* PositionsMoney.swift */; };
+		54EFCA362A96065C00C193E6 /* OrderTrades.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC94D2A96065B00C193E6 /* OrderTrades.swift */; };
+		54EFCA372A96065C00C193E6 /* OperationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC94E2A96065B00C193E6 /* OperationItem.swift */; };
+		54EFCA382A96065C00C193E6 /* OperationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC94F2A96065B00C193E6 /* OperationType.swift */; };
+		54EFCA392A96065C00C193E6 /* SharesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9502A96065B00C193E6 /* SharesResponse.swift */; };
+		54EFCA3A2A96065C00C193E6 /* ShareType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9512A96065B00C193E6 /* ShareType.swift */; };
+		54EFCA3B2A96065C00C193E6 /* AssetInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9522A96065B00C193E6 /* AssetInstrument.swift */; };
+		54EFCA3C2A96065C00C193E6 /* GetAccountsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9532A96065B00C193E6 /* GetAccountsRequest.swift */; };
+		54EFCA3D2A96065C00C193E6 /* GetOrderBookRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9542A96065B00C193E6 /* GetOrderBookRequest.swift */; };
+		54EFCA3E2A96065C00C193E6 /* BrokerReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9552A96065B00C193E6 /* BrokerReport.swift */; };
+		54EFCA3F2A96065C00C193E6 /* OrderState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9562A96065B00C193E6 /* OrderState.swift */; };
+		54EFCA402A96065C00C193E6 /* Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9572A96065B00C193E6 /* Ping.swift */; };
+		54EFCA412A96065C00C193E6 /* MarketDataRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9582A96065B00C193E6 /* MarketDataRequest.swift */; };
+		54EFCA422A96065C00C193E6 /* GetTradingStatusesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9592A96065B00C193E6 /* GetTradingStatusesRequest.swift */; };
+		54EFCA432A96065C00C193E6 /* Quotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC95A2A96065B00C193E6 /* Quotation.swift */; };
+		54EFCA442A96065C00C193E6 /* GetAccruedInterestsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC95B2A96065B00C193E6 /* GetAccruedInterestsResponse.swift */; };
+		54EFCA452A96065C00C193E6 /* StopOrderExpirationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC95C2A96065B00C193E6 /* StopOrderExpirationType.swift */; };
+		54EFCA462A96065C00C193E6 /* GetTradingStatusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC95D2A96065B00C193E6 /* GetTradingStatusResponse.swift */; };
+		54EFCA472A96065C00C193E6 /* GetDividendsForeignIssuerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC95E2A96065B00C193E6 /* GetDividendsForeignIssuerResponse.swift */; };
+		54EFCA482A96065C00C193E6 /* GetOperationsByCursorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC95F2A96065B00C193E6 /* GetOperationsByCursorResponse.swift */; };
+		54EFCA492A96065C00C193E6 /* InstrumentClosePriceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9602A96065B00C193E6 /* InstrumentClosePriceResponse.swift */; };
+		54EFCA4A2A96065C00C193E6 /* PositionsAccountSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9612A96065B00C193E6 /* PositionsAccountSubscriptionStatus.swift */; };
+		54EFCA4B2A96065C00C193E6 /* CandleInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9622A96065B00C193E6 /* CandleInterval.swift */; };
+		54EFCA4C2A96065C00C193E6 /* EtfsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9632A96065B00C193E6 /* EtfsResponse.swift */; };
+		54EFCA4D2A96065C00C193E6 /* SubscribeTradesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9642A96065B00C193E6 /* SubscribeTradesResponse.swift */; };
+		54EFCA4E2A96065C00C193E6 /* Candle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9652A96065B00C193E6 /* Candle.swift */; };
+		54EFCA4F2A96065C00C193E6 /* FindInstrumentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9662A96065B00C193E6 /* FindInstrumentRequest.swift */; };
+		54EFCA502A96065C00C193E6 /* InfoSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9672A96065B00C193E6 /* InfoSubscription.swift */; };
+		54EFCA512A96065C00C193E6 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9682A96065B00C193E6 /* Option.swift */; };
+		54EFCA522A96065C00C193E6 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9692A96065B00C193E6 /* Future.swift */; };
+		54EFCA532A96065C00C193E6 /* OpenSandboxAccountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC96A2A96065B00C193E6 /* OpenSandboxAccountRequest.swift */; };
+		54EFCA542A96065C00C193E6 /* PositionsFutures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC96B2A96065B00C193E6 /* PositionsFutures.swift */; };
+		54EFCA552A96065C00C193E6 /* VirtualPortfolioPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC96C2A96065B00C193E6 /* VirtualPortfolioPosition.swift */; };
+		54EFCA562A96065C00C193E6 /* BrokerReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC96D2A96065B00C193E6 /* BrokerReportRequest.swift */; };
+		54EFCA572A96065C00C193E6 /* GetAccountsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC96E2A96065B00C193E6 /* GetAccountsResponse.swift */; };
+		54EFCA582A96065C00C193E6 /* AssetFull.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC96F2A96065B00C193E6 /* AssetFull.swift */; };
+		54EFCA592A96065C00C193E6 /* GetLastPricesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9702A96065B00C193E6 /* GetLastPricesResponse.swift */; };
+		54EFCA5A2A96065C00C193E6 /* ReplaceOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9712A96065B00C193E6 /* ReplaceOrderRequest.swift */; };
+		54EFCA5B2A96065C00C193E6 /* InstrumentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9722A96065B00C193E6 /* InstrumentResponse.swift */; };
+		54EFCA5C2A96065C00C193E6 /* OptionDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9732A96065B00C193E6 /* OptionDirection.swift */; };
+		54EFCA5D2A96065C00C193E6 /* StructuredProductType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9742A96065B00C193E6 /* StructuredProductType.swift */; };
+		54EFCA5E2A96065C00C193E6 /* AccountStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9752A96065B00C193E6 /* AccountStatus.swift */; };
+		54EFCA5F2A96065C00C193E6 /* PortfolioSubscriptionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9762A96065B00C193E6 /* PortfolioSubscriptionResult.swift */; };
+		54EFCA602A96065C00C193E6 /* OrderDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9772A96065B00C193E6 /* OrderDirection.swift */; };
+		54EFCA612A96065C00C193E6 /* InstrumentIdType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9782A96065B00C193E6 /* InstrumentIdType.swift */; };
+		54EFCA622A96065C00C193E6 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9792A96065B00C193E6 /* Order.swift */; };
+		54EFCA632A96065C00C193E6 /* OrderTrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC97A2A96065B00C193E6 /* OrderTrade.swift */; };
+		54EFCA642A96065C00C193E6 /* OrderBookInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC97B2A96065B00C193E6 /* OrderBookInstrument.swift */; };
+		54EFCA652A96065C00C193E6 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC97C2A96065B00C193E6 /* Currency.swift */; };
+		54EFCA662A96065C00C193E6 /* PostStopOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC97D2A96065B00C193E6 /* PostStopOrderRequest.swift */; };
+		54EFCA672A96065C00C193E6 /* WithdrawLimitsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC97E2A96065B00C193E6 /* WithdrawLimitsRequest.swift */; };
+		54EFCA682A96065C00C193E6 /* GetMarginAttributesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC97F2A96065B00C193E6 /* GetMarginAttributesResponse.swift */; };
+		54EFCA692A96065C00C193E6 /* GetBrandRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9802A96065B00C193E6 /* GetBrandRequest.swift */; };
+		54EFCA6A2A96065C00C193E6 /* ShareResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9812A96065B00C193E6 /* ShareResponse.swift */; };
+		54EFCA6B2A96065C00C193E6 /* GetCandlesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9822A96065B00C193E6 /* GetCandlesResponse.swift */; };
+		54EFCA6C2A96065C00C193E6 /* MarketDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9832A96065B00C193E6 /* MarketDataResponse.swift */; };
+		54EFCA6D2A96065C00C193E6 /* TradingSchedulesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9842A96065B00C193E6 /* TradingSchedulesResponse.swift */; };
+		54EFCA6E2A96065C00C193E6 /* OrderExecutionReportStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9852A96065B00C193E6 /* OrderExecutionReportStatus.swift */; };
+		54EFCA6F2A96065C00C193E6 /* TradingSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9862A96065B00C193E6 /* TradingSchedule.swift */; };
+		54EFCA702A96065C00C193E6 /* PostStopOrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9872A96065B00C193E6 /* PostStopOrderResponse.swift */; };
+		54EFCA712A96065C00C193E6 /* OrderBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9882A96065B00C193E6 /* OrderBook.swift */; };
+		54EFCA722A96065C00C193E6 /* TradingSchedulesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9892A96065B00C193E6 /* TradingSchedulesRequest.swift */; };
+		54EFCA732A96065C00C193E6 /* DividendsForeignIssuerReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC98A2A96065B00C193E6 /* DividendsForeignIssuerReport.swift */; };
+		54EFCA742A96065C00C193E6 /* CloseSandboxAccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC98B2A96065B00C193E6 /* CloseSandboxAccountResponse.swift */; };
+		54EFCA752A96065C00C193E6 /* GetCountriesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC98C2A96065B00C193E6 /* GetCountriesRequest.swift */; };
+		54EFCA762A96065C00C193E6 /* Instrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC98D2A96065B00C193E6 /* Instrument.swift */; };
+		54EFCA772A96065C00C193E6 /* BondResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC98E2A96065B00C193E6 /* BondResponse.swift */; };
+		54EFCA782A96065C00C193E6 /* RealExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC98F2A96065B00C193E6 /* RealExchange.swift */; };
+		54EFCA792A96065C00C193E6 /* InstrumentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9902A96065B00C193E6 /* InstrumentRequest.swift */; };
+		54EFCA7A2A96065C00C193E6 /* StopOrderDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9912A96065B00C193E6 /* StopOrderDirection.swift */; };
+		54EFCA7B2A96065C00C193E6 /* SubscribeCandlesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9922A96065B00C193E6 /* SubscribeCandlesRequest.swift */; };
+		54EFCA7C2A96065C00C193E6 /* OptionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9932A96065B00C193E6 /* OptionsResponse.swift */; };
+		54EFCA7D2A96065C00C193E6 /* CountryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9942A96065B00C193E6 /* CountryResponse.swift */; };
+		54EFCA7E2A96065C00C193E6 /* GetOrdersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9952A96065B00C193E6 /* GetOrdersResponse.swift */; };
+		54EFCA7F2A96065C00C193E6 /* GetDividendsForeignIssuerReportResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9962A96065B00C193E6 /* GetDividendsForeignIssuerReportResponse.swift */; };
+		54EFCA802A96065C00C193E6 /* PositionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9972A96065B00C193E6 /* PositionData.swift */; };
+		54EFCA812A96065C00C193E6 /* AssetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9982A96065B00C193E6 /* AssetType.swift */; };
+		54EFCA822A96065C00C193E6 /* AssetShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9992A96065B00C193E6 /* AssetShare.swift */; };
+		54EFCA832A96065C00C193E6 /* AssetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC99A2A96065B00C193E6 /* AssetRequest.swift */; };
+		54EFCA842A96065C00C193E6 /* GetCandlesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC99B2A96065B00C193E6 /* GetCandlesRequest.swift */; };
+		54EFCA852A96065C00C193E6 /* AccessLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC99C2A96065B00C193E6 /* AccessLevel.swift */; };
+		54EFCA862A96065C00C193E6 /* PositionsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC99D2A96065B00C193E6 /* PositionsOptions.swift */; };
+		54EFCA872A96065C00C193E6 /* GetMarginAttributesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC99E2A96065B00C193E6 /* GetMarginAttributesRequest.swift */; };
+		54EFCA882A96065C00C193E6 /* OperationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC99F2A96065B00C193E6 /* OperationState.swift */; };
+		54EFCA892A96065C00C193E6 /* TradingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A02A96065B00C193E6 /* TradingStatus.swift */; };
+		54EFCA8A2A96065C00C193E6 /* GetStopOrdersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A12A96065B00C193E6 /* GetStopOrdersResponse.swift */; };
+		54EFCA8B2A96065C00C193E6 /* FutureResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A22A96065B00C193E6 /* FutureResponse.swift */; };
+		54EFCA8C2A96065C00C193E6 /* CancelStopOrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A32A96065B00C193E6 /* CancelStopOrderResponse.swift */; };
+		54EFCA8D2A96065C00C193E6 /* GetDividendsForeignIssuerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A42A96065B00C193E6 /* GetDividendsForeignIssuerRequest.swift */; };
+		54EFCA8E2A96065C00C193E6 /* WithdrawLimitsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A52A96065B00C193E6 /* WithdrawLimitsResponse.swift */; };
+		54EFCA8F2A96065C00C193E6 /* PositionsSubscriptionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A62A96065B00C193E6 /* PositionsSubscriptionResult.swift */; };
+		54EFCA902A96065C00C193E6 /* EditFavoritesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A72A96065B00C193E6 /* EditFavoritesResponse.swift */; };
+		54EFCA912A96065C00C193E6 /* GetOrderStateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A82A96065B00C193E6 /* GetOrderStateRequest.swift */; };
+		54EFCA922A96065C00C193E6 /* SubscribeInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9A92A96065B00C193E6 /* SubscribeInfoRequest.swift */; };
+		54EFCA932A96065C00C193E6 /* BondsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9AA2A96065B00C193E6 /* BondsResponse.swift */; };
+		54EFCA942A96065C00C193E6 /* EditFavoritesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9AB2A96065B00C193E6 /* EditFavoritesRequest.swift */; };
+		54EFCA952A96065C00C193E6 /* AssetsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9AC2A96065B00C193E6 /* AssetsResponse.swift */; };
+		54EFCA962A96065C00C193E6 /* SubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9AD2A96065B00C193E6 /* SubscriptionStatus.swift */; };
+		54EFCA972A96065C00C193E6 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9AE2A96065B00C193E6 /* Bond.swift */; };
+		54EFCA982A96065C00C193E6 /* AssetSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9AF2A96065B00C193E6 /* AssetSecurity.swift */; };
+		54EFCA992A96065C00C193E6 /* CurrencyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B02A96065B00C193E6 /* CurrencyResponse.swift */; };
+		54EFCA9A2A96065C00C193E6 /* GetMySubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B12A96065B00C193E6 /* GetMySubscriptions.swift */; };
+		54EFCA9B2A96065C00C193E6 /* GetBrokerReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B22A96065B00C193E6 /* GetBrokerReportRequest.swift */; };
+		54EFCA9C2A96065C00C193E6 /* InstrumentStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B32A96065B00C193E6 /* InstrumentStatus.swift */; };
+		54EFCA9D2A96065C00C193E6 /* GetDividendsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B42A96065B00C193E6 /* GetDividendsRequest.swift */; };
+		54EFCA9E2A96065C00C193E6 /* GetTradingStatusRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B52A96065B00C193E6 /* GetTradingStatusRequest.swift */; };
+		54EFCA9F2A96065C00C193E6 /* GetClosePricesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B62A96065B00C193E6 /* GetClosePricesRequest.swift */; };
+		54EFCAA02A96065C00C193E6 /* GetOperationsByCursorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B72A96065B00C193E6 /* GetOperationsByCursorRequest.swift */; };
+		54EFCAA12A96065C00C193E6 /* SubscribeCandlesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B82A96065B00C193E6 /* SubscribeCandlesResponse.swift */; };
+		54EFCAA22A96065C00C193E6 /* InstrumentShort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9B92A96065B00C193E6 /* InstrumentShort.swift */; };
+		54EFCAA32A96065C00C193E6 /* PositionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9BA2A96065B00C193E6 /* PositionsResponse.swift */; };
+		54EFCAA42A96065C00C193E6 /* OperationItemTrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9BB2A96065B00C193E6 /* OperationItemTrade.swift */; };
+		54EFCAA52A96065C00C193E6 /* SubscribeLastPriceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9BC2A96065B00C193E6 /* SubscribeLastPriceRequest.swift */; };
+		54EFCAA62A96065C00C193E6 /* SubscriptionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9BD2A96065B00C193E6 /* SubscriptionAction.swift */; };
+		54EFCAA72A96065C00C193E6 /* FavoriteInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9BE2A96065B00C193E6 /* FavoriteInstrument.swift */; };
+		54EFCAA82A96065C00C193E6 /* SandboxPayInResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9BF2A96065B00C193E6 /* SandboxPayInResponse.swift */; };
+		54EFCAA92A96065C00C193E6 /* AssetBond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C02A96065B00C193E6 /* AssetBond.swift */; };
+		54EFCAAA2A96065C00C193E6 /* AssetStructuredProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C12A96065B00C193E6 /* AssetStructuredProduct.swift */; };
+		54EFCAAB2A96065C00C193E6 /* OptionPaymentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C22A96065B00C193E6 /* OptionPaymentType.swift */; };
+		54EFCAAC2A96065C00C193E6 /* SubscribeOrderBookRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C32A96065B00C193E6 /* SubscribeOrderBookRequest.swift */; };
+		54EFCAAD2A96065C00C193E6 /* InstrumentLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C42A96065B00C193E6 /* InstrumentLink.swift */; };
+		54EFCAAE2A96065C00C193E6 /* CouponType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C52A96065B00C193E6 /* CouponType.swift */; };
+		54EFCAAF2A96065C00C193E6 /* CancelOrderResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C62A96065B00C193E6 /* CancelOrderResponse.swift */; };
+		54EFCAB02A96065C00C193E6 /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C72A96065B00C193E6 /* CancelOrderRequest.swift */; };
+		54EFCAB12A96065C00C193E6 /* CurrenciesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C82A96065B00C193E6 /* CurrenciesResponse.swift */; };
+		54EFCAB22A96065C00C193E6 /* SubscribeOrderBookResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9C92A96065B00C193E6 /* SubscribeOrderBookResponse.swift */; };
+		54EFCAB32A96065C00C193E6 /* PortfolioResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9CA2A96065B00C193E6 /* PortfolioResponse.swift */; };
+		54EFCAB42A96065C00C193E6 /* OptionSettlementType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9CB2A96065B00C193E6 /* OptionSettlementType.swift */; };
+		54EFCAB52A96065C00C193E6 /* GetBrandsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9CC2A96065B00C193E6 /* GetBrandsRequest.swift */; };
+		54EFCAB62A96065C00C193E6 /* GenerateDividendsForeignIssuerReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9CD2A96065B00C193E6 /* GenerateDividendsForeignIssuerReportRequest.swift */; };
+		54EFCAB72A96065C00C193E6 /* AssetsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9CE2A96065B00C193E6 /* AssetsRequest.swift */; };
+		54EFCAB82A96065C00C193E6 /* GetTradingStatusesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9CF2A96065B00C193E6 /* GetTradingStatusesResponse.swift */; };
+		54EFCAB92A96065C00C193E6 /* SubscribeInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D02A96065B00C193E6 /* SubscribeInfoResponse.swift */; };
+		54EFCABA2A96065C00C193E6 /* AccruedInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D12A96065B00C193E6 /* AccruedInterest.swift */; };
+		54EFCABB2A96065C00C193E6 /* TradeSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D22A96065B00C193E6 /* TradeSubscription.swift */; };
+		54EFCABC2A96065C00C193E6 /* Dividend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D32A96065B00C193E6 /* Dividend.swift */; };
+		54EFCABD2A96065C00C193E6 /* InstrumentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D42A96065B00C193E6 /* InstrumentType.swift */; };
+		54EFCABE2A96065C00C193E6 /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D52A96065B00C193E6 /* Share.swift */; };
+		54EFCABF2A96065C00C193E6 /* CandleSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D62A96065B00C193E6 /* CandleSubscription.swift */; };
+		54EFCAC02A96065C00C193E6 /* OptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D72A96065B00C193E6 /* OptionStyle.swift */; };
+		54EFCAC12A96065C00C193E6 /* GetBondCouponsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D82A96065B00C193E6 /* GetBondCouponsResponse.swift */; };
+		54EFCAC22A96065C00C193E6 /* LastPriceInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9D92A96065B00C193E6 /* LastPriceInstrument.swift */; };
+		54EFCAC32A96065C00C193E6 /* RpcStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9DA2A96065B00C193E6 /* RpcStatus.swift */; };
+		54EFCAC42A96065C00C193E6 /* OrderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9DB2A96065B00C193E6 /* OrderType.swift */; };
+		54EFCAC52A96065C00C193E6 /* HistoricCandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9DC2A96065B00C193E6 /* HistoricCandle.swift */; };
+		54EFCAC62A96065C00C193E6 /* CurrencyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9DD2A96065B00C193E6 /* CurrencyRequest.swift */; };
+		54EFCAC72A96065C00C193E6 /* GetOrderBookResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9DE2A96065B00C193E6 /* GetOrderBookResponse.swift */; };
+		54EFCAC82A96065C00C193E6 /* GetInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9DF2A96065B00C193E6 /* GetInfoRequest.swift */; };
+		54EFCAC92A96065C00C193E6 /* AssetClearingCertificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E02A96065B00C193E6 /* AssetClearingCertificate.swift */; };
+		54EFCACA2A96065C00C193E6 /* StreamLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E12A96065B00C193E6 /* StreamLimit.swift */; };
+		54EFCACB2A96065C00C193E6 /* CancelStopOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E22A96065B00C193E6 /* CancelStopOrderRequest.swift */; };
+		54EFCACC2A96065C00C193E6 /* OpenSandboxAccountResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E32A96065B00C193E6 /* OpenSandboxAccountResponse.swift */; };
+		54EFCACD2A96065C00C193E6 /* SecurityTradingStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E42A96065B00C193E6 /* SecurityTradingStatus.swift */; };
+		54EFCACE2A96065C00C193E6 /* OrderBookSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E52A96065B00C193E6 /* OrderBookSubscription.swift */; };
+		54EFCACF2A96065C00C193E6 /* GenerateBrokerReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E62A96065B00C193E6 /* GenerateBrokerReportRequest.swift */; };
+		54EFCAD02A96065C00C193E6 /* GetStopOrdersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E72A96065B00C193E6 /* GetStopOrdersRequest.swift */; };
+		54EFCAD12A96065C00C193E6 /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E82A96065B00C193E6 /* Brand.swift */; };
+		54EFCAD22A96065C00C193E6 /* CandleInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9E92A96065B00C193E6 /* CandleInstrument.swift */; };
+		54EFCAD32A96065C00C193E6 /* GetDividendsForeignIssuerReportRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9EA2A96065B00C193E6 /* GetDividendsForeignIssuerReportRequest.swift */; };
+		54EFCAD42A96065C00C193E6 /* InstrumentClosePriceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9EB2A96065B00C193E6 /* InstrumentClosePriceRequest.swift */; };
+		54EFCAD52A96065C00C193E6 /* Etf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9EC2A96065B00C193E6 /* Etf.swift */; };
+		54EFCAD62A96065C00C193E6 /* AssetCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9ED2A96065B00C193E6 /* AssetCurrency.swift */; };
+		54EFCAD72A96065C00C193E6 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9EE2A96065B00C193E6 /* Asset.swift */; };
+		54EFCAD82A96065C00C193E6 /* OptionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9EF2A96065B00C193E6 /* OptionResponse.swift */; };
+		54EFCAD92A96065C00C193E6 /* TradeInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F02A96065B00C193E6 /* TradeInstrument.swift */; };
+		54EFCADA2A96065C00C193E6 /* AssetEtf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F12A96065B00C193E6 /* AssetEtf.swift */; };
+		54EFCADB2A96065C00C193E6 /* GetAccruedInterestsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F22A96065B00C193E6 /* GetAccruedInterestsRequest.swift */; };
+		54EFCADC2A96065C00C193E6 /* MoneyValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F32A96065B00C193E6 /* MoneyValue.swift */; };
+		54EFCADD2A96065C00C193E6 /* EditFavoritesRequestInstrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F42A96065B00C193E6 /* EditFavoritesRequestInstrument.swift */; };
+		54EFCADE2A96065C00C193E6 /* LastPriceSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F52A96065B00C193E6 /* LastPriceSubscription.swift */; };
+		54EFCADF2A96065C00C193E6 /* StopOrderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F62A96065B00C193E6 /* StopOrderType.swift */; };
+		54EFCAE02A96065C00C193E6 /* SubscribeLastPriceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F72A96065B00C193E6 /* SubscribeLastPriceResponse.swift */; };
+		54EFCAE12A96065C00C193E6 /* PositionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F82A96065B00C193E6 /* PositionsRequest.swift */; };
+		54EFCAE22A96065C00C193E6 /* PortfolioSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9F92A96065B00C193E6 /* PortfolioSubscriptionStatus.swift */; };
+		54EFCAE32A96065C00C193E6 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9FA2A96065B00C193E6 /* Account.swift */; };
+		54EFCAE42A96065C00C193E6 /* GetInfoResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9FB2A96065B00C193E6 /* GetInfoResponse.swift */; };
+		54EFCAE52A96065C00C193E6 /* FuturesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9FC2A96065B00C193E6 /* FuturesResponse.swift */; };
+		54EFCAE62A96065C00C193E6 /* PortfolioPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9FD2A96065B00C193E6 /* PortfolioPosition.swift */; };
+		54EFCAE72A96065C00C193E6 /* PositionsSecurities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9FE2A96065B00C193E6 /* PositionsSecurities.swift */; };
+		54EFCAE82A96065C00C193E6 /* InstrumentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFC9FF2A96065B00C193E6 /* InstrumentsRequest.swift */; };
+		54EFCAE92A96065C00C193E6 /* GenerateBrokerReportResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA002A96065B00C193E6 /* GenerateBrokerReportResponse.swift */; };
+		54EFCAEA2A96065C00C193E6 /* GetFuturesMarginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA012A96065B00C193E6 /* GetFuturesMarginRequest.swift */; };
+		54EFCAEB2A96065C00C193E6 /* LastPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA022A96065B00C193E6 /* LastPrice.swift */; };
+		54EFCAEC2A96065C00C193E6 /* PositionsSubscriptionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA032A96065B00C193E6 /* PositionsSubscriptionStatus.swift */; };
+		54EFCAED2A96065C00C193E6 /* GetDividendsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA042A96065B00C193E6 /* GetDividendsResponse.swift */; };
+		54EFCAEE2A96065C00C193E6 /* OrderStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA052A96065B00C193E6 /* OrderStage.swift */; };
+		54EFCAEF2A96065C00C193E6 /* SubscribeTradesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA062A96065B00C193E6 /* SubscribeTradesRequest.swift */; };
+		54EFCAF02A96065C00C193E6 /* BrokerReportResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA072A96065B00C193E6 /* BrokerReportResponse.swift */; };
+		54EFCAF12A96065C00C193E6 /* RiskLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA082A96065B00C193E6 /* RiskLevel.swift */; };
+		54EFCAF22A96065C00C193E6 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA092A96065B00C193E6 /* Operation.swift */; };
+		54EFCAF32A96065C00C193E6 /* EtfResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA0A2A96065B00C193E6 /* EtfResponse.swift */; };
+		54EFCAF42A96065C00C193E6 /* GetBondCouponsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA0B2A96065B00C193E6 /* GetBondCouponsRequest.swift */; };
+		54EFCAF52A96065C00C193E6 /* GetOrdersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA0C2A96065B00C193E6 /* GetOrdersRequest.swift */; };
+		54EFCAF62A96065C00C193E6 /* AccountType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA0D2A96065B00C193E6 /* AccountType.swift */; };
+		54EFCAF72A96065C00C193E6 /* ProtobufAny.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA0E2A96065B00C193E6 /* ProtobufAny.swift */; };
+		54EFCAF82A96065C00C193E6 /* SandboxPayInRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA0F2A96065B00C193E6 /* SandboxPayInRequest.swift */; };
+		54EFCAF92A96065C00C193E6 /* TinkoffInvestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA102A96065C00C193E6 /* TinkoffInvestClient.swift */; };
+		54EFCAFA2A96065C00C193E6 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA112A96065C00C193E6 /* AsyncOperation.swift */; };
+		54EFCAFB2A96065C00C193E6 /* NetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCA122A96065C00C193E6 /* NetworkOperation.swift */; };
+		54EFCAFD2A9606A200C193E6 /* BigNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54EFCAFC2A9606A200C193E6 /* BigNumber.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +258,240 @@
 		54EFC9132A96026F00C193E6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		54EFC9162A96026F00C193E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		54EFC9182A96026F00C193E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54EFC92A2A96065B00C193E6 /* Trade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trade.swift; sourceTree = "<group>"; };
+		54EFC92B2A96065B00C193E6 /* AccountSubscriptionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSubscriptionStatus.swift; sourceTree = "<group>"; };
+		54EFC92C2A96065B00C193E6 /* StopOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopOrder.swift; sourceTree = "<group>"; };
+		54EFC92D2A96065B00C193E6 /* GetFavoritesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFavoritesResponse.swift; sourceTree = "<group>"; };
+		54EFC92E2A96065B00C193E6 /* GenerateDividendsForeignIssuerReportResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateDividendsForeignIssuerReportResponse.swift; sourceTree = "<group>"; };
+		54EFC92F2A96065B00C193E6 /* GetBrokerReportResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBrokerReportResponse.swift; sourceTree = "<group>"; };
+		54EFC9302A96065B00C193E6 /* TradingDay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradingDay.swift; sourceTree = "<group>"; };
+		54EFC9312A96065B00C193E6 /* EditFavoritesActionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFavoritesActionType.swift; sourceTree = "<group>"; };
+		54EFC9322A96065B00C193E6 /* GetFavoritesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFavoritesRequest.swift; sourceTree = "<group>"; };
+		54EFC9332A96065B00C193E6 /* GetCountriesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCountriesResponse.swift; sourceTree = "<group>"; };
+		54EFC9342A96065B00C193E6 /* TradeDirection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeDirection.swift; sourceTree = "<group>"; };
+		54EFC9352A96065B00C193E6 /* OperationsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsResponse.swift; sourceTree = "<group>"; };
+		54EFC9362A96065B00C193E6 /* AssetResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetResponse.swift; sourceTree = "<group>"; };
+		54EFC9372A96065B00C193E6 /* OperationsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsRequest.swift; sourceTree = "<group>"; };
+		54EFC9382A96065B00C193E6 /* PortfolioRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioRequest.swift; sourceTree = "<group>"; };
+		54EFC9392A96065B00C193E6 /* GetClosePricesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetClosePricesResponse.swift; sourceTree = "<group>"; };
+		54EFC93A2A96065B00C193E6 /* FindInstrumentResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindInstrumentResponse.swift; sourceTree = "<group>"; };
+		54EFC93B2A96065B00C193E6 /* OperationTrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationTrade.swift; sourceTree = "<group>"; };
+		54EFC93C2A96065B00C193E6 /* SubscriptionInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionInterval.swift; sourceTree = "<group>"; };
+		54EFC93D2A96065B00C193E6 /* GetFuturesMarginResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFuturesMarginResponse.swift; sourceTree = "<group>"; };
+		54EFC93E2A96065B00C193E6 /* GetLastTradesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetLastTradesRequest.swift; sourceTree = "<group>"; };
+		54EFC93F2A96065B00C193E6 /* GetBrandsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBrandsResponse.swift; sourceTree = "<group>"; };
+		54EFC9402A96065B00C193E6 /* PostOrderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostOrderResponse.swift; sourceTree = "<group>"; };
+		54EFC9412A96065B00C193E6 /* Coupon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coupon.swift; sourceTree = "<group>"; };
+		54EFC9422A96065B00C193E6 /* CloseSandboxAccountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseSandboxAccountRequest.swift; sourceTree = "<group>"; };
+		54EFC9432A96065B00C193E6 /* PostOrderRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostOrderRequest.swift; sourceTree = "<group>"; };
+		54EFC9442A96065B00C193E6 /* GetUserTariffRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetUserTariffRequest.swift; sourceTree = "<group>"; };
+		54EFC9452A96065B00C193E6 /* OperationItemTrades.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationItemTrades.swift; sourceTree = "<group>"; };
+		54EFC9462A96065B00C193E6 /* GetLastPricesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetLastPricesRequest.swift; sourceTree = "<group>"; };
+		54EFC9472A96065B00C193E6 /* UnaryLimit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnaryLimit.swift; sourceTree = "<group>"; };
+		54EFC9482A96065B00C193E6 /* GetUserTariffResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetUserTariffResponse.swift; sourceTree = "<group>"; };
+		54EFC9492A96065B00C193E6 /* PriceType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceType.swift; sourceTree = "<group>"; };
+		54EFC94A2A96065B00C193E6 /* InfoInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoInstrument.swift; sourceTree = "<group>"; };
+		54EFC94B2A96065B00C193E6 /* GetLastTradesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetLastTradesResponse.swift; sourceTree = "<group>"; };
+		54EFC94C2A96065B00C193E6 /* PositionsMoney.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsMoney.swift; sourceTree = "<group>"; };
+		54EFC94D2A96065B00C193E6 /* OrderTrades.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTrades.swift; sourceTree = "<group>"; };
+		54EFC94E2A96065B00C193E6 /* OperationItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationItem.swift; sourceTree = "<group>"; };
+		54EFC94F2A96065B00C193E6 /* OperationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationType.swift; sourceTree = "<group>"; };
+		54EFC9502A96065B00C193E6 /* SharesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharesResponse.swift; sourceTree = "<group>"; };
+		54EFC9512A96065B00C193E6 /* ShareType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareType.swift; sourceTree = "<group>"; };
+		54EFC9522A96065B00C193E6 /* AssetInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetInstrument.swift; sourceTree = "<group>"; };
+		54EFC9532A96065B00C193E6 /* GetAccountsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccountsRequest.swift; sourceTree = "<group>"; };
+		54EFC9542A96065B00C193E6 /* GetOrderBookRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderBookRequest.swift; sourceTree = "<group>"; };
+		54EFC9552A96065B00C193E6 /* BrokerReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrokerReport.swift; sourceTree = "<group>"; };
+		54EFC9562A96065B00C193E6 /* OrderState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderState.swift; sourceTree = "<group>"; };
+		54EFC9572A96065B00C193E6 /* Ping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ping.swift; sourceTree = "<group>"; };
+		54EFC9582A96065B00C193E6 /* MarketDataRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketDataRequest.swift; sourceTree = "<group>"; };
+		54EFC9592A96065B00C193E6 /* GetTradingStatusesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTradingStatusesRequest.swift; sourceTree = "<group>"; };
+		54EFC95A2A96065B00C193E6 /* Quotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quotation.swift; sourceTree = "<group>"; };
+		54EFC95B2A96065B00C193E6 /* GetAccruedInterestsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccruedInterestsResponse.swift; sourceTree = "<group>"; };
+		54EFC95C2A96065B00C193E6 /* StopOrderExpirationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopOrderExpirationType.swift; sourceTree = "<group>"; };
+		54EFC95D2A96065B00C193E6 /* GetTradingStatusResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTradingStatusResponse.swift; sourceTree = "<group>"; };
+		54EFC95E2A96065B00C193E6 /* GetDividendsForeignIssuerResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDividendsForeignIssuerResponse.swift; sourceTree = "<group>"; };
+		54EFC95F2A96065B00C193E6 /* GetOperationsByCursorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOperationsByCursorResponse.swift; sourceTree = "<group>"; };
+		54EFC9602A96065B00C193E6 /* InstrumentClosePriceResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentClosePriceResponse.swift; sourceTree = "<group>"; };
+		54EFC9612A96065B00C193E6 /* PositionsAccountSubscriptionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsAccountSubscriptionStatus.swift; sourceTree = "<group>"; };
+		54EFC9622A96065B00C193E6 /* CandleInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandleInterval.swift; sourceTree = "<group>"; };
+		54EFC9632A96065B00C193E6 /* EtfsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EtfsResponse.swift; sourceTree = "<group>"; };
+		54EFC9642A96065B00C193E6 /* SubscribeTradesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeTradesResponse.swift; sourceTree = "<group>"; };
+		54EFC9652A96065B00C193E6 /* Candle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Candle.swift; sourceTree = "<group>"; };
+		54EFC9662A96065B00C193E6 /* FindInstrumentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindInstrumentRequest.swift; sourceTree = "<group>"; };
+		54EFC9672A96065B00C193E6 /* InfoSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoSubscription.swift; sourceTree = "<group>"; };
+		54EFC9682A96065B00C193E6 /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
+		54EFC9692A96065B00C193E6 /* Future.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
+		54EFC96A2A96065B00C193E6 /* OpenSandboxAccountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenSandboxAccountRequest.swift; sourceTree = "<group>"; };
+		54EFC96B2A96065B00C193E6 /* PositionsFutures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsFutures.swift; sourceTree = "<group>"; };
+		54EFC96C2A96065B00C193E6 /* VirtualPortfolioPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualPortfolioPosition.swift; sourceTree = "<group>"; };
+		54EFC96D2A96065B00C193E6 /* BrokerReportRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrokerReportRequest.swift; sourceTree = "<group>"; };
+		54EFC96E2A96065B00C193E6 /* GetAccountsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccountsResponse.swift; sourceTree = "<group>"; };
+		54EFC96F2A96065B00C193E6 /* AssetFull.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetFull.swift; sourceTree = "<group>"; };
+		54EFC9702A96065B00C193E6 /* GetLastPricesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetLastPricesResponse.swift; sourceTree = "<group>"; };
+		54EFC9712A96065B00C193E6 /* ReplaceOrderRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceOrderRequest.swift; sourceTree = "<group>"; };
+		54EFC9722A96065B00C193E6 /* InstrumentResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentResponse.swift; sourceTree = "<group>"; };
+		54EFC9732A96065B00C193E6 /* OptionDirection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionDirection.swift; sourceTree = "<group>"; };
+		54EFC9742A96065B00C193E6 /* StructuredProductType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructuredProductType.swift; sourceTree = "<group>"; };
+		54EFC9752A96065B00C193E6 /* AccountStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountStatus.swift; sourceTree = "<group>"; };
+		54EFC9762A96065B00C193E6 /* PortfolioSubscriptionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioSubscriptionResult.swift; sourceTree = "<group>"; };
+		54EFC9772A96065B00C193E6 /* OrderDirection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderDirection.swift; sourceTree = "<group>"; };
+		54EFC9782A96065B00C193E6 /* InstrumentIdType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentIdType.swift; sourceTree = "<group>"; };
+		54EFC9792A96065B00C193E6 /* Order.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		54EFC97A2A96065B00C193E6 /* OrderTrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderTrade.swift; sourceTree = "<group>"; };
+		54EFC97B2A96065B00C193E6 /* OrderBookInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderBookInstrument.swift; sourceTree = "<group>"; };
+		54EFC97C2A96065B00C193E6 /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		54EFC97D2A96065B00C193E6 /* PostStopOrderRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostStopOrderRequest.swift; sourceTree = "<group>"; };
+		54EFC97E2A96065B00C193E6 /* WithdrawLimitsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithdrawLimitsRequest.swift; sourceTree = "<group>"; };
+		54EFC97F2A96065B00C193E6 /* GetMarginAttributesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetMarginAttributesResponse.swift; sourceTree = "<group>"; };
+		54EFC9802A96065B00C193E6 /* GetBrandRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBrandRequest.swift; sourceTree = "<group>"; };
+		54EFC9812A96065B00C193E6 /* ShareResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareResponse.swift; sourceTree = "<group>"; };
+		54EFC9822A96065B00C193E6 /* GetCandlesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCandlesResponse.swift; sourceTree = "<group>"; };
+		54EFC9832A96065B00C193E6 /* MarketDataResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarketDataResponse.swift; sourceTree = "<group>"; };
+		54EFC9842A96065B00C193E6 /* TradingSchedulesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradingSchedulesResponse.swift; sourceTree = "<group>"; };
+		54EFC9852A96065B00C193E6 /* OrderExecutionReportStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderExecutionReportStatus.swift; sourceTree = "<group>"; };
+		54EFC9862A96065B00C193E6 /* TradingSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradingSchedule.swift; sourceTree = "<group>"; };
+		54EFC9872A96065B00C193E6 /* PostStopOrderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostStopOrderResponse.swift; sourceTree = "<group>"; };
+		54EFC9882A96065B00C193E6 /* OrderBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderBook.swift; sourceTree = "<group>"; };
+		54EFC9892A96065B00C193E6 /* TradingSchedulesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradingSchedulesRequest.swift; sourceTree = "<group>"; };
+		54EFC98A2A96065B00C193E6 /* DividendsForeignIssuerReport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividendsForeignIssuerReport.swift; sourceTree = "<group>"; };
+		54EFC98B2A96065B00C193E6 /* CloseSandboxAccountResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseSandboxAccountResponse.swift; sourceTree = "<group>"; };
+		54EFC98C2A96065B00C193E6 /* GetCountriesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCountriesRequest.swift; sourceTree = "<group>"; };
+		54EFC98D2A96065B00C193E6 /* Instrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instrument.swift; sourceTree = "<group>"; };
+		54EFC98E2A96065B00C193E6 /* BondResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondResponse.swift; sourceTree = "<group>"; };
+		54EFC98F2A96065B00C193E6 /* RealExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealExchange.swift; sourceTree = "<group>"; };
+		54EFC9902A96065B00C193E6 /* InstrumentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentRequest.swift; sourceTree = "<group>"; };
+		54EFC9912A96065B00C193E6 /* StopOrderDirection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopOrderDirection.swift; sourceTree = "<group>"; };
+		54EFC9922A96065B00C193E6 /* SubscribeCandlesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeCandlesRequest.swift; sourceTree = "<group>"; };
+		54EFC9932A96065B00C193E6 /* OptionsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsResponse.swift; sourceTree = "<group>"; };
+		54EFC9942A96065B00C193E6 /* CountryResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryResponse.swift; sourceTree = "<group>"; };
+		54EFC9952A96065B00C193E6 /* GetOrdersResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrdersResponse.swift; sourceTree = "<group>"; };
+		54EFC9962A96065B00C193E6 /* GetDividendsForeignIssuerReportResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDividendsForeignIssuerReportResponse.swift; sourceTree = "<group>"; };
+		54EFC9972A96065B00C193E6 /* PositionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionData.swift; sourceTree = "<group>"; };
+		54EFC9982A96065B00C193E6 /* AssetType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetType.swift; sourceTree = "<group>"; };
+		54EFC9992A96065B00C193E6 /* AssetShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetShare.swift; sourceTree = "<group>"; };
+		54EFC99A2A96065B00C193E6 /* AssetRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetRequest.swift; sourceTree = "<group>"; };
+		54EFC99B2A96065B00C193E6 /* GetCandlesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCandlesRequest.swift; sourceTree = "<group>"; };
+		54EFC99C2A96065B00C193E6 /* AccessLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessLevel.swift; sourceTree = "<group>"; };
+		54EFC99D2A96065B00C193E6 /* PositionsOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsOptions.swift; sourceTree = "<group>"; };
+		54EFC99E2A96065B00C193E6 /* GetMarginAttributesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetMarginAttributesRequest.swift; sourceTree = "<group>"; };
+		54EFC99F2A96065B00C193E6 /* OperationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationState.swift; sourceTree = "<group>"; };
+		54EFC9A02A96065B00C193E6 /* TradingStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradingStatus.swift; sourceTree = "<group>"; };
+		54EFC9A12A96065B00C193E6 /* GetStopOrdersResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStopOrdersResponse.swift; sourceTree = "<group>"; };
+		54EFC9A22A96065B00C193E6 /* FutureResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureResponse.swift; sourceTree = "<group>"; };
+		54EFC9A32A96065B00C193E6 /* CancelStopOrderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CancelStopOrderResponse.swift; sourceTree = "<group>"; };
+		54EFC9A42A96065B00C193E6 /* GetDividendsForeignIssuerRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDividendsForeignIssuerRequest.swift; sourceTree = "<group>"; };
+		54EFC9A52A96065B00C193E6 /* WithdrawLimitsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WithdrawLimitsResponse.swift; sourceTree = "<group>"; };
+		54EFC9A62A96065B00C193E6 /* PositionsSubscriptionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsSubscriptionResult.swift; sourceTree = "<group>"; };
+		54EFC9A72A96065B00C193E6 /* EditFavoritesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFavoritesResponse.swift; sourceTree = "<group>"; };
+		54EFC9A82A96065B00C193E6 /* GetOrderStateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderStateRequest.swift; sourceTree = "<group>"; };
+		54EFC9A92A96065B00C193E6 /* SubscribeInfoRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeInfoRequest.swift; sourceTree = "<group>"; };
+		54EFC9AA2A96065B00C193E6 /* BondsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondsResponse.swift; sourceTree = "<group>"; };
+		54EFC9AB2A96065B00C193E6 /* EditFavoritesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFavoritesRequest.swift; sourceTree = "<group>"; };
+		54EFC9AC2A96065B00C193E6 /* AssetsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsResponse.swift; sourceTree = "<group>"; };
+		54EFC9AD2A96065B00C193E6 /* SubscriptionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionStatus.swift; sourceTree = "<group>"; };
+		54EFC9AE2A96065B00C193E6 /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
+		54EFC9AF2A96065B00C193E6 /* AssetSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetSecurity.swift; sourceTree = "<group>"; };
+		54EFC9B02A96065B00C193E6 /* CurrencyResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyResponse.swift; sourceTree = "<group>"; };
+		54EFC9B12A96065B00C193E6 /* GetMySubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetMySubscriptions.swift; sourceTree = "<group>"; };
+		54EFC9B22A96065B00C193E6 /* GetBrokerReportRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBrokerReportRequest.swift; sourceTree = "<group>"; };
+		54EFC9B32A96065B00C193E6 /* InstrumentStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentStatus.swift; sourceTree = "<group>"; };
+		54EFC9B42A96065B00C193E6 /* GetDividendsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDividendsRequest.swift; sourceTree = "<group>"; };
+		54EFC9B52A96065B00C193E6 /* GetTradingStatusRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTradingStatusRequest.swift; sourceTree = "<group>"; };
+		54EFC9B62A96065B00C193E6 /* GetClosePricesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetClosePricesRequest.swift; sourceTree = "<group>"; };
+		54EFC9B72A96065B00C193E6 /* GetOperationsByCursorRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOperationsByCursorRequest.swift; sourceTree = "<group>"; };
+		54EFC9B82A96065B00C193E6 /* SubscribeCandlesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeCandlesResponse.swift; sourceTree = "<group>"; };
+		54EFC9B92A96065B00C193E6 /* InstrumentShort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentShort.swift; sourceTree = "<group>"; };
+		54EFC9BA2A96065B00C193E6 /* PositionsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsResponse.swift; sourceTree = "<group>"; };
+		54EFC9BB2A96065B00C193E6 /* OperationItemTrade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationItemTrade.swift; sourceTree = "<group>"; };
+		54EFC9BC2A96065B00C193E6 /* SubscribeLastPriceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeLastPriceRequest.swift; sourceTree = "<group>"; };
+		54EFC9BD2A96065B00C193E6 /* SubscriptionAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionAction.swift; sourceTree = "<group>"; };
+		54EFC9BE2A96065B00C193E6 /* FavoriteInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteInstrument.swift; sourceTree = "<group>"; };
+		54EFC9BF2A96065B00C193E6 /* SandboxPayInResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SandboxPayInResponse.swift; sourceTree = "<group>"; };
+		54EFC9C02A96065B00C193E6 /* AssetBond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetBond.swift; sourceTree = "<group>"; };
+		54EFC9C12A96065B00C193E6 /* AssetStructuredProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetStructuredProduct.swift; sourceTree = "<group>"; };
+		54EFC9C22A96065B00C193E6 /* OptionPaymentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionPaymentType.swift; sourceTree = "<group>"; };
+		54EFC9C32A96065B00C193E6 /* SubscribeOrderBookRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeOrderBookRequest.swift; sourceTree = "<group>"; };
+		54EFC9C42A96065B00C193E6 /* InstrumentLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentLink.swift; sourceTree = "<group>"; };
+		54EFC9C52A96065B00C193E6 /* CouponType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponType.swift; sourceTree = "<group>"; };
+		54EFC9C62A96065B00C193E6 /* CancelOrderResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CancelOrderResponse.swift; sourceTree = "<group>"; };
+		54EFC9C72A96065B00C193E6 /* CancelOrderRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CancelOrderRequest.swift; sourceTree = "<group>"; };
+		54EFC9C82A96065B00C193E6 /* CurrenciesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrenciesResponse.swift; sourceTree = "<group>"; };
+		54EFC9C92A96065B00C193E6 /* SubscribeOrderBookResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeOrderBookResponse.swift; sourceTree = "<group>"; };
+		54EFC9CA2A96065B00C193E6 /* PortfolioResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioResponse.swift; sourceTree = "<group>"; };
+		54EFC9CB2A96065B00C193E6 /* OptionSettlementType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionSettlementType.swift; sourceTree = "<group>"; };
+		54EFC9CC2A96065B00C193E6 /* GetBrandsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBrandsRequest.swift; sourceTree = "<group>"; };
+		54EFC9CD2A96065B00C193E6 /* GenerateDividendsForeignIssuerReportRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateDividendsForeignIssuerReportRequest.swift; sourceTree = "<group>"; };
+		54EFC9CE2A96065B00C193E6 /* AssetsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsRequest.swift; sourceTree = "<group>"; };
+		54EFC9CF2A96065B00C193E6 /* GetTradingStatusesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTradingStatusesResponse.swift; sourceTree = "<group>"; };
+		54EFC9D02A96065B00C193E6 /* SubscribeInfoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeInfoResponse.swift; sourceTree = "<group>"; };
+		54EFC9D12A96065B00C193E6 /* AccruedInterest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccruedInterest.swift; sourceTree = "<group>"; };
+		54EFC9D22A96065B00C193E6 /* TradeSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeSubscription.swift; sourceTree = "<group>"; };
+		54EFC9D32A96065B00C193E6 /* Dividend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dividend.swift; sourceTree = "<group>"; };
+		54EFC9D42A96065B00C193E6 /* InstrumentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentType.swift; sourceTree = "<group>"; };
+		54EFC9D52A96065B00C193E6 /* Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
+		54EFC9D62A96065B00C193E6 /* CandleSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandleSubscription.swift; sourceTree = "<group>"; };
+		54EFC9D72A96065B00C193E6 /* OptionStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionStyle.swift; sourceTree = "<group>"; };
+		54EFC9D82A96065B00C193E6 /* GetBondCouponsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBondCouponsResponse.swift; sourceTree = "<group>"; };
+		54EFC9D92A96065B00C193E6 /* LastPriceInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastPriceInstrument.swift; sourceTree = "<group>"; };
+		54EFC9DA2A96065B00C193E6 /* RpcStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RpcStatus.swift; sourceTree = "<group>"; };
+		54EFC9DB2A96065B00C193E6 /* OrderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderType.swift; sourceTree = "<group>"; };
+		54EFC9DC2A96065B00C193E6 /* HistoricCandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoricCandle.swift; sourceTree = "<group>"; };
+		54EFC9DD2A96065B00C193E6 /* CurrencyRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyRequest.swift; sourceTree = "<group>"; };
+		54EFC9DE2A96065B00C193E6 /* GetOrderBookResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrderBookResponse.swift; sourceTree = "<group>"; };
+		54EFC9DF2A96065B00C193E6 /* GetInfoRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetInfoRequest.swift; sourceTree = "<group>"; };
+		54EFC9E02A96065B00C193E6 /* AssetClearingCertificate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetClearingCertificate.swift; sourceTree = "<group>"; };
+		54EFC9E12A96065B00C193E6 /* StreamLimit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamLimit.swift; sourceTree = "<group>"; };
+		54EFC9E22A96065B00C193E6 /* CancelStopOrderRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CancelStopOrderRequest.swift; sourceTree = "<group>"; };
+		54EFC9E32A96065B00C193E6 /* OpenSandboxAccountResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenSandboxAccountResponse.swift; sourceTree = "<group>"; };
+		54EFC9E42A96065B00C193E6 /* SecurityTradingStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityTradingStatus.swift; sourceTree = "<group>"; };
+		54EFC9E52A96065B00C193E6 /* OrderBookSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderBookSubscription.swift; sourceTree = "<group>"; };
+		54EFC9E62A96065B00C193E6 /* GenerateBrokerReportRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateBrokerReportRequest.swift; sourceTree = "<group>"; };
+		54EFC9E72A96065B00C193E6 /* GetStopOrdersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStopOrdersRequest.swift; sourceTree = "<group>"; };
+		54EFC9E82A96065B00C193E6 /* Brand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
+		54EFC9E92A96065B00C193E6 /* CandleInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandleInstrument.swift; sourceTree = "<group>"; };
+		54EFC9EA2A96065B00C193E6 /* GetDividendsForeignIssuerReportRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDividendsForeignIssuerReportRequest.swift; sourceTree = "<group>"; };
+		54EFC9EB2A96065B00C193E6 /* InstrumentClosePriceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentClosePriceRequest.swift; sourceTree = "<group>"; };
+		54EFC9EC2A96065B00C193E6 /* Etf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Etf.swift; sourceTree = "<group>"; };
+		54EFC9ED2A96065B00C193E6 /* AssetCurrency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetCurrency.swift; sourceTree = "<group>"; };
+		54EFC9EE2A96065B00C193E6 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
+		54EFC9EF2A96065B00C193E6 /* OptionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionResponse.swift; sourceTree = "<group>"; };
+		54EFC9F02A96065B00C193E6 /* TradeInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeInstrument.swift; sourceTree = "<group>"; };
+		54EFC9F12A96065B00C193E6 /* AssetEtf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetEtf.swift; sourceTree = "<group>"; };
+		54EFC9F22A96065B00C193E6 /* GetAccruedInterestsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetAccruedInterestsRequest.swift; sourceTree = "<group>"; };
+		54EFC9F32A96065B00C193E6 /* MoneyValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoneyValue.swift; sourceTree = "<group>"; };
+		54EFC9F42A96065B00C193E6 /* EditFavoritesRequestInstrument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFavoritesRequestInstrument.swift; sourceTree = "<group>"; };
+		54EFC9F52A96065B00C193E6 /* LastPriceSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastPriceSubscription.swift; sourceTree = "<group>"; };
+		54EFC9F62A96065B00C193E6 /* StopOrderType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StopOrderType.swift; sourceTree = "<group>"; };
+		54EFC9F72A96065B00C193E6 /* SubscribeLastPriceResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeLastPriceResponse.swift; sourceTree = "<group>"; };
+		54EFC9F82A96065B00C193E6 /* PositionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsRequest.swift; sourceTree = "<group>"; };
+		54EFC9F92A96065B00C193E6 /* PortfolioSubscriptionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioSubscriptionStatus.swift; sourceTree = "<group>"; };
+		54EFC9FA2A96065B00C193E6 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		54EFC9FB2A96065B00C193E6 /* GetInfoResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetInfoResponse.swift; sourceTree = "<group>"; };
+		54EFC9FC2A96065B00C193E6 /* FuturesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuturesResponse.swift; sourceTree = "<group>"; };
+		54EFC9FD2A96065B00C193E6 /* PortfolioPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioPosition.swift; sourceTree = "<group>"; };
+		54EFC9FE2A96065B00C193E6 /* PositionsSecurities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsSecurities.swift; sourceTree = "<group>"; };
+		54EFC9FF2A96065B00C193E6 /* InstrumentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentsRequest.swift; sourceTree = "<group>"; };
+		54EFCA002A96065B00C193E6 /* GenerateBrokerReportResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateBrokerReportResponse.swift; sourceTree = "<group>"; };
+		54EFCA012A96065B00C193E6 /* GetFuturesMarginRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetFuturesMarginRequest.swift; sourceTree = "<group>"; };
+		54EFCA022A96065B00C193E6 /* LastPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastPrice.swift; sourceTree = "<group>"; };
+		54EFCA032A96065B00C193E6 /* PositionsSubscriptionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PositionsSubscriptionStatus.swift; sourceTree = "<group>"; };
+		54EFCA042A96065B00C193E6 /* GetDividendsResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetDividendsResponse.swift; sourceTree = "<group>"; };
+		54EFCA052A96065B00C193E6 /* OrderStage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderStage.swift; sourceTree = "<group>"; };
+		54EFCA062A96065B00C193E6 /* SubscribeTradesRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeTradesRequest.swift; sourceTree = "<group>"; };
+		54EFCA072A96065B00C193E6 /* BrokerReportResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrokerReportResponse.swift; sourceTree = "<group>"; };
+		54EFCA082A96065B00C193E6 /* RiskLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiskLevel.swift; sourceTree = "<group>"; };
+		54EFCA092A96065B00C193E6 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
+		54EFCA0A2A96065B00C193E6 /* EtfResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EtfResponse.swift; sourceTree = "<group>"; };
+		54EFCA0B2A96065B00C193E6 /* GetBondCouponsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetBondCouponsRequest.swift; sourceTree = "<group>"; };
+		54EFCA0C2A96065B00C193E6 /* GetOrdersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetOrdersRequest.swift; sourceTree = "<group>"; };
+		54EFCA0D2A96065B00C193E6 /* AccountType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountType.swift; sourceTree = "<group>"; };
+		54EFCA0E2A96065B00C193E6 /* ProtobufAny.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtobufAny.swift; sourceTree = "<group>"; };
+		54EFCA0F2A96065B00C193E6 /* SandboxPayInRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SandboxPayInRequest.swift; sourceTree = "<group>"; };
+		54EFCA102A96065C00C193E6 /* TinkoffInvestClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TinkoffInvestClient.swift; sourceTree = "<group>"; };
+		54EFCA112A96065C00C193E6 /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		54EFCA122A96065C00C193E6 /* NetworkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkOperation.swift; sourceTree = "<group>"; };
+		54EFCAFC2A9606A200C193E6 /* BigNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigNumber.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +526,7 @@
 		54EFC9092A96026E00C193E6 /* TinkoffStocks */ = {
 			isa = PBXGroup;
 			children = (
+				54EFC9282A96060B00C193E6 /* Tinkoff Invest API */,
 				54EFC9242A96035400C193E6 /* Application */,
 				54EFC9262A96038300C193E6 /* Screens */,
 				54EFC9252A96037B00C193E6 /* Support */,
@@ -98,6 +567,255 @@
 				54EFC90E2A96026E00C193E6 /* ViewController.swift */,
 			);
 			path = FirstScreen;
+			sourceTree = "<group>";
+		};
+		54EFC9282A96060B00C193E6 /* Tinkoff Invest API */ = {
+			isa = PBXGroup;
+			children = (
+				54EFC9292A96065B00C193E6 /* Model Objects */,
+				54EFCA112A96065C00C193E6 /* AsyncOperation.swift */,
+				54EFCAFC2A9606A200C193E6 /* BigNumber.swift */,
+				54EFCA122A96065C00C193E6 /* NetworkOperation.swift */,
+				54EFCA102A96065C00C193E6 /* TinkoffInvestClient.swift */,
+			);
+			path = "Tinkoff Invest API";
+			sourceTree = "<group>";
+		};
+		54EFC9292A96065B00C193E6 /* Model Objects */ = {
+			isa = PBXGroup;
+			children = (
+				54EFC99C2A96065B00C193E6 /* AccessLevel.swift */,
+				54EFC9FA2A96065B00C193E6 /* Account.swift */,
+				54EFC9752A96065B00C193E6 /* AccountStatus.swift */,
+				54EFC92B2A96065B00C193E6 /* AccountSubscriptionStatus.swift */,
+				54EFCA0D2A96065B00C193E6 /* AccountType.swift */,
+				54EFC9D12A96065B00C193E6 /* AccruedInterest.swift */,
+				54EFC9EE2A96065B00C193E6 /* Asset.swift */,
+				54EFC9C02A96065B00C193E6 /* AssetBond.swift */,
+				54EFC9E02A96065B00C193E6 /* AssetClearingCertificate.swift */,
+				54EFC9ED2A96065B00C193E6 /* AssetCurrency.swift */,
+				54EFC9F12A96065B00C193E6 /* AssetEtf.swift */,
+				54EFC96F2A96065B00C193E6 /* AssetFull.swift */,
+				54EFC9522A96065B00C193E6 /* AssetInstrument.swift */,
+				54EFC99A2A96065B00C193E6 /* AssetRequest.swift */,
+				54EFC9362A96065B00C193E6 /* AssetResponse.swift */,
+				54EFC9AF2A96065B00C193E6 /* AssetSecurity.swift */,
+				54EFC9992A96065B00C193E6 /* AssetShare.swift */,
+				54EFC9CE2A96065B00C193E6 /* AssetsRequest.swift */,
+				54EFC9AC2A96065B00C193E6 /* AssetsResponse.swift */,
+				54EFC9C12A96065B00C193E6 /* AssetStructuredProduct.swift */,
+				54EFC9982A96065B00C193E6 /* AssetType.swift */,
+				54EFC9AE2A96065B00C193E6 /* Bond.swift */,
+				54EFC98E2A96065B00C193E6 /* BondResponse.swift */,
+				54EFC9AA2A96065B00C193E6 /* BondsResponse.swift */,
+				54EFC9E82A96065B00C193E6 /* Brand.swift */,
+				54EFC9552A96065B00C193E6 /* BrokerReport.swift */,
+				54EFC96D2A96065B00C193E6 /* BrokerReportRequest.swift */,
+				54EFCA072A96065B00C193E6 /* BrokerReportResponse.swift */,
+				54EFC9C72A96065B00C193E6 /* CancelOrderRequest.swift */,
+				54EFC9C62A96065B00C193E6 /* CancelOrderResponse.swift */,
+				54EFC9E22A96065B00C193E6 /* CancelStopOrderRequest.swift */,
+				54EFC9A32A96065B00C193E6 /* CancelStopOrderResponse.swift */,
+				54EFC9652A96065B00C193E6 /* Candle.swift */,
+				54EFC9E92A96065B00C193E6 /* CandleInstrument.swift */,
+				54EFC9622A96065B00C193E6 /* CandleInterval.swift */,
+				54EFC9D62A96065B00C193E6 /* CandleSubscription.swift */,
+				54EFC9422A96065B00C193E6 /* CloseSandboxAccountRequest.swift */,
+				54EFC98B2A96065B00C193E6 /* CloseSandboxAccountResponse.swift */,
+				54EFC9942A96065B00C193E6 /* CountryResponse.swift */,
+				54EFC9412A96065B00C193E6 /* Coupon.swift */,
+				54EFC9C52A96065B00C193E6 /* CouponType.swift */,
+				54EFC9C82A96065B00C193E6 /* CurrenciesResponse.swift */,
+				54EFC97C2A96065B00C193E6 /* Currency.swift */,
+				54EFC9DD2A96065B00C193E6 /* CurrencyRequest.swift */,
+				54EFC9B02A96065B00C193E6 /* CurrencyResponse.swift */,
+				54EFC9D32A96065B00C193E6 /* Dividend.swift */,
+				54EFC98A2A96065B00C193E6 /* DividendsForeignIssuerReport.swift */,
+				54EFC9312A96065B00C193E6 /* EditFavoritesActionType.swift */,
+				54EFC9AB2A96065B00C193E6 /* EditFavoritesRequest.swift */,
+				54EFC9F42A96065B00C193E6 /* EditFavoritesRequestInstrument.swift */,
+				54EFC9A72A96065B00C193E6 /* EditFavoritesResponse.swift */,
+				54EFC9EC2A96065B00C193E6 /* Etf.swift */,
+				54EFCA0A2A96065B00C193E6 /* EtfResponse.swift */,
+				54EFC9632A96065B00C193E6 /* EtfsResponse.swift */,
+				54EFC9BE2A96065B00C193E6 /* FavoriteInstrument.swift */,
+				54EFC9662A96065B00C193E6 /* FindInstrumentRequest.swift */,
+				54EFC93A2A96065B00C193E6 /* FindInstrumentResponse.swift */,
+				54EFC9692A96065B00C193E6 /* Future.swift */,
+				54EFC9A22A96065B00C193E6 /* FutureResponse.swift */,
+				54EFC9FC2A96065B00C193E6 /* FuturesResponse.swift */,
+				54EFC9E62A96065B00C193E6 /* GenerateBrokerReportRequest.swift */,
+				54EFCA002A96065B00C193E6 /* GenerateBrokerReportResponse.swift */,
+				54EFC9CD2A96065B00C193E6 /* GenerateDividendsForeignIssuerReportRequest.swift */,
+				54EFC92E2A96065B00C193E6 /* GenerateDividendsForeignIssuerReportResponse.swift */,
+				54EFC9532A96065B00C193E6 /* GetAccountsRequest.swift */,
+				54EFC96E2A96065B00C193E6 /* GetAccountsResponse.swift */,
+				54EFC9F22A96065B00C193E6 /* GetAccruedInterestsRequest.swift */,
+				54EFC95B2A96065B00C193E6 /* GetAccruedInterestsResponse.swift */,
+				54EFCA0B2A96065B00C193E6 /* GetBondCouponsRequest.swift */,
+				54EFC9D82A96065B00C193E6 /* GetBondCouponsResponse.swift */,
+				54EFC9802A96065B00C193E6 /* GetBrandRequest.swift */,
+				54EFC9CC2A96065B00C193E6 /* GetBrandsRequest.swift */,
+				54EFC93F2A96065B00C193E6 /* GetBrandsResponse.swift */,
+				54EFC9B22A96065B00C193E6 /* GetBrokerReportRequest.swift */,
+				54EFC92F2A96065B00C193E6 /* GetBrokerReportResponse.swift */,
+				54EFC99B2A96065B00C193E6 /* GetCandlesRequest.swift */,
+				54EFC9822A96065B00C193E6 /* GetCandlesResponse.swift */,
+				54EFC9B62A96065B00C193E6 /* GetClosePricesRequest.swift */,
+				54EFC9392A96065B00C193E6 /* GetClosePricesResponse.swift */,
+				54EFC98C2A96065B00C193E6 /* GetCountriesRequest.swift */,
+				54EFC9332A96065B00C193E6 /* GetCountriesResponse.swift */,
+				54EFC9EA2A96065B00C193E6 /* GetDividendsForeignIssuerReportRequest.swift */,
+				54EFC9962A96065B00C193E6 /* GetDividendsForeignIssuerReportResponse.swift */,
+				54EFC9A42A96065B00C193E6 /* GetDividendsForeignIssuerRequest.swift */,
+				54EFC95E2A96065B00C193E6 /* GetDividendsForeignIssuerResponse.swift */,
+				54EFC9B42A96065B00C193E6 /* GetDividendsRequest.swift */,
+				54EFCA042A96065B00C193E6 /* GetDividendsResponse.swift */,
+				54EFC9322A96065B00C193E6 /* GetFavoritesRequest.swift */,
+				54EFC92D2A96065B00C193E6 /* GetFavoritesResponse.swift */,
+				54EFCA012A96065B00C193E6 /* GetFuturesMarginRequest.swift */,
+				54EFC93D2A96065B00C193E6 /* GetFuturesMarginResponse.swift */,
+				54EFC9DF2A96065B00C193E6 /* GetInfoRequest.swift */,
+				54EFC9FB2A96065B00C193E6 /* GetInfoResponse.swift */,
+				54EFC9462A96065B00C193E6 /* GetLastPricesRequest.swift */,
+				54EFC9702A96065B00C193E6 /* GetLastPricesResponse.swift */,
+				54EFC93E2A96065B00C193E6 /* GetLastTradesRequest.swift */,
+				54EFC94B2A96065B00C193E6 /* GetLastTradesResponse.swift */,
+				54EFC99E2A96065B00C193E6 /* GetMarginAttributesRequest.swift */,
+				54EFC97F2A96065B00C193E6 /* GetMarginAttributesResponse.swift */,
+				54EFC9B12A96065B00C193E6 /* GetMySubscriptions.swift */,
+				54EFC9B72A96065B00C193E6 /* GetOperationsByCursorRequest.swift */,
+				54EFC95F2A96065B00C193E6 /* GetOperationsByCursorResponse.swift */,
+				54EFC9542A96065B00C193E6 /* GetOrderBookRequest.swift */,
+				54EFC9DE2A96065B00C193E6 /* GetOrderBookResponse.swift */,
+				54EFCA0C2A96065B00C193E6 /* GetOrdersRequest.swift */,
+				54EFC9952A96065B00C193E6 /* GetOrdersResponse.swift */,
+				54EFC9A82A96065B00C193E6 /* GetOrderStateRequest.swift */,
+				54EFC9E72A96065B00C193E6 /* GetStopOrdersRequest.swift */,
+				54EFC9A12A96065B00C193E6 /* GetStopOrdersResponse.swift */,
+				54EFC9592A96065B00C193E6 /* GetTradingStatusesRequest.swift */,
+				54EFC9CF2A96065B00C193E6 /* GetTradingStatusesResponse.swift */,
+				54EFC9B52A96065B00C193E6 /* GetTradingStatusRequest.swift */,
+				54EFC95D2A96065B00C193E6 /* GetTradingStatusResponse.swift */,
+				54EFC9442A96065B00C193E6 /* GetUserTariffRequest.swift */,
+				54EFC9482A96065B00C193E6 /* GetUserTariffResponse.swift */,
+				54EFC9DC2A96065B00C193E6 /* HistoricCandle.swift */,
+				54EFC94A2A96065B00C193E6 /* InfoInstrument.swift */,
+				54EFC9672A96065B00C193E6 /* InfoSubscription.swift */,
+				54EFC98D2A96065B00C193E6 /* Instrument.swift */,
+				54EFC9EB2A96065B00C193E6 /* InstrumentClosePriceRequest.swift */,
+				54EFC9602A96065B00C193E6 /* InstrumentClosePriceResponse.swift */,
+				54EFC9782A96065B00C193E6 /* InstrumentIdType.swift */,
+				54EFC9C42A96065B00C193E6 /* InstrumentLink.swift */,
+				54EFC9902A96065B00C193E6 /* InstrumentRequest.swift */,
+				54EFC9722A96065B00C193E6 /* InstrumentResponse.swift */,
+				54EFC9B92A96065B00C193E6 /* InstrumentShort.swift */,
+				54EFC9FF2A96065B00C193E6 /* InstrumentsRequest.swift */,
+				54EFC9B32A96065B00C193E6 /* InstrumentStatus.swift */,
+				54EFC9D42A96065B00C193E6 /* InstrumentType.swift */,
+				54EFCA022A96065B00C193E6 /* LastPrice.swift */,
+				54EFC9D92A96065B00C193E6 /* LastPriceInstrument.swift */,
+				54EFC9F52A96065B00C193E6 /* LastPriceSubscription.swift */,
+				54EFC9582A96065B00C193E6 /* MarketDataRequest.swift */,
+				54EFC9832A96065B00C193E6 /* MarketDataResponse.swift */,
+				54EFC9F32A96065B00C193E6 /* MoneyValue.swift */,
+				54EFC96A2A96065B00C193E6 /* OpenSandboxAccountRequest.swift */,
+				54EFC9E32A96065B00C193E6 /* OpenSandboxAccountResponse.swift */,
+				54EFCA092A96065B00C193E6 /* Operation.swift */,
+				54EFC94E2A96065B00C193E6 /* OperationItem.swift */,
+				54EFC9BB2A96065B00C193E6 /* OperationItemTrade.swift */,
+				54EFC9452A96065B00C193E6 /* OperationItemTrades.swift */,
+				54EFC9372A96065B00C193E6 /* OperationsRequest.swift */,
+				54EFC9352A96065B00C193E6 /* OperationsResponse.swift */,
+				54EFC99F2A96065B00C193E6 /* OperationState.swift */,
+				54EFC93B2A96065B00C193E6 /* OperationTrade.swift */,
+				54EFC94F2A96065B00C193E6 /* OperationType.swift */,
+				54EFC9682A96065B00C193E6 /* Option.swift */,
+				54EFC9732A96065B00C193E6 /* OptionDirection.swift */,
+				54EFC9C22A96065B00C193E6 /* OptionPaymentType.swift */,
+				54EFC9EF2A96065B00C193E6 /* OptionResponse.swift */,
+				54EFC9CB2A96065B00C193E6 /* OptionSettlementType.swift */,
+				54EFC9932A96065B00C193E6 /* OptionsResponse.swift */,
+				54EFC9D72A96065B00C193E6 /* OptionStyle.swift */,
+				54EFC9792A96065B00C193E6 /* Order.swift */,
+				54EFC9882A96065B00C193E6 /* OrderBook.swift */,
+				54EFC97B2A96065B00C193E6 /* OrderBookInstrument.swift */,
+				54EFC9E52A96065B00C193E6 /* OrderBookSubscription.swift */,
+				54EFC9772A96065B00C193E6 /* OrderDirection.swift */,
+				54EFC9852A96065B00C193E6 /* OrderExecutionReportStatus.swift */,
+				54EFCA052A96065B00C193E6 /* OrderStage.swift */,
+				54EFC9562A96065B00C193E6 /* OrderState.swift */,
+				54EFC97A2A96065B00C193E6 /* OrderTrade.swift */,
+				54EFC94D2A96065B00C193E6 /* OrderTrades.swift */,
+				54EFC9DB2A96065B00C193E6 /* OrderType.swift */,
+				54EFC9572A96065B00C193E6 /* Ping.swift */,
+				54EFC9FD2A96065B00C193E6 /* PortfolioPosition.swift */,
+				54EFC9382A96065B00C193E6 /* PortfolioRequest.swift */,
+				54EFC9CA2A96065B00C193E6 /* PortfolioResponse.swift */,
+				54EFC9762A96065B00C193E6 /* PortfolioSubscriptionResult.swift */,
+				54EFC9F92A96065B00C193E6 /* PortfolioSubscriptionStatus.swift */,
+				54EFC9972A96065B00C193E6 /* PositionData.swift */,
+				54EFC9612A96065B00C193E6 /* PositionsAccountSubscriptionStatus.swift */,
+				54EFC96B2A96065B00C193E6 /* PositionsFutures.swift */,
+				54EFC94C2A96065B00C193E6 /* PositionsMoney.swift */,
+				54EFC99D2A96065B00C193E6 /* PositionsOptions.swift */,
+				54EFC9F82A96065B00C193E6 /* PositionsRequest.swift */,
+				54EFC9BA2A96065B00C193E6 /* PositionsResponse.swift */,
+				54EFC9FE2A96065B00C193E6 /* PositionsSecurities.swift */,
+				54EFC9A62A96065B00C193E6 /* PositionsSubscriptionResult.swift */,
+				54EFCA032A96065B00C193E6 /* PositionsSubscriptionStatus.swift */,
+				54EFC9432A96065B00C193E6 /* PostOrderRequest.swift */,
+				54EFC9402A96065B00C193E6 /* PostOrderResponse.swift */,
+				54EFC97D2A96065B00C193E6 /* PostStopOrderRequest.swift */,
+				54EFC9872A96065B00C193E6 /* PostStopOrderResponse.swift */,
+				54EFC9492A96065B00C193E6 /* PriceType.swift */,
+				54EFCA0E2A96065B00C193E6 /* ProtobufAny.swift */,
+				54EFC95A2A96065B00C193E6 /* Quotation.swift */,
+				54EFC98F2A96065B00C193E6 /* RealExchange.swift */,
+				54EFC9712A96065B00C193E6 /* ReplaceOrderRequest.swift */,
+				54EFCA082A96065B00C193E6 /* RiskLevel.swift */,
+				54EFC9DA2A96065B00C193E6 /* RpcStatus.swift */,
+				54EFCA0F2A96065B00C193E6 /* SandboxPayInRequest.swift */,
+				54EFC9BF2A96065B00C193E6 /* SandboxPayInResponse.swift */,
+				54EFC9E42A96065B00C193E6 /* SecurityTradingStatus.swift */,
+				54EFC9D52A96065B00C193E6 /* Share.swift */,
+				54EFC9812A96065B00C193E6 /* ShareResponse.swift */,
+				54EFC9502A96065B00C193E6 /* SharesResponse.swift */,
+				54EFC9512A96065B00C193E6 /* ShareType.swift */,
+				54EFC92C2A96065B00C193E6 /* StopOrder.swift */,
+				54EFC9912A96065B00C193E6 /* StopOrderDirection.swift */,
+				54EFC95C2A96065B00C193E6 /* StopOrderExpirationType.swift */,
+				54EFC9F62A96065B00C193E6 /* StopOrderType.swift */,
+				54EFC9E12A96065B00C193E6 /* StreamLimit.swift */,
+				54EFC9742A96065B00C193E6 /* StructuredProductType.swift */,
+				54EFC9922A96065B00C193E6 /* SubscribeCandlesRequest.swift */,
+				54EFC9B82A96065B00C193E6 /* SubscribeCandlesResponse.swift */,
+				54EFC9A92A96065B00C193E6 /* SubscribeInfoRequest.swift */,
+				54EFC9D02A96065B00C193E6 /* SubscribeInfoResponse.swift */,
+				54EFC9BC2A96065B00C193E6 /* SubscribeLastPriceRequest.swift */,
+				54EFC9F72A96065B00C193E6 /* SubscribeLastPriceResponse.swift */,
+				54EFC9C32A96065B00C193E6 /* SubscribeOrderBookRequest.swift */,
+				54EFC9C92A96065B00C193E6 /* SubscribeOrderBookResponse.swift */,
+				54EFCA062A96065B00C193E6 /* SubscribeTradesRequest.swift */,
+				54EFC9642A96065B00C193E6 /* SubscribeTradesResponse.swift */,
+				54EFC9BD2A96065B00C193E6 /* SubscriptionAction.swift */,
+				54EFC93C2A96065B00C193E6 /* SubscriptionInterval.swift */,
+				54EFC9AD2A96065B00C193E6 /* SubscriptionStatus.swift */,
+				54EFC92A2A96065B00C193E6 /* Trade.swift */,
+				54EFC9342A96065B00C193E6 /* TradeDirection.swift */,
+				54EFC9F02A96065B00C193E6 /* TradeInstrument.swift */,
+				54EFC9D22A96065B00C193E6 /* TradeSubscription.swift */,
+				54EFC9302A96065B00C193E6 /* TradingDay.swift */,
+				54EFC9862A96065B00C193E6 /* TradingSchedule.swift */,
+				54EFC9892A96065B00C193E6 /* TradingSchedulesRequest.swift */,
+				54EFC9842A96065B00C193E6 /* TradingSchedulesResponse.swift */,
+				54EFC9A02A96065B00C193E6 /* TradingStatus.swift */,
+				54EFC9472A96065B00C193E6 /* UnaryLimit.swift */,
+				54EFC96C2A96065B00C193E6 /* VirtualPortfolioPosition.swift */,
+				54EFC97E2A96065B00C193E6 /* WithdrawLimitsRequest.swift */,
+				54EFC9A52A96065B00C193E6 /* WithdrawLimitsResponse.swift */,
+			);
+			path = "Model Objects";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,9 +896,243 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54EFCA6B2A96065C00C193E6 /* GetCandlesResponse.swift in Sources */,
+				54EFCAD22A96065C00C193E6 /* CandleInstrument.swift in Sources */,
+				54EFCA312A96065C00C193E6 /* GetUserTariffResponse.swift in Sources */,
+				54EFCAE52A96065C00C193E6 /* FuturesResponse.swift in Sources */,
+				54EFCAE42A96065C00C193E6 /* GetInfoResponse.swift in Sources */,
+				54EFCA622A96065C00C193E6 /* Order.swift in Sources */,
+				54EFCA992A96065C00C193E6 /* CurrencyResponse.swift in Sources */,
+				54EFCAEA2A96065C00C193E6 /* GetFuturesMarginRequest.swift in Sources */,
+				54EFCA7D2A96065C00C193E6 /* CountryResponse.swift in Sources */,
+				54EFCA852A96065C00C193E6 /* AccessLevel.swift in Sources */,
+				54EFCAED2A96065C00C193E6 /* GetDividendsResponse.swift in Sources */,
+				54EFCA552A96065C00C193E6 /* VirtualPortfolioPosition.swift in Sources */,
+				54EFCAE12A96065C00C193E6 /* PositionsRequest.swift in Sources */,
+				54EFCA702A96065C00C193E6 /* PostStopOrderResponse.swift in Sources */,
+				54EFCA632A96065C00C193E6 /* OrderTrade.swift in Sources */,
+				54EFCAA92A96065C00C193E6 /* AssetBond.swift in Sources */,
+				54EFCA262A96065C00C193E6 /* GetFuturesMarginResponse.swift in Sources */,
+				54EFCA572A96065C00C193E6 /* GetAccountsResponse.swift in Sources */,
 				54EFC90F2A96026E00C193E6 /* ViewController.swift in Sources */,
+				54EFCA162A96065C00C193E6 /* GetFavoritesResponse.swift in Sources */,
+				54EFCA8C2A96065C00C193E6 /* CancelStopOrderResponse.swift in Sources */,
+				54EFCA8D2A96065C00C193E6 /* GetDividendsForeignIssuerRequest.swift in Sources */,
+				54EFCA332A96065C00C193E6 /* InfoInstrument.swift in Sources */,
+				54EFCAC22A96065C00C193E6 /* LastPriceInstrument.swift in Sources */,
+				54EFCA3C2A96065C00C193E6 /* GetAccountsRequest.swift in Sources */,
+				54EFCAA32A96065C00C193E6 /* PositionsResponse.swift in Sources */,
+				54EFCA3A2A96065C00C193E6 /* ShareType.swift in Sources */,
+				54EFCAC12A96065C00C193E6 /* GetBondCouponsResponse.swift in Sources */,
+				54EFCA172A96065C00C193E6 /* GenerateDividendsForeignIssuerReportResponse.swift in Sources */,
+				54EFCA5F2A96065C00C193E6 /* PortfolioSubscriptionResult.swift in Sources */,
+				54EFCAE72A96065C00C193E6 /* PositionsSecurities.swift in Sources */,
+				54EFCA772A96065C00C193E6 /* BondResponse.swift in Sources */,
+				54EFCA9B2A96065C00C193E6 /* GetBrokerReportRequest.swift in Sources */,
+				54EFCAFA2A96065C00C193E6 /* AsyncOperation.swift in Sources */,
+				54EFCABD2A96065C00C193E6 /* InstrumentType.swift in Sources */,
+				54EFCA372A96065C00C193E6 /* OperationItem.swift in Sources */,
+				54EFCA652A96065C00C193E6 /* Currency.swift in Sources */,
+				54EFCA842A96065C00C193E6 /* GetCandlesRequest.swift in Sources */,
+				54EFCAB32A96065C00C193E6 /* PortfolioResponse.swift in Sources */,
+				54EFCA532A96065C00C193E6 /* OpenSandboxAccountRequest.swift in Sources */,
+				54EFCAD42A96065C00C193E6 /* InstrumentClosePriceRequest.swift in Sources */,
+				54EFCABE2A96065C00C193E6 /* Share.swift in Sources */,
+				54EFCA4E2A96065C00C193E6 /* Candle.swift in Sources */,
+				54EFCAB02A96065C00C193E6 /* CancelOrderRequest.swift in Sources */,
+				54EFCAF62A96065C00C193E6 /* AccountType.swift in Sources */,
+				54EFCA752A96065C00C193E6 /* GetCountriesRequest.swift in Sources */,
+				54EFCAA42A96065C00C193E6 /* OperationItemTrade.swift in Sources */,
+				54EFCA832A96065C00C193E6 /* AssetRequest.swift in Sources */,
+				54EFCA142A96065C00C193E6 /* AccountSubscriptionStatus.swift in Sources */,
+				54EFCA542A96065C00C193E6 /* PositionsFutures.swift in Sources */,
+				54EFCAF92A96065C00C193E6 /* TinkoffInvestClient.swift in Sources */,
+				54EFCAEC2A96065C00C193E6 /* PositionsSubscriptionStatus.swift in Sources */,
+				54EFCA4D2A96065C00C193E6 /* SubscribeTradesResponse.swift in Sources */,
+				54EFCA9A2A96065C00C193E6 /* GetMySubscriptions.swift in Sources */,
+				54EFCA352A96065C00C193E6 /* PositionsMoney.swift in Sources */,
+				54EFCAAF2A96065C00C193E6 /* CancelOrderResponse.swift in Sources */,
+				54EFCAB42A96065C00C193E6 /* OptionSettlementType.swift in Sources */,
+				54EFCA442A96065C00C193E6 /* GetAccruedInterestsResponse.swift in Sources */,
+				54EFCA722A96065C00C193E6 /* TradingSchedulesRequest.swift in Sources */,
+				54EFCABB2A96065C00C193E6 /* TradeSubscription.swift in Sources */,
+				54EFCA822A96065C00C193E6 /* AssetShare.swift in Sources */,
+				54EFCAF02A96065C00C193E6 /* BrokerReportResponse.swift in Sources */,
+				54EFCAB22A96065C00C193E6 /* SubscribeOrderBookResponse.swift in Sources */,
+				54EFCA7E2A96065C00C193E6 /* GetOrdersResponse.swift in Sources */,
+				54EFCA8B2A96065C00C193E6 /* FutureResponse.swift in Sources */,
+				54EFCA962A96065C00C193E6 /* SubscriptionStatus.swift in Sources */,
+				54EFCA402A96065C00C193E6 /* Ping.swift in Sources */,
+				54EFCADB2A96065C00C193E6 /* GetAccruedInterestsRequest.swift in Sources */,
+				54EFCA342A96065C00C193E6 /* GetLastTradesResponse.swift in Sources */,
+				54EFCADD2A96065C00C193E6 /* EditFavoritesRequestInstrument.swift in Sources */,
+				54EFCADC2A96065C00C193E6 /* MoneyValue.swift in Sources */,
+				54EFCA422A96065C00C193E6 /* GetTradingStatusesRequest.swift in Sources */,
+				54EFCA9F2A96065C00C193E6 /* GetClosePricesRequest.swift in Sources */,
+				54EFCAEF2A96065C00C193E6 /* SubscribeTradesRequest.swift in Sources */,
+				54EFCA482A96065C00C193E6 /* GetOperationsByCursorResponse.swift in Sources */,
+				54EFCA272A96065C00C193E6 /* GetLastTradesRequest.swift in Sources */,
+				54EFCA7F2A96065C00C193E6 /* GetDividendsForeignIssuerReportResponse.swift in Sources */,
+				54EFCA5B2A96065C00C193E6 /* InstrumentResponse.swift in Sources */,
+				54EFCA5D2A96065C00C193E6 /* StructuredProductType.swift in Sources */,
+				54EFCA472A96065C00C193E6 /* GetDividendsForeignIssuerResponse.swift in Sources */,
+				54EFCA582A96065C00C193E6 /* AssetFull.swift in Sources */,
+				54EFCACC2A96065C00C193E6 /* OpenSandboxAccountResponse.swift in Sources */,
+				54EFCA362A96065C00C193E6 /* OrderTrades.swift in Sources */,
+				54EFCA932A96065C00C193E6 /* BondsResponse.swift in Sources */,
+				54EFCAAC2A96065C00C193E6 /* SubscribeOrderBookRequest.swift in Sources */,
+				54EFCA612A96065C00C193E6 /* InstrumentIdType.swift in Sources */,
+				54EFCAE92A96065C00C193E6 /* GenerateBrokerReportResponse.swift in Sources */,
+				54EFCAD92A96065C00C193E6 /* TradeInstrument.swift in Sources */,
+				54EFCACB2A96065C00C193E6 /* CancelStopOrderRequest.swift in Sources */,
+				54EFCABA2A96065C00C193E6 /* AccruedInterest.swift in Sources */,
+				54EFCA9C2A96065C00C193E6 /* InstrumentStatus.swift in Sources */,
+				54EFCA9E2A96065C00C193E6 /* GetTradingStatusRequest.swift in Sources */,
+				54EFCAEB2A96065C00C193E6 /* LastPrice.swift in Sources */,
+				54EFCAA22A96065C00C193E6 /* InstrumentShort.swift in Sources */,
+				54EFCA3B2A96065C00C193E6 /* AssetInstrument.swift in Sources */,
+				54EFCA1B2A96065C00C193E6 /* GetFavoritesRequest.swift in Sources */,
+				54EFCADE2A96065C00C193E6 /* LastPriceSubscription.swift in Sources */,
+				54EFCA412A96065C00C193E6 /* MarketDataRequest.swift in Sources */,
+				54EFCAC72A96065C00C193E6 /* GetOrderBookResponse.swift in Sources */,
+				54EFCA2D2A96065C00C193E6 /* GetUserTariffRequest.swift in Sources */,
+				54EFCAA82A96065C00C193E6 /* SandboxPayInResponse.swift in Sources */,
+				54EFCA802A96065C00C193E6 /* PositionData.swift in Sources */,
+				54EFCA862A96065C00C193E6 /* PositionsOptions.swift in Sources */,
+				54EFCAE82A96065C00C193E6 /* InstrumentsRequest.swift in Sources */,
+				54EFCA892A96065C00C193E6 /* TradingStatus.swift in Sources */,
+				54EFCA4F2A96065C00C193E6 /* FindInstrumentRequest.swift in Sources */,
+				54EFCAF52A96065C00C193E6 /* GetOrdersRequest.swift in Sources */,
+				54EFCA392A96065C00C193E6 /* SharesResponse.swift in Sources */,
+				54EFCA492A96065C00C193E6 /* InstrumentClosePriceResponse.swift in Sources */,
+				54EFCA192A96065C00C193E6 /* TradingDay.swift in Sources */,
+				54EFCA502A96065C00C193E6 /* InfoSubscription.swift in Sources */,
+				54EFCA5E2A96065C00C193E6 /* AccountStatus.swift in Sources */,
+				54EFCA712A96065C00C193E6 /* OrderBook.swift in Sources */,
+				54EFCA6E2A96065C00C193E6 /* OrderExecutionReportStatus.swift in Sources */,
+				54EFCAD52A96065C00C193E6 /* Etf.swift in Sources */,
+				54EFCAB72A96065C00C193E6 /* AssetsRequest.swift in Sources */,
+				54EFCA9D2A96065C00C193E6 /* GetDividendsRequest.swift in Sources */,
+				54EFCA5C2A96065C00C193E6 /* OptionDirection.swift in Sources */,
+				54EFCA1A2A96065C00C193E6 /* EditFavoritesActionType.swift in Sources */,
+				54EFCAEE2A96065C00C193E6 /* OrderStage.swift in Sources */,
+				54EFCA4B2A96065C00C193E6 /* CandleInterval.swift in Sources */,
+				54EFCACE2A96065C00C193E6 /* OrderBookSubscription.swift in Sources */,
 				54EFC90B2A96026E00C193E6 /* AppDelegate.swift in Sources */,
+				54EFCA5A2A96065C00C193E6 /* ReplaceOrderRequest.swift in Sources */,
+				54EFCA6A2A96065C00C193E6 /* ShareResponse.swift in Sources */,
+				54EFCACA2A96065C00C193E6 /* StreamLimit.swift in Sources */,
+				54EFCA212A96065C00C193E6 /* PortfolioRequest.swift in Sources */,
+				54EFCAB52A96065C00C193E6 /* GetBrandsRequest.swift in Sources */,
+				54EFCA942A96065C00C193E6 /* EditFavoritesRequest.swift in Sources */,
+				54EFCAC52A96065C00C193E6 /* HistoricCandle.swift in Sources */,
+				54EFCAD12A96065C00C193E6 /* Brand.swift in Sources */,
+				54EFCA872A96065C00C193E6 /* GetMarginAttributesRequest.swift in Sources */,
+				54EFCAF82A96065C00C193E6 /* SandboxPayInRequest.swift in Sources */,
+				54EFCAA52A96065C00C193E6 /* SubscribeLastPriceRequest.swift in Sources */,
+				54EFCAC42A96065C00C193E6 /* OrderType.swift in Sources */,
+				54EFCA252A96065C00C193E6 /* SubscriptionInterval.swift in Sources */,
+				54EFCA222A96065C00C193E6 /* GetClosePricesResponse.swift in Sources */,
+				54EFCA302A96065C00C193E6 /* UnaryLimit.swift in Sources */,
+				54EFCA762A96065C00C193E6 /* Instrument.swift in Sources */,
+				54EFCA7B2A96065C00C193E6 /* SubscribeCandlesRequest.swift in Sources */,
+				54EFCAE02A96065C00C193E6 /* SubscribeLastPriceResponse.swift in Sources */,
+				54EFCA292A96065C00C193E6 /* PostOrderResponse.swift in Sources */,
+				54EFCAC32A96065C00C193E6 /* RpcStatus.swift in Sources */,
+				54EFCA1D2A96065C00C193E6 /* TradeDirection.swift in Sources */,
+				54EFCAFB2A96065C00C193E6 /* NetworkOperation.swift in Sources */,
+				54EFCAF72A96065C00C193E6 /* ProtobufAny.swift in Sources */,
+				54EFCAF12A96065C00C193E6 /* RiskLevel.swift in Sources */,
+				54EFCA602A96065C00C193E6 /* OrderDirection.swift in Sources */,
+				54EFCA4A2A96065C00C193E6 /* PositionsAccountSubscriptionStatus.swift in Sources */,
+				54EFCA432A96065C00C193E6 /* Quotation.swift in Sources */,
+				54EFCA522A96065C00C193E6 /* Future.swift in Sources */,
+				54EFCA2C2A96065C00C193E6 /* PostOrderRequest.swift in Sources */,
+				54EFCAC62A96065C00C193E6 /* CurrencyRequest.swift in Sources */,
+				54EFCABF2A96065C00C193E6 /* CandleSubscription.swift in Sources */,
+				54EFCA3D2A96065C00C193E6 /* GetOrderBookRequest.swift in Sources */,
+				54EFCAD02A96065C00C193E6 /* GetStopOrdersRequest.swift in Sources */,
+				54EFCA812A96065C00C193E6 /* AssetType.swift in Sources */,
+				54EFCADA2A96065C00C193E6 /* AssetEtf.swift in Sources */,
+				54EFCA6C2A96065C00C193E6 /* MarketDataResponse.swift in Sources */,
+				54EFCA132A96065C00C193E6 /* Trade.swift in Sources */,
+				54EFCA232A96065C00C193E6 /* FindInstrumentResponse.swift in Sources */,
+				54EFCA982A96065C00C193E6 /* AssetSecurity.swift in Sources */,
+				54EFCAF22A96065C00C193E6 /* Operation.swift in Sources */,
+				54EFCA8F2A96065C00C193E6 /* PositionsSubscriptionResult.swift in Sources */,
+				54EFCA322A96065C00C193E6 /* PriceType.swift in Sources */,
+				54EFCA382A96065C00C193E6 /* OperationType.swift in Sources */,
+				54EFCA642A96065C00C193E6 /* OrderBookInstrument.swift in Sources */,
+				54EFCAC92A96065C00C193E6 /* AssetClearingCertificate.swift in Sources */,
+				54EFCA3E2A96065C00C193E6 /* BrokerReport.swift in Sources */,
+				54EFCAA72A96065C00C193E6 /* FavoriteInstrument.swift in Sources */,
+				54EFCACD2A96065C00C193E6 /* SecurityTradingStatus.swift in Sources */,
+				54EFCAD72A96065C00C193E6 /* Asset.swift in Sources */,
+				54EFCA8E2A96065C00C193E6 /* WithdrawLimitsResponse.swift in Sources */,
+				54EFCA6F2A96065C00C193E6 /* TradingSchedule.swift in Sources */,
+				54EFCA462A96065C00C193E6 /* GetTradingStatusResponse.swift in Sources */,
+				54EFCAB12A96065C00C193E6 /* CurrenciesResponse.swift in Sources */,
+				54EFCAB82A96065C00C193E6 /* GetTradingStatusesResponse.swift in Sources */,
+				54EFCAC02A96065C00C193E6 /* OptionStyle.swift in Sources */,
+				54EFCAFD2A9606A200C193E6 /* BigNumber.swift in Sources */,
+				54EFCA592A96065C00C193E6 /* GetLastPricesResponse.swift in Sources */,
+				54EFCA682A96065C00C193E6 /* GetMarginAttributesResponse.swift in Sources */,
+				54EFCA282A96065C00C193E6 /* GetBrandsResponse.swift in Sources */,
+				54EFCAC82A96065C00C193E6 /* GetInfoRequest.swift in Sources */,
+				54EFCACF2A96065C00C193E6 /* GenerateBrokerReportRequest.swift in Sources */,
+				54EFCAB62A96065C00C193E6 /* GenerateDividendsForeignIssuerReportRequest.swift in Sources */,
+				54EFCA6D2A96065C00C193E6 /* TradingSchedulesResponse.swift in Sources */,
+				54EFCADF2A96065C00C193E6 /* StopOrderType.swift in Sources */,
+				54EFCA7C2A96065C00C193E6 /* OptionsResponse.swift in Sources */,
+				54EFCA972A96065C00C193E6 /* Bond.swift in Sources */,
+				54EFCA152A96065C00C193E6 /* StopOrder.swift in Sources */,
+				54EFCA732A96065C00C193E6 /* DividendsForeignIssuerReport.swift in Sources */,
+				54EFCA782A96065C00C193E6 /* RealExchange.swift in Sources */,
+				54EFCA562A96065C00C193E6 /* BrokerReportRequest.swift in Sources */,
+				54EFCA1C2A96065C00C193E6 /* GetCountriesResponse.swift in Sources */,
+				54EFCAA12A96065C00C193E6 /* SubscribeCandlesResponse.swift in Sources */,
+				54EFCA4C2A96065C00C193E6 /* EtfsResponse.swift in Sources */,
+				54EFCA692A96065C00C193E6 /* GetBrandRequest.swift in Sources */,
+				54EFCA2B2A96065C00C193E6 /* CloseSandboxAccountRequest.swift in Sources */,
+				54EFCA242A96065C00C193E6 /* OperationTrade.swift in Sources */,
+				54EFCA2F2A96065C00C193E6 /* GetLastPricesRequest.swift in Sources */,
+				54EFCA452A96065C00C193E6 /* StopOrderExpirationType.swift in Sources */,
+				54EFCA3F2A96065C00C193E6 /* OrderState.swift in Sources */,
+				54EFCAAE2A96065C00C193E6 /* CouponType.swift in Sources */,
+				54EFCAD82A96065C00C193E6 /* OptionResponse.swift in Sources */,
+				54EFCA512A96065C00C193E6 /* Option.swift in Sources */,
+				54EFCAA62A96065C00C193E6 /* SubscriptionAction.swift in Sources */,
+				54EFCAD32A96065C00C193E6 /* GetDividendsForeignIssuerReportRequest.swift in Sources */,
+				54EFCA2A2A96065C00C193E6 /* Coupon.swift in Sources */,
 				54EFC90D2A96026E00C193E6 /* SceneDelegate.swift in Sources */,
+				54EFCA882A96065C00C193E6 /* OperationState.swift in Sources */,
+				54EFCA952A96065C00C193E6 /* AssetsResponse.swift in Sources */,
+				54EFCA202A96065C00C193E6 /* OperationsRequest.swift in Sources */,
+				54EFCA902A96065C00C193E6 /* EditFavoritesResponse.swift in Sources */,
+				54EFCA912A96065C00C193E6 /* GetOrderStateRequest.swift in Sources */,
+				54EFCAF32A96065C00C193E6 /* EtfResponse.swift in Sources */,
+				54EFCA8A2A96065C00C193E6 /* GetStopOrdersResponse.swift in Sources */,
+				54EFCA2E2A96065C00C193E6 /* OperationItemTrades.swift in Sources */,
+				54EFCA672A96065C00C193E6 /* WithdrawLimitsRequest.swift in Sources */,
+				54EFCA662A96065C00C193E6 /* PostStopOrderRequest.swift in Sources */,
+				54EFCA1F2A96065C00C193E6 /* AssetResponse.swift in Sources */,
+				54EFCAAB2A96065C00C193E6 /* OptionPaymentType.swift in Sources */,
+				54EFCA922A96065C00C193E6 /* SubscribeInfoRequest.swift in Sources */,
+				54EFCAE22A96065C00C193E6 /* PortfolioSubscriptionStatus.swift in Sources */,
+				54EFCAE62A96065C00C193E6 /* PortfolioPosition.swift in Sources */,
+				54EFCAAA2A96065C00C193E6 /* AssetStructuredProduct.swift in Sources */,
+				54EFCAE32A96065C00C193E6 /* Account.swift in Sources */,
+				54EFCA742A96065C00C193E6 /* CloseSandboxAccountResponse.swift in Sources */,
+				54EFCAF42A96065C00C193E6 /* GetBondCouponsRequest.swift in Sources */,
+				54EFCAB92A96065C00C193E6 /* SubscribeInfoResponse.swift in Sources */,
+				54EFCAAD2A96065C00C193E6 /* InstrumentLink.swift in Sources */,
+				54EFCAA02A96065C00C193E6 /* GetOperationsByCursorRequest.swift in Sources */,
+				54EFCABC2A96065C00C193E6 /* Dividend.swift in Sources */,
+				54EFCAD62A96065C00C193E6 /* AssetCurrency.swift in Sources */,
+				54EFCA7A2A96065C00C193E6 /* StopOrderDirection.swift in Sources */,
+				54EFCA1E2A96065C00C193E6 /* OperationsResponse.swift in Sources */,
+				54EFCA792A96065C00C193E6 /* InstrumentRequest.swift in Sources */,
+				54EFCA182A96065C00C193E6 /* GetBrokerReportResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
