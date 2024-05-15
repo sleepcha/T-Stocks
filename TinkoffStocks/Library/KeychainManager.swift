@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - IKeychainManager
+// MARK: - KeychainManager
 
-protocol IKeychainManager {
+protocol KeychainManager {
     func save<T: Encodable>(_ serviceName: String, data: T, completion: @escaping (Error?) -> Void)
     func read<T: Decodable>(_ serviceName: String, type: T.Type, completion: @escaping (Result<T, Error>) -> Void)
     func delete(_ serviceName: String, completion: @escaping (Error?) -> Void)
@@ -17,7 +17,7 @@ protocol IKeychainManager {
 
 // MARK: - KeychainManager
 
-final class KeychainManager: IKeychainManager {
+final class KeychainManagerImpl: KeychainManager {
     private let account: String
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
