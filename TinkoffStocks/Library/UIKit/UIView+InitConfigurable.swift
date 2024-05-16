@@ -1,5 +1,5 @@
 //
-//  InitConfigurable.swift
+//  UIView+InitConfigurable.swift
 //  TinkoffStocks
 //
 //  Created by sleepcha on 5/9/24.
