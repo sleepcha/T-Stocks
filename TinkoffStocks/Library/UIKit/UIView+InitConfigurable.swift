@@ -1,5 +1,5 @@
 //
-//  InitConfigurable.swift
+//  UIView+InitConfigurable.swift
 //  TinkoffStocks
 //
 //  Created by sleepcha on 5/9/24.
@@ -14,9 +14,9 @@ protocol InitConfigurable {
 }
 
 extension InitConfigurable {
-    init(configuring: (Self) -> Void) {
+    init(configure: (Self) -> Void) {
         self.init()
-        configuring(self)
+        configure(self)
     }
 }
 

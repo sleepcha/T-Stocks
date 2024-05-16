@@ -1,8 +1,8 @@
 //
-//  Result+Extension.swift
+//  Helpers.swift
 //  TinkoffStocks
 //
-//  Created by sleepcha on 5/14/24.
+//  Created by sleepcha on 8/23/23.
 //
 
 import Foundation
@@ -23,4 +23,8 @@ extension Result {
         default: nil
         }
     }
+}
+
+func onMain<T>(closure: () throws -> T) rethrows -> T {
+    try Thread.isMainThread ? closure() : DispatchQueue.main.sync { try closure() }
 }
