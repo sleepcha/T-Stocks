@@ -199,9 +199,9 @@ extension TinkoffInvestClient {
         )
     }
 
-    func getInstrumentBy(_ instrument: InstrumentIdentifier, completion: @escaping ResultHandler<Instrument>) -> AsyncTask {
+    func getInstrumentBy(_ id: InstrumentID, completion: @escaping ResultHandler<Instrument>) -> AsyncTask {
         fetch(
-            Endpoints.getInstrumentBy(instrument.request),
+            Endpoints.getInstrumentBy(id.request),
             completion: { completion($0.map(\.instrument)) }
         )
     }

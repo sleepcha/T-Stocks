@@ -1,5 +1,5 @@
 //
-//  InstrumentIdentifier.swift
+//  InstrumentID.swift
 //  TinkoffStocks
 //
 //  Created by sleepcha on 9/17/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum InstrumentIdentifier {
+enum InstrumentID {
     enum ClassCode: String {
         /// Currencies
         case cets
