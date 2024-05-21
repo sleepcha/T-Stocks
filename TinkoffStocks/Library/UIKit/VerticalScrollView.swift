@@ -11,6 +11,7 @@ import UIKit
 
 class VerticalScrollView: UIScrollView {
     let contentView = UIView()
+    
     private var keyboardInset: CGFloat = 0
     private var isKeyboardVisible: Bool = false
 
@@ -21,16 +22,12 @@ class VerticalScrollView: UIScrollView {
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         keyboardDismissMode = .interactive
+        setupContentView()
         addKeyboardObservers()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func willMove(toSuperview newSuperview: UIView?) {
-        super.willMove(toSuperview: newSuperview)
-        setupContentView()
     }
 
     /// Scrolls to the subview frame origin or to the lowest point possible (if there is no more content below the view).
