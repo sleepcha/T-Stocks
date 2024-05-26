@@ -67,7 +67,7 @@ final class TinkoffInvestClient: FetchupClient {
 
             // 3. A custom query item containing the hash of token will guarantee the request uniqueness for different users.
             // This is just in case - the cache must be cleared when the user logs out anyway.
-            request.url?.append(queryItems: [URLQueryItem(name: Constants.cachedResponseUserIDKey, value: hash)])
+            request.url = request.url?.appending([Constants.cachedResponseUserIDKey: hash], notEncoding: .rfc3986Allowed)
 
             return request
         }
@@ -84,7 +84,7 @@ final class TinkoffInvestClient: FetchupClient {
     /// Initializes a copy of a client instance.
     private init(_ client: TinkoffInvestClient) {
         self.configuration = client.configuration
-        self.session = client.session
+        self.session = URLSession(configuration: client.session.configuration)
         self.environment = client.environment
         self.cacheMode = client.cacheMode
     }
@@ -106,7 +106,6 @@ final class TinkoffInvestClient: FetchupClient {
             }
 
             if let expiry, let cached = cached(resource, isValid: expiry.isValid) {
-                print("vvv cached \(resource.path)")
                 handleResult(cached)
                 return
             }
