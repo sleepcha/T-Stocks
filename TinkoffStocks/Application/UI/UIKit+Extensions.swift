@@ -68,17 +68,9 @@ extension UIView {
     }
 }
 
-extension UIAlertController {
-    static func actionSheet(
-        title: String,
-        message: String,
-        okButton: String,
-        cancelButton: String,
-        handler: @escaping (UIAlertAction) -> Void
-    ) -> UIAlertController {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: okButton, style: .default, handler: handler))
-        alert.addAction(UIAlertAction(title: cancelButton, style: .cancel))
-        return alert
+extension Collection where Element: UIResponder {
+    /// Useful for finding a specific subview.
+    func first(ofType typeName: String) -> Element? {
+        first { String(describing: type(of: $0)) == typeName }
     }
 }
