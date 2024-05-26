@@ -25,6 +25,10 @@ extension Result {
     }
 }
 
-func onMain<T>(closure: () throws -> T) rethrows -> T {
-    try Thread.isMainThread ? closure() : DispatchQueue.main.sync { try closure() }
+extension DispatchQueue {
+    /// Safer version of `.main.sync` that prevents a potential deadlock.
+    @discardableResult
+    class func mainSync<T>(closure: () throws -> T) rethrows -> T {
+        try Thread.isMainThread ? closure() : DispatchQueue.main.sync { try closure() }
+    }
 }
