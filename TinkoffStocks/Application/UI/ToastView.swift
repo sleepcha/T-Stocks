@@ -223,14 +223,9 @@ extension UIViewController {
 
 private extension UIWindow {
     func getKeyboardHeight() -> CGFloat {
-        let typeName = { (view: UIView) in String(describing: type(of: view)) }
-        let keyboardWindow = windowScene?.windows
-            .first { typeName($0) == "UITextEffectsWindow" }
-        let keyboardView = keyboardWindow?.rootViewController?.view.subviews
-            .first { typeName($0) == "UIInputSetHostView" }
-
         guard
-            let keyboardView, let keyboardWindow,
+            let keyboardWindow = windowScene?.windows.first(ofType: "UITextEffectsWindow"),
+            let keyboardView = keyboardWindow.rootViewController?.view.subviews.first(ofType: "UIInputSetHostView"),
             // keyboard isn't hidden (not off-screen)
             keyboardView.frame.origin.y < keyboardWindow.frame.maxY
         else { return 0 }
