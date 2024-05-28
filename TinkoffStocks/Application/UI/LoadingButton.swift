@@ -10,19 +10,14 @@ import UIKit
 class LoadingButton: FilledButton {
     var isLoading: Bool = false {
         didSet {
-            if isLoading {
-                titleLabel?.isHidden = true
-                spinner.startAnimating()
-            } else {
-                spinner.stopAnimating()
-                titleLabel?.isHidden = false
-            }
+            isUserInteractionEnabled = !isLoading
+            titleLabel?.isHidden = isLoading
+            isLoading ? spinner.startAnimating() : spinner.stopAnimating()
         }
     }
 
     private let spinner = UIActivityIndicatorView {
         $0.style = .medium
-        $0.color = .white
         $0.hidesWhenStopped = true
     }
 
@@ -44,7 +39,7 @@ class LoadingButton: FilledButton {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         let center = CGPointMake(bounds.midX, bounds.midY)
         if spinner.center != center { spinner.center = center }
     }
