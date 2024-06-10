@@ -25,6 +25,12 @@ extension Result {
     }
 }
 
+extension Collection {
+    func apply<T>(_ transform: (Self) -> T) -> T {
+        transform(self)
+    }
+}
+
 extension DispatchQueue {
     /// Safer version of `.main.sync` that prevents a potential deadlock.
     @discardableResult
