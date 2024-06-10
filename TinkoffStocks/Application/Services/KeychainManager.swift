@@ -7,28 +7,34 @@
 
 import Foundation
 
-// MARK: - KeychainManager
+// MARK: - KeychainKey
 
-protocol KeychainManager {
-    func save<T: Encodable>(_ serviceName: String, data: T, completion: @escaping (Error?) -> Void)
-    func read<T: Decodable>(_ serviceName: String, type: T.Type, completion: @escaping (Result<T, Error>) -> Void)
-    func delete(_ serviceName: String, completion: @escaping (Error?) -> Void)
+enum KeychainKey: String {
+    case authToken
 }
 
 // MARK: - KeychainManager
 
+protocol KeychainManager {
+    func save<T: Encodable>(_ key: KeychainKey, data: T, completion: @escaping (Error?) -> Void)
+    func read<T: Decodable>(_ key: KeychainKey, type: T.Type, completion: @escaping (Result<T, Error>) -> Void)
+    func delete(_ key: KeychainKey, completion: @escaping (Error?) -> Void)
+}
+
+// MARK: - KeychainManagerImpl
+
 final class KeychainManagerImpl: KeychainManager {
-    private let account: String
+    private let service: String
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
 
-    init(account: String, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
-        self.account = account
+    init(service: String, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
+        self.service = service
         self.encoder = encoder
         self.decoder = decoder
     }
 
-    func save(_ serviceName: String, data: some Encodable, completion: @escaping (Error?) -> Void) {
+    func save(_ key: KeychainKey, data: some Encodable, completion: @escaping (Error?) -> Void) {
         DispatchQueue.global().async { [self] in
             let jsonData: Data
 
@@ -49,8 +55,8 @@ final class KeychainManagerImpl: KeychainManager {
             var query: [CFString: Any] = [
                 kSecClass: kSecClassGenericPassword,
                 kSecAttrAccessControl: accessControl,
-                kSecAttrAccount: account,
-                kSecAttrService: serviceName,
+                kSecAttrAccount: key.rawValue,
+                kSecAttrService: service,
                 kSecValueData: jsonData,
             ]
 
@@ -67,7 +73,7 @@ final class KeychainManagerImpl: KeychainManager {
         }
     }
 
-    func read<T: Decodable>(_ serviceName: String, type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
+    func read<T: Decodable>(_ key: KeychainKey, type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
         DispatchQueue.global().async { [self] in
             let accessControl = SecAccessControlCreateWithFlags(
                 nil,
@@ -79,8 +85,8 @@ final class KeychainManagerImpl: KeychainManager {
             let query: [CFString: Any] = [
                 kSecClass: kSecClassGenericPassword,
                 kSecAttrAccessControl: accessControl,
-                kSecAttrAccount: account,
-                kSecAttrService: serviceName,
+                kSecAttrAccount: key.rawValue,
+                kSecAttrService: service,
                 kSecReturnData: true,
             ]
 
@@ -99,12 +105,12 @@ final class KeychainManagerImpl: KeychainManager {
         }
     }
 
-    func delete(_ serviceName: String, completion: @escaping (Error?) -> Void) {
+    func delete(_ key: KeychainKey, completion: @escaping (Error?) -> Void) {
         DispatchQueue.global().async { [self] in
             let query: [CFString: Any] = [
                 kSecClass: kSecClassGenericPassword,
-                kSecAttrAccount: account,
-                kSecAttrService: serviceName,
+                kSecAttrAccount: key.rawValue,
+                kSecAttrService: service,
             ]
 
             let status = SecItemDelete(query as CFDictionary)
