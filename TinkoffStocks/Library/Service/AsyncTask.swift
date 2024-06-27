@@ -9,108 +9,41 @@ import Foundation
 
 // MARK: - AsyncTask
 
-final class AsyncTask: Identifiable {
-    enum State {
+class AsyncTask: Identifiable {
+    enum State: Equatable {
         case ready
         case executing
         case completed
         case cancelled
-        case failed
+        case failed(Error)
 
-        var isFinished: Bool {
-            switch self {
-            case .completed, .cancelled, .failed: true
-            default: false
-            }
-        }
-    }
-
-    private enum WrappedTask {
-        case wrapped(() -> AsyncTask)
-        case unwrapped(AsyncTask)
-
-        var isWrapped: Bool {
-            switch self {
-            case .wrapped: true
-            case .unwrapped: false
-            }
-        }
-
-        mutating func unwrap() -> AsyncTask {
-            switch self {
-            case let .wrapped(closure):
-                let task = closure()
-                self = .unwrapped(task)
-                return task
-            case let .unwrapped(task):
-                return task
+        static func == (lhs: State, rhs: State) -> Bool {
+            switch (lhs, rhs) {
+            case (.ready, .ready),
+                 (.executing, .executing),
+                 (.completed, .completed),
+                 (.cancelled, .cancelled),
+                 (.failed, .failed):
+                true
+            default:
+                false
             }
         }
     }
 
     let id = UUID()
     var state: State { lock.withLock { _state } }
-    private(set) var error: Error?
+
+    fileprivate let lock = NSLock()
+    fileprivate var queue = DispatchQueue.main
+    fileprivate var finishHandler: ((Error?) -> Void)?
+
     private var _state = State.ready
-    private let lock = NSLock()
-    private var queue = DispatchQueue.main
-
-    private var block: ((AsyncTask) -> Void)?
+    private var block: ((AsyncTask) -> Void)!
     private var cancellationHandlers = [() -> Void]()
-    private var finishHandler: ((Error?) -> Void)?
-    private var chain = [WrappedTask]()
-    private var rootTask: AsyncTask?
 
-    /// Runs a group of tasks and collects each task's error until `shouldCancelOnError` closure returns `true`.
-    static func group(
-        _ tasks: [AsyncTask],
-        shouldCancelOnError: ((Error) -> Bool)? = nil,
-        completionQueue: DispatchQueue = .main,
-        completion: @escaping ([Error]) -> Void
-    ) -> AsyncTask {
-        AsyncTask { groupTask in
-            let group = DispatchGroup()
-            let lock = NSLock()
-            var abortingError: Error?
-            var errors = [Error]()
-
-            let onCancel = {
-                for task in tasks {
-                    groupTask.queue.async { task.cancel() }
-                }
-            }
-            groupTask.addCancellationHandler(onCancel)
-
-            for task in tasks {
-                guard !groupTask.state.isFinished else { break }
-
-                let isNotFinished = task.trySetFinishHandler { error in
-                    defer { group.leave() }
-                    guard let error else { return }
-
-                    lock.withLock {
-                        errors.append(error)
-                        guard
-                            abortingError == nil,
-                            shouldCancelOnError?(error) == true
-                        else { return }
-
-                        abortingError = error
-                        onCancel()
-                    }
-                }
-
-                guard isNotFinished else { continue }
-
-                group.enter()
-                task.perform(on: groupTask.queue)
-            }
-
-            group.notify(queue: completionQueue) {
-                completion(errors)
-                groupTask.done(error: abortingError)
-            }
-        }
+    static func empty() -> AsyncTask {
+        AsyncTask { $0.done() }
     }
 
     /// You must manually signal the task completion by calling `$0.done(error:)` from inside the block.
@@ -118,33 +51,13 @@ final class AsyncTask: Identifiable {
         self.block = block
     }
 
-    /// Executes the block on the `queue`. The queue will also be used later to run cancellation handlers and chained tasks.
+    /// Executes the block on the `queue`. The queue will also be used to run cancellation handlers.
     func perform(on queue: DispatchQueue = .global(qos: .userInitiated)) {
-        switchState(to: .executing, andRun: {
+        trySwitchState(to: .executing) {
             self.queue = queue
-            queue.async { [block] in block!(self) }
-            block = nil
-        })
-    }
-
-    /// Adds another task to the chain of tasks that will be performed one after another.
-    /// The chain execution breaks with any task finishing with error.
-    /// You can also cancel the chain by cancelling the root task (the one you're adding tasks to).
-    func then(_ taskClosure: @escaping () -> AsyncTask) -> AsyncTask {
-        chain.append(.wrapped(taskClosure))
-        return self
-    }
-
-    /// Saves the closure that will execute if task is cancelled.
-    func addCancellationHandler(_ handler: @escaping () -> Void) {
-        lock.withLock {
-            switch _state {
-            case .cancelled:
-                queue.async { handler() }
-            case .ready, .executing:
-                cancellationHandlers.append(handler)
-            default:
-                break
+            queue.async { [self] in
+                block(self)
+                block = nil
             }
         }
     }
@@ -152,45 +65,46 @@ final class AsyncTask: Identifiable {
     /// Indicates that the task has finished. Passing an error will get it stored and propagated to the group task.
     /// It will also break the execution of the task chain if there is one.
     func done(error: Error? = nil) {
-        switchState(
-            to: (error == nil) ? .completed : .failed,
-            andRun: {
-                self.error = error
-                finish()
-
-                if _state == .completed, let task = nextChainTask() {
-                    task.perform(on: queue)
-                } else {
-                    cleanUpChain()
-                }
-            }
-        )
+        trySwitchState(to: (error == nil) ? .completed : .failed(error!)) {
+            finish(with: error)
+        }
     }
 
     /// Finishes the task and calls cancellation handlers.
-    /// If there are tasks in the chain, they will be cancelled as well.
     func cancel() {
-        switchState(
-            to: .cancelled,
-            andRun: {
-                for handler in cancellationHandlers {
-                    queue.async { handler() }
-                }
-                finish()
+        trySwitchState(to: .cancelled) {
+            for handler in cancellationHandlers.reversed() {
+                queue.async { handler() }
             }
-        )
-        // must be called regardless of the root task's state
-        lock.withLock { cleanUpChain(shouldCancel: true) }
+            finish(with: nil)
+        }
     }
 
-    private func finish() {
+    /// Saves the closure that will execute when the task is cancelled. Will execute immediately if the task is already cancelled.
+    func addCancellationHandler(_ handler: @escaping () -> Void) {
+        ifStateIs([.ready, .executing]) { cancellationHandlers.append(handler) }
+    }
+
+    fileprivate func finish(with error: Error?) {
         finishHandler?(error)
         finishHandler = nil
         cancellationHandlers.removeAll()
     }
 
+    /// Synchronizes execution of a closure if the current task state is in one of the specified states.
     @discardableResult
-    private func switchState(to newState: State, andRun closure: () -> Void = {}) -> Bool {
+    fileprivate func ifStateIs(_ states: [State], execute closure: () -> Void) -> Bool {
+        lock.withLock {
+            if states.contains(_state) {
+                closure()
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
+    private func trySwitchState(to newState: State, andExecute closure: () -> Void = {}) {
         lock.withLock {
             let success = switch (_state, newState) {
             case (.ready, .executing),
@@ -207,49 +121,7 @@ final class AsyncTask: Identifiable {
                 _state = newState
                 closure()
             }
-
-            return success
         }
-    }
-
-    private func trySetFinishHandler(_ handler: @escaping (Error?) -> Void) -> Bool {
-        lock.withLock {
-            guard !_state.isFinished else { return false }
-            finishHandler = handler
-            return true
-        }
-    }
-
-    private func nextChainTask() -> AsyncTask? {
-        let root = rootTask ?? self
-        guard let index = root.chain.firstIndex(where: \.isWrapped) else { return nil }
-        let task = root.chain[index].unwrap()
-        task.rootTask = root
-        return task
-    }
-
-    private func cleanUpChain(shouldCancel: Bool = false) {
-        let root = rootTask ?? self
-        guard !root.chain.isEmpty else { return }
-
-        for case let .unwrapped(task) in root.chain {
-            queue.async {
-                task.rootTask = nil
-                if shouldCancel { task.cancel() }
-            }
-        }
-        root.chain.removeAll()
-    }
-}
-
-extension AsyncTask {
-    /// Convenience version of method for functional-style calls
-    static func group(_ tasks: [AsyncTask]) -> AsyncTask {
-        group(tasks) { _ in }
-    }
-
-    static func empty() -> AsyncTask {
-        AsyncTask { $0.done() }
     }
 }
 
@@ -261,6 +133,129 @@ extension AsyncTask: Equatable, CustomDebugStringConvertible {
     }
 
     var debugDescription: String {
-        "AsyncTask <\(id.uuidString)>"
+        "\(type(of: self)) <\(id.uuidString)>"
+    }
+}
+
+// MARK: - AsyncChain
+
+final class AsyncChain: AsyncTask {
+    typealias AsyncTaskProvider = () -> AsyncTask
+
+    private var chain = LinkedList<AsyncTaskProvider>()
+    private var completion: ((State) -> Void)?
+
+    private static func performChain(rootTask: AsyncChain) {
+        guard case .executing = rootTask.state else { return }
+
+        guard let subTask = rootTask.chain.popFirst()?() else {
+            // no more tasks in the chain
+            rootTask.done()
+            return
+        }
+
+        let isReady = subTask.ifStateIs([.ready]) {
+            subTask.finishHandler = { error in
+                if let error {
+                    rootTask.done(error: error)
+                } else {
+                    performChain(rootTask: rootTask)
+                }
+            }
+            rootTask.addCancellationHandler(subTask.cancel)
+        }
+
+        isReady ? subTask.perform(on: rootTask.queue) : rootTask.cancel()
+    }
+
+    init(_ taskClosure: @escaping AsyncTaskProvider) {
+        chain.append(taskClosure)
+        super.init { task in
+            Self.performChain(rootTask: task as! AsyncChain)
+        }
+    }
+
+    /// Adds another task to the chain of tasks that will be performed one after another.
+    ///
+    /// The chain execution breaks with any task completing with error (or starting off with a non-ready state).
+    /// You can also cancel the chain by cancelling the root task (the one you're adding tasks to).
+    func then(_ taskClosure: @escaping AsyncTaskProvider) -> AsyncChain {
+        ifStateIs([.ready, .executing]) { chain.append(taskClosure) }
+        return self
+    }
+
+    /// Sets the closure that will handle the completion of the chain.
+    func handle(_ completion: @escaping (State) -> Void) -> AsyncTask {
+        ifStateIs([.ready, .executing]) { self.completion = completion }
+        return self
+    }
+
+    override fileprivate func finish(with error: Error?) {
+        super.finish(with: error)
+        queue.async { [self] in
+            completion?(state)
+            completion = nil
+        }
+        chain.removeAll()
+    }
+}
+
+// MARK: - AsyncGroup
+
+final class AsyncGroup: AsyncTask {
+    /// Runs a group of tasks and collects each task's error until `shouldCancelOnError` closure returns `true`.
+    init(
+        _ tasks: [AsyncTask],
+        shouldCancelOnError: ((Error) -> Bool)? = nil,
+        completionQueue: DispatchQueue = .main,
+        completion: @escaping ([Error]) -> Void
+    ) {
+        super.init { groupTask in
+            let group = DispatchGroup()
+            let groupLock = NSLock()
+            var abortingError: Error?
+            var errors = [Error]()
+
+            let onCancel = {
+                for task in tasks {
+                    groupTask.queue.async { task.cancel() }
+                }
+            }
+            groupTask.addCancellationHandler(onCancel)
+
+            for task in tasks {
+                guard case .executing = groupTask.state else { break }
+
+                task.ifStateIs([.ready]) {
+                    group.enter()
+                    task.finishHandler = { error in
+                        defer { group.leave() }
+                        guard let error else { return }
+
+                        groupLock.withLock {
+                            errors.append(error)
+                            guard
+                                abortingError == nil,
+                                shouldCancelOnError?(error) == true
+                            else { return }
+
+                            abortingError = error
+                            onCancel()
+                        }
+                    }
+                }
+                task.perform(on: groupTask.queue)
+            }
+
+            group.notify(queue: completionQueue) {
+                completion(errors)
+                groupTask.done(error: abortingError)
+            }
+        }
+    }
+
+    /// Convenience version for functional-style calls
+    convenience init(_ tasks: [AsyncTask]) {
+        self.init(tasks) { _ in }
     }
 }
