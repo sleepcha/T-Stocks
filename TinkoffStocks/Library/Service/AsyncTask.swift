@@ -39,7 +39,7 @@ class AsyncTask: Identifiable {
     fileprivate var finishHandler: ((Error?) -> Void)?
 
     private var _state = State.ready
-    private var block: ((AsyncTask) -> Void)!
+    private var block: ((AsyncTask) -> Void)?
     private var cancellationHandlers = [() -> Void]()
 
     static func empty() -> AsyncTask {
@@ -56,7 +56,7 @@ class AsyncTask: Identifiable {
         trySwitchState(to: .executing) {
             self.queue = queue
             queue.async { [self] in
-                block(self)
+                block?(self)
                 block = nil
             }
         }
@@ -104,6 +104,7 @@ class AsyncTask: Identifiable {
         }
     }
 
+    /// Syncronizes state switching and executes a closure if the action is allowed.
     private func trySwitchState(to newState: State, andExecute closure: () -> Void = {}) {
         lock.withLock {
             let success = switch (_state, newState) {
@@ -143,6 +144,7 @@ final class AsyncChain: AsyncTask {
     typealias AsyncTaskProvider = () -> AsyncTask
 
     private var chain = LinkedList<AsyncTaskProvider>()
+    private var completionQueue: DispatchQueue = .main
     private var completion: ((State) -> Void)?
 
     private static func performChain(rootTask: AsyncChain) {
@@ -185,14 +187,17 @@ final class AsyncChain: AsyncTask {
     }
 
     /// Sets the closure that will handle the completion of the chain.
-    func handle(_ completion: @escaping (State) -> Void) -> AsyncTask {
-        ifStateIs([.ready, .executing]) { self.completion = completion }
+    func handle(on completionQueue: DispatchQueue = .main, _ completion: @escaping (State) -> Void) -> AsyncTask {
+        ifStateIs([.ready, .executing]) {
+            self.completionQueue = completionQueue
+            self.completion = completion
+        }
         return self
     }
 
     override fileprivate func finish(with error: Error?) {
         super.finish(with: error)
-        queue.async { [self] in
+        completionQueue.async { [self] in
             completion?(state)
             completion = nil
         }
