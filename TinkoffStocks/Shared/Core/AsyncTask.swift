@@ -187,7 +187,7 @@ final class AsyncChain: AsyncTask {
     }
 
     /// Sets the closure that will handle the completion of the chain.
-    func handle(on completionQueue: DispatchQueue = .main, _ completion: @escaping (State) -> Void) -> AsyncTask {
+    func handle(on completionQueue: DispatchQueue = .main, completion: @escaping (State) -> Void) -> AsyncTask {
         ifStateIs([.ready, .executing]) {
             self.completionQueue = completionQueue
             self.completion = completion
