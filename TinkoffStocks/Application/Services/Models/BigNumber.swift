@@ -54,4 +54,9 @@ extension Decimal {
 
         return Quotation(units: "\(integer)", nano: nano.integer.asInt)
     }
+    
+    func asMoney(_ currency: String) -> MoneyValue {
+        let q = asQuotation
+        return MoneyValue(currency: currency, units: q.units, nano: q.nano)
+    }
 }
