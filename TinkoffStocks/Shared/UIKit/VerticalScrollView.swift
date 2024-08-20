@@ -1,15 +1,6 @@
-//
-//  VerticalScrollView.swift
-//  TinkoffStocks
-//
-//  Created by sleepcha on 3/21/24.
-//
-
 import UIKit
 
-// MARK: - VerticalScrollView
-
-class VerticalScrollView: UIScrollView {
+final class VerticalScrollView: UIScrollView {
     let contentView = UIView()
 
     override init(frame: CGRect) {

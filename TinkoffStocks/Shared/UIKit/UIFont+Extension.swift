@@ -1,10 +1,3 @@
-//
-//  UIFont+Extension.swift
-//  TinkoffStocks
-//
-//  Created by sleepcha on 5/16/24.
-//
-
 import UIKit
 
 extension UIFont {

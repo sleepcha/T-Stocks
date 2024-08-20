@@ -1,10 +1,3 @@
-//
-//  UIView+InitConfigurable.swift
-//  TinkoffStocks
-//
-//  Created by sleepcha on 5/9/24.
-//
-
 import UIKit
 
 // MARK: - InitConfigurable
@@ -20,4 +13,4 @@ extension InitConfigurable {
     }
 }
 
-extension UIView: InitConfigurable {}
+extension UIResponder: InitConfigurable {}

@@ -1,10 +1,3 @@
-//
-//  KeyboardObserving.swift
-//  TinkoffStocks
-//
-//  Created by sleepcha on 4/8/24.
-//
-
 import UIKit
 
 // MARK: - KeyboardObserving
