@@ -21,12 +21,11 @@ enum API {
         }
 
         func callAsFunction(_ request: Request) -> POST {
-            let data = try? JSONEncoder.custom.encode(request)
-            return POST(path, body: data)
+            POST(path, body: try? JSONEncoder.custom.encode(request))
         }
     }
 
-    static let getAccounts = POST<GetAccountsRequest, GetAccountsResponse>("tinkoff.public.invest.api.contract.v1.UsersService/GetAccounts")
+    static let getAccounts = POST<GetAccountsRequest, GetAccountsResponse>("tinkoff.public.invest.api.contract.v1.UsersService/GetAccounts")(GetAccountsRequest())
     static let getPortfolio = POST<PortfolioRequest, PortfolioResponse>("tinkoff.public.invest.api.contract.v1.OperationsService/GetPortfolio")
     static let getLastOperations = POST<GetOperationsByCursorRequest, GetOperationsByCursorResponse>("tinkoff.public.invest.api.contract.v1.OperationsService/GetOperationsByCursor")
     static let getInstrumentBy = POST<InstrumentRequest, InstrumentResponse>("tinkoff.public.invest.api.contract.v1.InstrumentsService/GetInstrumentBy")
