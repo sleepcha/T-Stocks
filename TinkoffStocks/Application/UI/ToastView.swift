@@ -1,6 +1,6 @@
 //
 //  ToastView.swift
-//  BondsFilter
+//  TinkoffStocks
 //
 //  Created by sleepcha on 4/2/24.
 //
@@ -9,7 +9,35 @@ import UIKit
 
 // MARK: - ToastView
 
-private final class ToastView: UIVisualEffectView {
+final class ToastView: UIVisualEffectView {
+    enum ToastSize: CGFloat {
+        case small = 0.33
+        case medium = 0.5
+        case large = 0.66
+    }
+
+    enum ToastKind {
+        case success
+        case warning
+        case error
+
+        var iconName: String {
+            switch self {
+            case .success: "checkmark"
+            case .warning: "exclamationmark.triangle"
+            case .error: "xmark.square"
+            }
+        }
+
+        var feedback: UINotificationFeedbackGenerator.FeedbackType {
+            switch self {
+            case .success: .success
+            case .warning: .warning
+            case .error: .error
+            }
+        }
+    }
+
     private let scale: CGFloat
     private var keyboardHeight: CGFloat = 0
 
@@ -28,10 +56,10 @@ private final class ToastView: UIVisualEffectView {
         $0.tintColor = .white
     }
 
-    init(message: String, icon iconName: String, scale: CGFloat) {
+    init(message: String, kind: ToastKind, size: ToastSize) {
         label.text = message
-        icon.image = UIImage(systemName: iconName)
-        self.scale = scale
+        icon.image = UIImage(systemName: kind.iconName)
+        self.scale = size.rawValue
 
         super.init(effect: nil)
         setupViews()
@@ -159,38 +187,10 @@ extension ToastView: KeyboardObserving {
 // MARK: - UIViewController
 
 extension UIViewController {
-    enum ToastSize: CGFloat {
-        case small = 0.33
-        case medium = 0.5
-        case large = 0.66
-    }
-
-    enum ToastKind {
-        case success
-        case warning
-        case error
-
-        var icon: String {
-            switch self {
-            case .success: "checkmark"
-            case .warning: "exclamationmark.triangle"
-            case .error: "xmark.square"
-            }
-        }
-
-        var feedback: UINotificationFeedbackGenerator.FeedbackType {
-            switch self {
-            case .success: .success
-            case .warning: .warning
-            case .error: .error
-            }
-        }
-    }
-
     func showToast(
         _ message: String,
-        kind: ToastKind,
-        size: ToastSize = .medium,
+        kind: ToastView.ToastKind,
+        size: ToastView.ToastSize = .medium,
         willAutohide: Bool = true
     ) {
         guard let window = view.window ?? tabBarController?.tabBar.window else { return }
@@ -199,19 +199,22 @@ extension UIViewController {
         feedback.prepare()
         feedback.notificationOccurred(kind.feedback)
 
-        let toast = ToastView(message: message, icon: kind.icon, scale: size.rawValue)
+        let toast = ToastView(message: message, kind: kind, size: size)
         window.addSubview(toast)
 
         guard willAutohide else { return }
 
         // long messages take more time to read
         let delay = 1.5 + Double(message.count) / 25
+
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             // return if messageView has already been removed by tap
             guard toast.superview != nil else { return }
 
             UIView.animate(
-                withDuration: 0.5,
+                withDuration: 0.25,
+                delay: 0,
+                options: [.curveEaseIn],
                 animations: { toast.alpha = 0 },
                 completion: { _ in toast.removeFromSuperview() }
             )
@@ -219,7 +222,7 @@ extension UIViewController {
     }
 }
 
-// MARK: - UIWindow
+// MARK: Helpers
 
 private extension UIWindow {
     func getKeyboardHeight() -> CGFloat {
