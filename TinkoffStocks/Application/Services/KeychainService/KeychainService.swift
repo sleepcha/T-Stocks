@@ -1,5 +1,5 @@
 //
-//  KeychainManager.swift
+//  KeychainService.swift
 //  TinkoffStocks
 //
 //  Created by sleepcha on 12/19/22.
@@ -13,17 +13,17 @@ enum KeychainKey: String {
     case authToken
 }
 
-// MARK: - KeychainManager
+// MARK: - KeychainService
 
-protocol KeychainManager {
+protocol KeychainService {
     func save<T: Encodable>(_ key: KeychainKey, data: T, completion: @escaping (Error?) -> Void)
     func read<T: Decodable>(_ key: KeychainKey, type: T.Type, completion: @escaping (Result<T, Error>) -> Void)
     func delete(_ key: KeychainKey, completion: @escaping (Error?) -> Void)
 }
 
-// MARK: - KeychainManagerImpl
+// MARK: - KeychainServiceImpl
 
-final class KeychainManagerImpl: KeychainManager {
+final class KeychainServiceImpl: KeychainService {
     private let service: String
     private let encoder: JSONEncoder
     private let decoder: JSONDecoder
