@@ -1,21 +1,16 @@
-//
-//  GroupedCollection.swift
-//  TinkoffStocks
-//
-//  Created by sleepcha on 9/6/23.
-//
-
 import Foundation
 
 // MARK: - GroupedCollection
 
 struct GroupedCollection<Group: Hashable, Element> {
+    var groupCount: Int { groups.count }
+    
     private let groupingKey: (Element) -> Group
     private let groupsComparator: KeyPathComparator<Group>
     private let elementsComparator: KeyPathComparator<Element>
 
-    private(set) var collections = [Group: [Element]]()
-    private(set) var groups = [Group]()
+    private var collections = [Group: [Element]]()
+    private var groups = [Group]()
 
     init(
         _ array: [Element]? = nil,

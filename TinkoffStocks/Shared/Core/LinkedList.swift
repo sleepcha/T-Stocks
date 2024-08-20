@@ -1,14 +1,5 @@
-//
-//  LinkedList.swift
-//  T-Stocks
-//
-//  Created by sleepcha on 6/25/24.
-//
-
-import Foundation
-
-class LinkedList<T> {
-    private class Node {
+final class LinkedList<T> {
+    private final class Node {
         var value: T
         var next: Node?
 

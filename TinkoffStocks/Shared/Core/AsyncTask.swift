@@ -1,10 +1,3 @@
-//
-//  AsyncTask.swift
-//  TinkoffStocks
-//
-//  Created by sleepcha on 12/15/23.
-//
-
 import Foundation
 
 // MARK: - AsyncTask
@@ -31,31 +24,37 @@ class AsyncTask: Identifiable {
         }
     }
 
-    let id = UUID()
+    let id: UUID
     var state: State { lock.withLock { _state } }
 
-    fileprivate let lock = NSLock()
-    fileprivate var queue = DispatchQueue.main
     fileprivate var finishHandler: ((Error?) -> Void)?
+    fileprivate let lock = NSLock()
+    fileprivate(set) var queue = DispatchQueue.main
 
-    private var _state = State.ready
     private var block: ((AsyncTask) -> Void)?
     private var cancellationHandlers = [() -> Void]()
-
-    static func empty() -> AsyncTask {
-        AsyncTask { $0.done() }
-    }
+    private var _state = State.ready
 
     /// You must manually signal the task completion by calling `$0.done(error:)` from inside the block.
-    init(_ block: @escaping (AsyncTask) -> Void) {
+    init(id: UUID = .init(), _ block: @escaping (AsyncTask) -> Void) {
+        self.id = id
         self.block = block
     }
 
+    /// Creates an `AsyncTask` that immediately completes without performing any actual work (except the completion handler).
+    /// The method is useful in scenarios where a task must be returned but no action is necessary.
+    static func empty(error: Error? = nil, completion: (() -> Void)? = nil) -> AsyncTask {
+        AsyncTask {
+            completion?()
+            $0.done(error: error)
+        }
+    }
+
     /// Executes the block on the `queue`. The queue will also be used to run cancellation handlers.
-    func perform(on queue: DispatchQueue = .global(qos: .userInitiated)) {
+    func perform(on queue: DispatchQueue = .global(qos: .userInitiated), delay: TimeInterval = 0) {
         trySwitchState(to: .executing) {
             self.queue = queue
-            queue.async { [self] in
+            queue.asyncAfter(deadline: .now() + delay) { [self] in
                 block?(self)
                 block = nil
             }
@@ -82,7 +81,8 @@ class AsyncTask: Identifiable {
 
     /// Saves the closure that will execute when the task is cancelled. Will execute immediately if the task is already cancelled.
     func addCancellationHandler(_ handler: @escaping () -> Void) {
-        ifStateIs([.ready, .executing]) { cancellationHandlers.append(handler) }
+        let didAddHandler = ifStateIs([.ready, .executing]) { cancellationHandlers.append(handler) }
+        if !didAddHandler, state == .cancelled { handler() }
     }
 
     fileprivate func finish(with error: Error?) {
@@ -126,15 +126,15 @@ class AsyncTask: Identifiable {
     }
 }
 
-// MARK: - Equatable, CustomDebugStringConvertible
+// MARK: - CustomDebugStringConvertible, Equatable
 
-extension AsyncTask: Equatable, CustomDebugStringConvertible {
-    static func == (lhs: AsyncTask, rhs: AsyncTask) -> Bool {
-        lhs.id == rhs.id
-    }
-
+extension AsyncTask: CustomDebugStringConvertible, Equatable {
     var debugDescription: String {
         "\(type(of: self)) <\(id.uuidString)>"
+    }
+
+    static func == (lhs: AsyncTask, rhs: AsyncTask) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
@@ -146,6 +146,13 @@ final class AsyncChain: AsyncTask {
     private var chain = LinkedList<AsyncTaskProvider>()
     private var completionQueue: DispatchQueue = .main
     private var completion: ((State) -> Void)?
+
+    init(_ taskClosure: @escaping AsyncTaskProvider) {
+        chain.append(taskClosure)
+        super.init { task in
+            Self.performChain(rootTask: task as! AsyncChain)
+        }
+    }
 
     private static func performChain(rootTask: AsyncChain) {
         guard case .executing = rootTask.state else { return }
@@ -168,13 +175,6 @@ final class AsyncChain: AsyncTask {
         }
 
         isReady ? subTask.perform(on: rootTask.queue) : rootTask.cancel()
-    }
-
-    init(_ taskClosure: @escaping AsyncTaskProvider) {
-        chain.append(taskClosure)
-        super.init { task in
-            Self.performChain(rootTask: task as! AsyncChain)
-        }
     }
 
     /// Adds another task to the chain of tasks that will be performed one after another.
@@ -208,12 +208,32 @@ final class AsyncChain: AsyncTask {
 // MARK: - AsyncGroup
 
 final class AsyncGroup: AsyncTask {
+    enum CancellationCondition {
+        case never
+        case always
+        case when((Error) -> Bool)
+
+        func check(_ error: Error) -> Bool {
+            switch self {
+            case .never:
+                false
+            case .always:
+                true
+            case .when(let condition):
+                condition(error)
+            }
+        }
+    }
+
     /// Runs a group of tasks and collects each task's error until `shouldCancelOnError` closure returns `true`.
+    ///
+    /// `throttle` parameter adds a delay between each task's start by a specified the number of seconds.
     init(
         _ tasks: [AsyncTask],
-        shouldCancelOnError: ((Error) -> Bool)? = nil,
+        shouldCancelOnError: CancellationCondition = .never,
+        throttle: TimeInterval = 0,
         completionQueue: DispatchQueue = .main,
-        completion: @escaping ([Error]) -> Void
+        completion: (([Error]) -> Void)? = nil
     ) {
         super.init { groupTask in
             let group = DispatchGroup()
@@ -228,7 +248,7 @@ final class AsyncGroup: AsyncTask {
             }
             groupTask.addCancellationHandler(onCancel)
 
-            for task in tasks {
+            for (index, task) in tasks.enumerated() {
                 guard case .executing = groupTask.state else { break }
 
                 task.ifStateIs([.ready]) {
@@ -241,7 +261,7 @@ final class AsyncGroup: AsyncTask {
                             errors.append(error)
                             guard
                                 abortingError == nil,
-                                shouldCancelOnError?(error) == true
+                                shouldCancelOnError.check(error)
                             else { return }
 
                             abortingError = error
@@ -249,18 +269,13 @@ final class AsyncGroup: AsyncTask {
                         }
                     }
                 }
-                task.perform(on: groupTask.queue)
+                task.perform(on: groupTask.queue, delay: TimeInterval(index) * throttle)
             }
 
             group.notify(queue: completionQueue) {
-                completion(errors)
+                completion?(errors)
                 groupTask.done(error: abortingError)
             }
         }
-    }
-
-    /// Convenience version for functional-style calls
-    convenience init(_ tasks: [AsyncTask]) {
-        self.init(tasks) { _ in }
     }
 }
