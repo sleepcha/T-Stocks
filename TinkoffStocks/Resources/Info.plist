@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Authentication with TouchId or FaceID</string>
+	<string>Разрешите доступ к Face ID для быстрой авторизации</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
