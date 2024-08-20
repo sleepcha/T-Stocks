@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoadingButton: FilledButton {
+final class LoadingButton: FilledButton {
     var isLoading: Bool = false {
         didSet {
             isUserInteractionEnabled = !isLoading

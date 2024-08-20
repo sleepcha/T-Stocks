@@ -5,10 +5,9 @@
 //  Created by sleepcha on 5/11/23.
 //
 
-import Foundation
 import UIKit
 
-class PaddedTextField: UITextField {
+final class PaddedTextField: UITextField {
     var padding: CGFloat = 16
     private let textToOverlayViewsPadding: CGFloat = 4
 
