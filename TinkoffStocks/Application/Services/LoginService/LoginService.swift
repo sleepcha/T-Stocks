@@ -23,7 +23,7 @@ protocol LoginService {
 
     func isValidToken(text: String) -> Bool
     func getStoredAuthData(completion: @escaping (AuthData?) -> Void)
-    func login(auth: AuthData, shouldStore: Bool, completion: @escaping (Result<[AccountData], LoginServiceError>) -> Void)
+    func login(auth: AuthData, shouldStore: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void)
     func logout()
 }
 
@@ -53,7 +53,7 @@ final class LoginServiceImpl: LoginService {
         }
     }
 
-    func login(auth: AuthData, shouldStore: Bool, completion: @escaping (Result<[AccountData], LoginServiceError>) -> Void) {
+    func login(auth: AuthData, shouldStore: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
         let networkManager = networkManagerAssembly.build(token: auth.token, isSandbox: auth.isSandbox)
 
         networkManager.fetch(API.getAccounts) { result in
@@ -70,7 +70,7 @@ final class LoginServiceImpl: LoginService {
                     completion(.success(accounts.compactMap(AccountData.init)))
                 }
             case .failure(let networkManagerError):
-                completion(.failure(LoginServiceError(networkManagerError)))
+                completion(.failure(RepositoryError(networkManagerError)))
             }
         }.perform()
     }
@@ -90,7 +90,7 @@ final class LoginServiceImpl: LoginService {
         }
     }
 
-    private func createStubAccount(networkManager: NetworkManager, completion: @escaping (Result<[AccountData], LoginServiceError>) -> Void) {
+    private func createStubAccount(networkManager: NetworkManager, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
         AsyncChain {
             self.sandboxServiceAssembly
                 .build(networkManager: networkManager)
@@ -99,7 +99,7 @@ final class LoginServiceImpl: LoginService {
             networkManager.fetch(API.getAccounts) { result in
                 let result = result
                     .map { $0.accounts.compactMap(AccountData.init) }
-                    .mapError { _ in LoginServiceError.networkError }
+                    .mapError { _ in RepositoryError.networkError }
                 completion(result)
             }
         }.perform()
@@ -122,24 +122,5 @@ private extension AccountData {
             isIIS: account.type == .tinkoffIis,
             isReadOnly: account.accessLevel == .readOnly
         )
-    }
-}
-
-// MARK: - Error mapping
-
-private extension LoginServiceError {
-    init(_ networkManagerError: NetworkManagerError) {
-        self = switch networkManagerError {
-        case .networkError, .connectionLost, .timedOut:
-            .networkError
-        case .badRequest, .notFound, .httpError, .serverError, .invalidResponse, .decodingError:
-            .serverError
-        case .unauthorized, .forbidden:
-            .noAccess
-        case .tooManyRequests:
-            .tooManyRequests
-        case .taskCancelled:
-            .taskCancelled
-        }
     }
 }

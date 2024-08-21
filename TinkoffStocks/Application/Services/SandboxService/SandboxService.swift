@@ -16,8 +16,8 @@ private extension String {
 // MARK: - SandboxService
 
 protocol SandboxService {
-    func createAccount(completion: @escaping (SandboxServiceError?) -> Void) -> AsyncTask
-    func closeAccount(_ accountID: String, completion: @escaping (SandboxServiceError?) -> Void) -> AsyncTask
+    func createAccount(completion: @escaping (RepositoryError?) -> Void) -> AsyncTask
+    func closeAccount(_ accountID: String, completion: @escaping (RepositoryError?) -> Void) -> AsyncTask
 }
 
 // MARK: - SandboxServiceImpl
@@ -29,21 +29,21 @@ final class SandboxServiceImpl: SandboxService {
         self.networkManager = networkManager
     }
 
-    func createAccount(completion: @escaping (SandboxServiceError?) -> Void) -> AsyncTask {
+    func createAccount(completion: @escaping (RepositoryError?) -> Void) -> AsyncTask {
         let openSandboxAccount = API.openSandboxAccount(OpenSandboxAccountRequest(name: .newAccountName))
         return networkManager.fetch(openSandboxAccount, retryCount: 0) {
             switch $0 {
             case .failure(let error):
-                completion(SandboxServiceError(error))
+                completion(RepositoryError(error))
             case .success(let response):
                 self.fillAccount(response.accountId) { completion(nil) }
             }
         }
     }
 
-    func closeAccount(_ accountID: String, completion: @escaping (SandboxServiceError?) -> Void) -> AsyncTask {
+    func closeAccount(_ accountID: String, completion: @escaping (RepositoryError?) -> Void) -> AsyncTask {
         let endpoint = API.closeSandboxAccount(CloseSandboxAccountRequest(accountId: accountID))
-        return networkManager.fetch(endpoint) { completion($0.failure.map(SandboxServiceError.init)) }
+        return networkManager.fetch(endpoint) { completion($0.failure.map(RepositoryError.init)) }
     }
 
     private func fillAccount(_ accountID: String, completion: @escaping () -> Void) {
@@ -92,26 +92,5 @@ final class SandboxServiceImpl: SandboxService {
             }
             return AsyncGroup(tasks)
         }.perform()
-    }
-}
-
-// MARK: - Error mapping
-
-extension SandboxServiceError {
-    init(_ networkManagerError: NetworkManagerError) {
-        self = switch networkManagerError {
-        case .networkError, .connectionLost, .timedOut:
-            .networkError
-        case .badRequest, .notFound, .httpError, .serverError, .invalidResponse:
-            .serverError
-        case .unauthorized, .forbidden:
-            .noAccess
-        case .tooManyRequests:
-            .tooManyRequests
-        case .decodingError:
-            .decodingError
-        case .taskCancelled:
-            .taskCancelled
-        }
     }
 }
