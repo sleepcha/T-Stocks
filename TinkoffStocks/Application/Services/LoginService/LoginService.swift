@@ -124,3 +124,9 @@ private extension AccountData {
         )
     }
 }
+
+// MARK: - Helpers
+
+private extension AuthData {
+    var isSandbox: Bool { server == .sandbox }
+}

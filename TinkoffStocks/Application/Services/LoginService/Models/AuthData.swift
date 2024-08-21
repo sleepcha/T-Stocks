@@ -15,6 +15,4 @@ struct AuthData: Codable {
 
     let token: String
     let server: ServerEnvironment
-
-    var isSandbox: Bool { server == .sandbox }
 }
