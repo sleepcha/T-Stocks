@@ -43,7 +43,7 @@ final class LogoRepositoryImpl: LogoRepository {
             )
 
             guard let url = URL(string: imageName) else {
-                completion(.failure(.invalidURL(imageName)))
+                completion(.failure(.invalidURL))
                 return
             }
 
@@ -62,8 +62,8 @@ final class LogoRepositoryImpl: LogoRepository {
 extension LogoRepositoryError {
     init(_ error: FetchError) {
         self = switch error {
-        case .networkError(let error):
-            .networkError(error)
+        case .networkError:
+            .networkError
         default:
             .serverError
         }

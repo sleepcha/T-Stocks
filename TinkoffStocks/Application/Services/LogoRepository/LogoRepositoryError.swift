@@ -8,7 +8,7 @@
 import Foundation
 
 enum LogoRepositoryError: Error {
-    case invalidURL(String)
-    case networkError(Error)
+    case invalidURL
+    case networkError
     case serverError
 }
