@@ -16,7 +16,7 @@ private extension Int {
 // MARK: - NetworkManager
 
 protocol NetworkManager {
-    /// Returns a task that calls the completion handler on the main queue with a cached response if available (and `NetworkManager` is caching) or with the result of a network request.
+    /// Returns a task that calls the completion handler with a cached response if available (and `NetworkManager` is caching) or with the result of a network request.
     func fetch<T: Endpoint>(_ endpoint: T, retryCount: Int, completion: @escaping (T.Result) -> Void) -> AsyncTask
 
     /// A version of the method with the default `retryCount` value.
@@ -67,7 +67,7 @@ final class NetworkManagerImpl: NetworkManager {
     func fetch<T: Endpoint>(_ endpoint: T, retryCount: Int, completion: @escaping (T.Result) -> Void) -> AsyncTask {
         AsyncTask { [self] task in
             let completion = { (result: T.Result) in
-                DispatchQueue.mainSync { completion(result) }
+                completion(result)
                 task.done(error: result.failure)
             }
 
