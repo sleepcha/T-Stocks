@@ -56,16 +56,3 @@ final class LogoRepositoryImpl: LogoRepository {
         }
     }
 }
-
-// MARK: - Error mapping
-
-extension LogoRepositoryError {
-    init(_ error: FetchError) {
-        self = switch error {
-        case .networkError:
-            .networkError
-        default:
-            .serverError
-        }
-    }
-}
