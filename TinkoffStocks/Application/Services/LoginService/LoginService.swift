@@ -23,7 +23,7 @@ protocol LoginService {
 
     func isValidToken(text: String) -> Bool
     func getStoredAuthData(completion: @escaping (AuthData?) -> Void)
-    func login(auth: AuthData, shouldStore: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void)
+    func login(auth: AuthData, shouldSave: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void)
     func logout()
 }
 
@@ -53,13 +53,13 @@ final class LoginServiceImpl: LoginService {
         }
     }
 
-    func login(auth: AuthData, shouldStore: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
+    func login(auth: AuthData, shouldSave: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
         let networkManager = networkManagerAssembly.build(token: auth.token, isSandbox: auth.isSandbox)
 
         networkManager.fetch(API.getAccounts) { result in
             switch result {
             case .success(let response):
-                if shouldStore { self.saveAuthData(auth) }
+                if shouldSave { self.saveAuthData(auth) }
                 self.networkManager = networkManager
                 self.isSandbox = auth.isSandbox
 
