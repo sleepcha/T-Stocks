@@ -9,7 +9,6 @@ import Foundation
 
 protocol LoginScreenPresenter {
     func viewReady()
-    func isValidToken(_ text: String) -> Bool
     func login(token: String, isSandbox: Bool, rememberMe: Bool)
     func help()
 }

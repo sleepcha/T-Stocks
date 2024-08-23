@@ -5,7 +5,6 @@
 //  Created by sleepcha on 8/14/24.
 //
 
-import SnapKit
 import UIKit
 
 // MARK: - LoginScreenViewController
@@ -36,20 +35,13 @@ final class LoginScreenViewController: UIViewController {
     }
 
     @objc private func loginButtonTapped(sender: LoadingButton) {
-        guard
-            let token = ui.tokenField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-            presenter.isValidToken(token)
-        else {
-            ui.tokenField.shake()
-            return
-        }
+        let token = (ui.tokenField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
 
         presenter.login(
             token: token,
             isSandbox: ui.sandboxSwitch.isOn,
             rememberMe: ui.rememberMeSwitch.isOn
         )
-        ui.endEditing(true)
     }
 }
 
@@ -57,14 +49,20 @@ final class LoginScreenViewController: UIViewController {
 
 extension LoginScreenViewController: LoginScreenView {
     func switchState(isLoading: Bool) {
+        ui.endEditing(true)
         let controls = [ui.tokenField, ui.sandboxSwitch, ui.rememberMeSwitch, ui.sandboxSwitch]
         ui.loginButton.isLoading = isLoading
         ui.loginButton.isUserInteractionEnabled = !isLoading
         controls.forEach { $0.isEnabled = !isLoading }
     }
 
+    func indicateInvalidToken() {
+        ui.tokenField.shake()
+    }
+
     func showErrorMessage(message: String) {
         showToast(message, kind: .error)
+        dismiss(animated: false)
     }
 
     func showHelpDialog(_ dialog: Dialog) {
