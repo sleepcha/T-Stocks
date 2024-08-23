@@ -73,7 +73,6 @@ private extension PortfolioData.Item {
     init(_ position: PortfolioPosition) {
         self.init(
             id: position.instrumentUid,
-            kind: Kind(rawValue: position.instrumentType.lowercased()) ?? .other,
             quantity: position.quantity.asDecimal ?? 0,
             currentPrice: position.currentPrice?.asDecimal ?? 0,
             averagePrice: position.averagePositionPriceFifo?.asDecimal ?? 0,

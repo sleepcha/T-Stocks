@@ -9,19 +9,7 @@ import Foundation
 
 struct PortfolioData {
     struct Item {
-        enum Kind: String {
-            case share
-            case bond
-            case etf
-            case futures
-            case option
-            case sp
-            case currency
-            case other
-        }
-
         let id: String
-        let kind: Kind
         let quantity: Decimal
         let currentPrice: Decimal
         let averagePrice: Decimal
