@@ -87,6 +87,10 @@ public extension DispatchQueue {
     static func mainSync<T>(closure: () throws -> T) rethrows -> T {
         try Thread.isMainThread ? closure() : main.sync { try closure() }
     }
+
+    static func mainAsync(closure: @escaping () -> Void) {
+        Thread.isMainThread ? closure() : main.async { closure() }
+    }
 }
 
 public extension NSLock {
