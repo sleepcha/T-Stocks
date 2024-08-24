@@ -5,12 +5,13 @@
 //  Created by sleepcha on 6/3/24.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - LogoRepository
 
 protocol LogoRepository {
-    typealias LogoResult = Result<Data, LogoRepositoryError>
+    typealias LogoResult = Result<UIImage, LogoRepositoryError>
+    func getPlaceholder(_ name: String) -> UIImage
     func getLogo(_ name: String, completion: @escaping (LogoResult) -> Void) -> AsyncTask
 }
 
@@ -27,6 +28,39 @@ final class LogoRepositoryImpl: LogoRepository {
     init(client: HTTPClient, logoSize: LogoSize) {
         self.client = client
         self.logoSize = logoSize
+    }
+
+    func getPlaceholder(_ name: String) -> UIImage {
+        let letter = String(name.first ?? "?")
+
+        let size: CGFloat = switch logoSize {
+        case .x160: 160
+        case .x320: 320
+        case .x640: 640
+        }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let fontSize: CGFloat = size * 0.5
+        let letterAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: fontSize),
+            .foregroundColor: UIColor.white,
+            .paragraphStyle: paragraphStyle,
+        ]
+        let rect = CGRect(x: 0, y: 0, width: size, height: size)
+
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: size, height: size), false, 0)
+        UIColor.systemGray.setFill()
+        UIRectFill(rect)
+
+        var textRect = rect
+        textRect.origin.y = size / 2 - fontSize * 0.6
+        letter.draw(in: textRect, withAttributes: letterAttributes)
+
+        let logo = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return logo!
     }
 
     func getLogo(_ name: String, completion: @escaping (LogoResult) -> Void) -> AsyncTask {
@@ -47,8 +81,10 @@ final class LogoRepositoryImpl: LogoRepository {
                 return
             }
 
-            let dataTask = client.fetchDataTask(GET(url), cacheMode: .policy) {
-                let result = $0.mapError(LogoRepositoryError.init)
+            let dataTask = client.fetchDataTask(GET(url), cacheMode: .policy) { result in
+                let result = result
+                    .mapError(LogoRepositoryError.init)
+                    .flatMap { UIImage(data: $0).map(Result.success) ?? .failure(.invalidImage) }
                 completion(result)
             }
             task.addCancellationHandler(dataTask.cancel)
