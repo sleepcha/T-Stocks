@@ -1,5 +1,5 @@
 //
-//  PortfolioDataRepository.swift.swift
+//  PortfolioDataRepository.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/18/24.
