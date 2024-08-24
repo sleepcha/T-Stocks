@@ -7,6 +7,12 @@
 
 import Foundation
 
+// MARK: - Constants
+
+private extension String {
+    static let emptyAssetName = String(localized: "PortfolioService.emptyAssetName", defaultValue: "Неизвестный актив")
+}
+
 // MARK: - PortfolioService
 
 protocol PortfolioService {
@@ -110,7 +116,7 @@ private extension Asset {
     static func empty(id: String) -> Asset {
         Asset(
             id: id,
-            name: String(localized: "PortfolioService.Asset.empty.name", defaultValue: "Неизвестный актив"),
+            name: .emptyAssetName,
             ticker: "?",
             logoName: "",
             currency: .other,
