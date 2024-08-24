@@ -11,8 +11,8 @@ import UIKit
 
 protocol LogoRepository {
     typealias LogoResult = Result<UIImage, LogoRepositoryError>
-    func getPlaceholder(_ letter: Character) -> UIImage
-    func getLogo(_ name: String, completion: @escaping (LogoResult) -> Void) -> AsyncTask
+    func getPlaceholder(letter: Character) -> UIImage
+    func getLogo(_ fileName: String, completion: @escaping (LogoResult) -> Void) -> AsyncTask
 }
 
 // MARK: - LogoRepositoryImpl
@@ -30,7 +30,7 @@ final class LogoRepositoryImpl: LogoRepository {
         self.logoSize = logoSize
     }
 
-    func getPlaceholder(_ letter: Character) -> UIImage {
+    func getPlaceholder(letter: Character) -> UIImage {
         let size: CGFloat = switch logoSize {
         case .x160: 160
         case .x320: 320
@@ -61,14 +61,14 @@ final class LogoRepositoryImpl: LogoRepository {
         return logo!
     }
 
-    func getLogo(_ name: String, completion: @escaping (LogoResult) -> Void) -> AsyncTask {
+    func getLogo(_ fileName: String, completion: @escaping (LogoResult) -> Void) -> AsyncTask {
         AsyncTask { [self] task in
             let completion = { (result: LogoResult) in
                 completion(result)
                 task.done(error: result.failure)
             }
 
-            let imageName = name.replacingOccurrences(
+            let imageName = fileName.replacingOccurrences(
                 of: ".png",
                 with: "\(logoSize.rawValue).png",
                 options: [.anchored, .backwards]
