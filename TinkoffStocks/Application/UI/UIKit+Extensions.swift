@@ -53,10 +53,11 @@ extension UILabel {
 
 extension UIView {
     func shake() {
+        let animationKey = "position"
         let feedback = UINotificationFeedbackGenerator()
         feedback.prepare()
 
-        let animation = CABasicAnimation(keyPath: "position")
+        let animation = CABasicAnimation(keyPath: animationKey)
         animation.duration = 0.06
         animation.repeatCount = 3
         animation.autoreverses = true
@@ -64,7 +65,7 @@ extension UIView {
         animation.toValue = [center.x + 10, center.y]
 
         feedback.notificationOccurred(.error)
-        layer.add(animation, forKey: "position")
+        layer.add(animation, forKey: animationKey)
     }
 }
 
