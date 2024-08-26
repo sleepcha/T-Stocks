@@ -148,7 +148,7 @@ final class LoginScreen: UIView {
         }
 
         scrollView.snp.makeConstraints { make in
-            make.horizontalEdges.top.equalTo(safeAreaLayoutGuide)
+            make.top.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(keyboardLayoutGuide.snp.top)
         }
     }
