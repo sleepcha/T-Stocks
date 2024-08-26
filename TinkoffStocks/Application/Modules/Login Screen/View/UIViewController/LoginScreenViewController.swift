@@ -84,8 +84,7 @@ extension LoginScreenViewController: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            // self.ui.scrollView.scrollTo(textField)
-            self.ui.scrollView.scrollRectToVisible(textField.frame, animated: true)
+            self.ui.scrollView.scrollTo(textField)
         }
     }
 }
