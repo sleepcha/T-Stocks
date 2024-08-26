@@ -135,9 +135,6 @@ final class LoginScreen: UIView {
     }
 
     private func setupConstraints() {
-        mainStack.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-
         tokenField.snp.makeConstraints { make in
             make.height.equalTo(48)
         }
