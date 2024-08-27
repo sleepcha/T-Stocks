@@ -21,6 +21,7 @@ final class NetworkManagerAssemblyImpl: NetworkManagerAssembly {
             client: HTTPClientFactory.create(.apiClient(token: token, isSandbox: isSandbox)),
             decoder: JSONDecoder.custom,
             rateLimitManager: RateLimitManagerImpl(dateProvider: Date.init),
+            errorMapper: HTTPClientErrorMapper.map,
             dateProvider: Date.init
         )
     }

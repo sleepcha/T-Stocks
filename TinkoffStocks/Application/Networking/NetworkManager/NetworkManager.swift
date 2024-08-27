@@ -43,11 +43,13 @@ extension Endpoint {
 
 final class NetworkManagerImpl: NetworkManager {
     typealias DateProvider = () -> Date
+    typealias ErrorMapper = (HTTPClientError) -> NetworkManagerError
 
     private let client: HTTPClient
     private let cacheExpiry: Expiry?
     private let decoder: JSONDecoder
     private let rateLimitManager: RateLimitManager
+    private let errorMapper: ErrorMapper
     private let now: DateProvider
 
     init(
@@ -55,12 +57,14 @@ final class NetworkManagerImpl: NetworkManager {
         cacheExpiry: Expiry? = nil,
         decoder: JSONDecoder,
         rateLimitManager: RateLimitManager,
+        errorMapper: @escaping ErrorMapper,
         dateProvider: @escaping DateProvider
     ) {
         self.client = client
         self.cacheExpiry = cacheExpiry
         self.decoder = decoder
         self.rateLimitManager = rateLimitManager
+        self.errorMapper = errorMapper
         self.now = dateProvider
     }
 
@@ -82,7 +86,14 @@ final class NetworkManagerImpl: NetworkManager {
     }
 
     func caching(_ expiry: Expiry) -> NetworkManager {
-        NetworkManagerImpl(client: client, cacheExpiry: expiry, decoder: decoder, rateLimitManager: rateLimitManager, dateProvider: now)
+        NetworkManagerImpl(
+            client: client,
+            cacheExpiry: expiry,
+            decoder: decoder,
+            rateLimitManager: rateLimitManager,
+            errorMapper: errorMapper,
+            dateProvider: now
+        )
     }
 
     func clearCache() {
@@ -106,7 +117,7 @@ final class NetworkManagerImpl: NetworkManager {
             }
 
             let decodedResult = result
-                .mapError(NetworkManagerError.init)
+                .mapError(errorMapper)
                 .flatMap { $0.decoded(as: T.Response.self, using: decoder).mapError(NetworkManagerError.decodingError) }
 
             switch decodedResult {
@@ -127,7 +138,7 @@ final class NetworkManagerImpl: NetworkManager {
 
     private func handle(error: NetworkManagerError, retryCount: Int, completion: Handler, retryHandler: Handler) {
         #if DEBUG
-            print("> NetworkManagerError: \(error)")
+        print("> NetworkManagerError: \(error)")
         #endif
 
         switch error {
