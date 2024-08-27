@@ -9,21 +9,23 @@ import UIKit
 
 extension Dialog {
     func make(_ style: UIAlertController.Style) -> UIAlertController {
-        let actionSheet = UIAlertController(title: title, message: text, preferredStyle: style)
-        let actions = actions.map { action in
-            UIAlertAction(
-                title: action.title,
-                style: action.kind.asAlertActionStyle,
-                handler: { _ in action.handler() }
-            )
-        }
+        let alert = UIAlertController(title: title, message: text, preferredStyle: style)
 
-        actions.forEach(actionSheet.addAction)
-        return actionSheet
+        actions
+            .map { action in
+                UIAlertAction(
+                    title: action.title,
+                    style: action.kind.asAlertActionStyle,
+                    handler: { _ in action.handler() }
+                )
+            }
+            .forEach(alert.addAction)
+
+        return alert
     }
 }
 
-extension Dialog.Action.Kind {
+private extension Dialog.Action.Kind {
     var asAlertActionStyle: UIAlertAction.Style {
         switch self {
         case .primary: .default
