@@ -9,8 +9,12 @@ protocol HTTPClient {
     ///     - httpRequest: An instance that contains the data for generating a URLRequest.
     ///     - cacheMode: Specifies the way responses will be cached.
     ///     - completion: A completion handler that passes data in case of `.success`.
-    ///     Otherwise `.failure(FetchError)` is passed.
-    func fetchDataTask(_ httpRequest: some HTTPRequest, cacheMode: CacheMode, completion: @escaping (Result<Data, FetchError>) -> Void) -> URLSessionDataTask
+    ///     Otherwise `.failure(HTTPClientError)` is passed.
+    func fetchDataTask(
+        _ httpRequest: some HTTPRequest,
+        cacheMode: CacheMode,
+        completion: @escaping (Result<Data, HTTPClientError>) -> Void
+    ) -> URLSessionDataTask
 
     /// Returns a cached version of the response.
     /// In case of failure `CacheError` is returned.
@@ -31,7 +35,7 @@ protocol HTTPClient {
 
 // MARK: - HTTPClientImpl
 
-final class HTTPClientImpl: HTTPClient {
+class HTTPClientImpl: HTTPClient {
     let session: URLSession
     let configuration: HTTPClientConfiguration
 
@@ -40,7 +44,11 @@ final class HTTPClientImpl: HTTPClient {
         self.configuration = configuration
     }
 
-    func fetchDataTask(_ httpRequest: some HTTPRequest, cacheMode: CacheMode, completion: @escaping (Result<Data, FetchError>) -> Void) -> URLSessionDataTask {
+    func fetchDataTask(
+        _ httpRequest: some HTTPRequest,
+        cacheMode: CacheMode,
+        completion: @escaping (Result<Data, HTTPClientError>) -> Void
+    ) -> URLSessionDataTask {
         let request = generateURLRequest(for: httpRequest)
         let task = session.dataTask(with: request)
         task.delegate = HTTPClientTaskDelegate(

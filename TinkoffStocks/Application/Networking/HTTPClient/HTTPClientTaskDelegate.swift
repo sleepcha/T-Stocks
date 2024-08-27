@@ -5,14 +5,14 @@ import Foundation
 final class HTTPClientTaskDelegate: NSObject, URLSessionDataDelegate {
     private let cacheMode: CacheMode
     private let transformingCached: (URLRequest) -> URLRequest
-    private let completionHandler: (Result<Data, FetchError>) -> Void
+    private let completionHandler: (Result<Data, HTTPClientError>) -> Void
 
     private var receivedData = Data()
 
     init(
         cacheMode: CacheMode,
         transformingCached: @escaping (URLRequest) -> URLRequest,
-        completionHandler: @escaping (Result<Data, FetchError>) -> Void
+        completionHandler: @escaping (Result<Data, HTTPClientError>) -> Void
     ) {
         self.cacheMode = cacheMode
         self.transformingCached = transformingCached
@@ -60,7 +60,7 @@ final class HTTPClientTaskDelegate: NSObject, URLSessionDataDelegate {
 
     // MARK: Private
 
-    private static func processResponse(data: Data?, response: URLResponse?, error: Error?) -> Result<Data, FetchError> {
+    private static func processResponse(data: Data?, response: URLResponse?, error: Error?) -> Result<Data, HTTPClientError> {
         if let error {
             return .failure(.networkError(error))
         }
