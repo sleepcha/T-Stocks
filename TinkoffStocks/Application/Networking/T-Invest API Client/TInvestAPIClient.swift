@@ -1,5 +1,5 @@
 //
-//  HTTPClientFactory+APIClient.swift
+//  TInvestAPIClient.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/8/24.
@@ -30,10 +30,10 @@ private enum Constants {
     static let cacheDiskPath = "API"
 }
 
-// MARK: - APIClient
+// MARK: - TInvestAPIClient
 
-extension HTTPClientFactory {
-    static func createAPIClient(token: String, isSandbox: Bool) -> HTTPClient {
+final class TInvestAPIClient: HTTPClientImpl {
+    init(token: String, isSandbox: Bool) {
         let sessionConfiguration = URLSessionConfiguration.ephemeral
         sessionConfiguration.httpAdditionalHeaders = Constants.headers
         sessionConfiguration.httpAdditionalHeaders?[Constants.auth.key] = Constants.auth.value + token
@@ -60,7 +60,7 @@ extension HTTPClientFactory {
             return request
         }
 
-        return HTTPClientImpl(
+        super.init(
             session: URLSession(configuration: sessionConfiguration),
             configuration: HTTPClientConfiguration(
                 baseURL: isSandbox ? Constants.sandboxURL : Constants.prodURL,

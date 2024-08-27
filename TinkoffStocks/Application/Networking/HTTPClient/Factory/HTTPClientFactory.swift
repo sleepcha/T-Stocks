@@ -16,7 +16,7 @@ enum HTTPClientFactory {
     static func create(_ type: HTTPClientType) -> HTTPClient {
         switch type {
         case let .apiClient(token, isSandbox):
-            createAPIClient(token: token, isSandbox: isSandbox)
+            TInvestAPIClient(token: token, isSandbox: isSandbox)
         case .logoClient:
             createLogoClient()
         }
