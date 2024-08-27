@@ -24,7 +24,7 @@ protocol HTTPClient {
     /// - Parameters:
     ///     - httpRequest: An instance that contains the data used as a key to look up in the cache.
     ///     - isValid: A closure that checks whether the cached version has expired, given the creation date of the response.
-    func cached(_ httpRequest: some HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, CacheError>
+    func cached(_ httpRequest: some HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError>
 
     /// Removes a cached entry if there is one.
     func removeCached(_ httpRequest: some HTTPRequest)
@@ -59,7 +59,7 @@ class HTTPClientImpl: HTTPClient {
         return task
     }
 
-    func cached(_ httpRequest: some HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, CacheError> {
+    func cached(_ httpRequest: some HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError> {
         let request = generateURLRequest(for: httpRequest, transformForCaching: true)
 
         guard let urlCache = session.configuration.urlCache,
