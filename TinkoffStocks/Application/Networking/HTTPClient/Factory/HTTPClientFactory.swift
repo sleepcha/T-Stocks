@@ -18,7 +18,7 @@ enum HTTPClientFactory {
         case let .apiClient(token, isSandbox):
             TInvestAPIClient(token: token, isSandbox: isSandbox)
         case .logoClient:
-            createLogoClient()
+            LogoClient()
         }
     }
 }

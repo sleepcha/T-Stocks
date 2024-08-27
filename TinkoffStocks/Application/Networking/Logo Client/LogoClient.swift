@@ -21,8 +21,8 @@ private enum Constants {
 
 // MARK: - LogoClient
 
-extension HTTPClientFactory {
-    static func createLogoClient() -> HTTPClient {
+final class LogoClient: HTTPClientImpl {
+    init() {
         let sessionConfiguration = URLSessionConfiguration.ephemeral
         sessionConfiguration.timeoutIntervalForRequest = Constants.requestTimeout
         sessionConfiguration.timeoutIntervalForResource = Constants.resourceTimeout
@@ -33,7 +33,7 @@ extension HTTPClientFactory {
             diskPath: Constants.cacheDiskPath
         )
 
-        return HTTPClientImpl(
+        super.init(
             session: URLSession(configuration: sessionConfiguration),
             configuration: HTTPClientConfiguration(baseURL: Constants.logoCDNURL)
         )
