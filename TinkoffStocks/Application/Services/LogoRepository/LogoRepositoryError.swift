@@ -19,8 +19,8 @@ enum LogoRepositoryError: Error {
 // MARK: - Error mapping
 
 extension LogoRepositoryError {
-    init(fetchError: FetchError) {
-        self = switch fetchError {
+    init(httpClientError: HTTPClientError) {
+        self = switch httpClientError {
         case .networkError:
             .networkError
         default:
