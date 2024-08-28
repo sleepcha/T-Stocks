@@ -110,7 +110,7 @@ private extension Asset.Kind {
             .structuredProduct
         case .currency:
             .currency
-        default:
+        case .unspecified, .clearingCertificate, .index, .commodity:
             .other
         }
     }

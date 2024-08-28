@@ -97,10 +97,10 @@ final class LoginServiceImpl: LoginService {
                 .createAccount { _ in }
         }.then {
             networkManager.fetch(API.getAccounts) { result in
-                let result = result
+                completion(result
                     .map { $0.accounts.compactMap(AccountData.init) }
                     .mapError { _ in RepositoryError.networkError }
-                completion(result)
+                )
             }
         }.perform()
     }

@@ -61,7 +61,8 @@ final class PortfoliosServiceImpl: PortfolioService {
             case .completed:
                 let portfolios = self.makePortfolios(portfoliosData: portfoliosData, assets: assets, closePrices: closePrices)
                 completion(.success(portfolios))
-            default:
+            case .ready, .executing:
+                // impossible states
                 break
             }
         }
