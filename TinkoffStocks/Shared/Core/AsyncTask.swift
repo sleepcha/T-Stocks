@@ -144,7 +144,7 @@ final class AsyncChain: AsyncTask {
     typealias AsyncTaskProvider = () -> AsyncTask
 
     private var chain = LinkedList<AsyncTaskProvider>()
-    private var completionQueue: DispatchQueue = .main
+    private var completionQueue: DispatchQueue = .global()
     private var completion: ((State) -> Void)?
 
     init(_ taskClosure: @escaping AsyncTaskProvider) {
@@ -187,7 +187,8 @@ final class AsyncChain: AsyncTask {
     }
 
     /// Sets the closure that will handle the completion of the chain.
-    func handle(on completionQueue: DispatchQueue = .main, completion: @escaping (State) -> Void) -> AsyncTask {
+    /// At the time of completion, the `State` argument will be in one of three states: `completed`, `cancelled`, or `failed`.
+    func handle(on completionQueue: DispatchQueue = .global(), completion: @escaping (State) -> Void) -> AsyncTask {
         ifStateIs([.ready, .executing]) {
             self.completionQueue = completionQueue
             self.completion = completion
@@ -232,7 +233,7 @@ final class AsyncGroup: AsyncTask {
         _ tasks: [AsyncTask],
         shouldCancelOnError: CancellationCondition = .never,
         throttle: TimeInterval = 0,
-        completionQueue: DispatchQueue = .main,
+        completionQueue: DispatchQueue = .global(),
         completion: (([Error]) -> Void)? = nil
     ) {
         super.init { groupTask in
