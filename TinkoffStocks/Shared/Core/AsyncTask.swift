@@ -188,7 +188,7 @@ final class AsyncChain: AsyncTask {
 
     /// Sets the closure that will handle the completion of the chain.
     /// At the time of completion, the `State` argument will be in one of three states: `completed`, `cancelled`, or `failed`.
-    func handle(on completionQueue: DispatchQueue = .global(), completion: @escaping (State) -> Void) -> AsyncTask {
+    func handle(on completionQueue: DispatchQueue = .global(qos: .userInitiated), completion: @escaping (State) -> Void) -> AsyncTask {
         ifStateIs([.ready, .executing]) {
             self.completionQueue = completionQueue
             self.completion = completion
@@ -233,7 +233,7 @@ final class AsyncGroup: AsyncTask {
         _ tasks: [AsyncTask],
         shouldCancelOnError: CancellationCondition = .never,
         throttle: TimeInterval = 0,
-        completionQueue: DispatchQueue = .global(),
+        completionQueue: DispatchQueue = .global(qos: .userInitiated),
         completion: (([Error]) -> Void)? = nil
     ) {
         super.init { groupTask in
