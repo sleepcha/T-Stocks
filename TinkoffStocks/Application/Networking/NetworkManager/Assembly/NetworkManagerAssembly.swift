@@ -17,10 +17,16 @@ protocol NetworkManagerAssembly {
 
 final class NetworkManagerAssemblyImpl: NetworkManagerAssembly {
     func build(token: String, isSandbox: Bool) -> NetworkManager {
-        NetworkManagerImpl(
-            client: HTTPClientFactory.create(.apiClient(token: token, isSandbox: isSandbox)),
+        let apiClient = TInvestAPIClient(token: token, isSandbox: isSandbox)
+        #if DEBUG
+        let client = LoggingHTTPClient(client: apiClient)
+        #else
+        let client = apiClient
+        #endif
+
+        return NetworkManagerImpl(
+            client: client,
             decoder: JSONDecoder.custom,
-            rateLimitManager: RateLimitManagerImpl(dateProvider: Date.init),
             errorMapper: HTTPClientErrorMapper.map,
             dateProvider: Date.init
         )
