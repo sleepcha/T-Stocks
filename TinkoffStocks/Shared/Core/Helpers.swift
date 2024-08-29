@@ -98,3 +98,10 @@ public extension NSLock {
         withLock { autoclosure() }
     }
 }
+
+extension URL: ExpressibleByStringLiteral {
+    /// A convenience for using string literals as URLs
+    public init(stringLiteral value: StaticString) {
+        self.init(string: "\(value)")!
+    }
+}
