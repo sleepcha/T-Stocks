@@ -1,5 +1,5 @@
 //
-//  HTTPClientFactory+LogoClient.swift
+//  LogoClient.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/8/24.
