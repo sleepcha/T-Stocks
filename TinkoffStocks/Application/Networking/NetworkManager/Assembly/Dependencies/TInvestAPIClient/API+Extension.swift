@@ -1,15 +1,13 @@
 //
-//  API.swift
+//  API+Extension.swift
 //  T-Stocks
 //
-//  Created by sleepcha on 7/19/24.
+//  Created by sleepcha on 8/29/24.
 //
 
 import Foundation
 
-// MARK: - API
-
-enum API {
+extension API {
     struct POST<Request: Encodable, Response: Decodable>: Endpoint {
         let method: HTTPMethod = .post
         let path: URL
