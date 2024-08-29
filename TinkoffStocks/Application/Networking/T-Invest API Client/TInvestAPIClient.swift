@@ -21,7 +21,7 @@ private enum Constants {
     static let headers = [
         "accept": "application/json",
         "Content-Type": "application/json",
-        "x-app-name": "sleepcha.TinkoffStocks",
+        "x-app-name": "sleepcha.T-Stocks",
     ]
     static let auth = (key: "Authorization", value: "Bearer ")
 
