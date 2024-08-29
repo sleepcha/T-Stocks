@@ -25,7 +25,7 @@ enum HTTPClientErrorMapper {
         switch httpClientError {
         case .emptyResponse, .invalidHTTPResponse, .emptyData:
             .invalidResponse
-        case .httpError(_, let response):
+        case .httpError(let response):
             Self.processHTTPResponse(response)
         case .networkError(let urlError as URLError) where urlError.code == .timedOut:
             .timedOut
@@ -36,9 +36,9 @@ enum HTTPClientErrorMapper {
         }
     }
 
-    private static func processHTTPResponse(_ response: HTTPURLResponse) -> NetworkManagerError {
-        var rateLimitReset: TimeInterval? { response.value(forHTTPHeaderField: .rateLimitResetHeader).flatMap(TimeInterval.init) }
-        var message: String { response.value(forHTTPHeaderField: .grpcMessageHeader) ?? "" }
+    private static func processHTTPResponse(_ response: HTTPResponse) -> NetworkManagerError {
+        var rateLimitReset: TimeInterval? { response.headers[.rateLimitResetHeader].flatMap(TimeInterval.init) }
+        var message: String { response.headers[.grpcMessageHeader] ?? "" }
 
         return switch response.statusCode {
         case 400: .badRequest(message)

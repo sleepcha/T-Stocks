@@ -16,7 +16,7 @@ enum NetworkManagerError: LocalizedError {
     case notFound(String)
     case tooManyRequests(wait: TimeInterval)
     case serverError(statusCode: Int)
-    case httpError(HTTPURLResponse)
+    case httpError(HTTPResponse)
     case networkError(Error)
     case connectionLost
     case timedOut
@@ -38,8 +38,8 @@ enum NetworkManagerError: LocalizedError {
             String(localized: "NetworkManagerError.tooManyRequests", defaultValue: "Превышен лимит запросов в минуту")
         case .serverError(let code):
             String(localized: "NetworkManagerError.serverError", defaultValue: "Внутренняя ошибка сервера (HTTP \(code)), попробуйте повторить запрос позже")
-        case .httpError(let code):
-            String(localized: "NetworkManagerError.httpError", defaultValue: "Ошибка HTTP \(code)")
+        case .httpError(let response):
+            String(localized: "NetworkManagerError.httpError", defaultValue: "Ошибка HTTP \(response.statusCode)")
         case .networkError(let error):
             String(localized: "NetworkManagerError.networkError", defaultValue: "Ошибка сети: \(error.localizedDescription)")
         case .connectionLost:
