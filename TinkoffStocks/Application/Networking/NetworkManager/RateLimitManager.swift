@@ -7,16 +7,7 @@
 
 import Foundation
 
-// MARK: - RateLimitManager
-
-protocol RateLimitManager {
-    func setResetInterval(_ waitTime: TimeInterval)
-    func getResetInterval() -> TimeInterval?
-}
-
-// MARK: - RateLimitManagerImpl
-
-final class RateLimitManagerImpl: RateLimitManager {
+final class RateLimitManager {
     private let now: () -> Date
     private let lock = NSLock()
     private var rateLimitResetDate: Date?

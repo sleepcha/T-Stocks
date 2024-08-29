@@ -48,24 +48,23 @@ final class NetworkManagerImpl: NetworkManager {
     private let client: HTTPClient
     private let cacheExpiry: Expiry?
     private let decoder: JSONDecoder
-    private let rateLimitManager: RateLimitManager
     private let errorMapper: ErrorMapper
     private let now: DateProvider
+    private let rateLimitManager: RateLimitManager
 
     init(
         client: HTTPClient,
         cacheExpiry: Expiry? = nil,
         decoder: JSONDecoder,
-        rateLimitManager: RateLimitManager,
         errorMapper: @escaping ErrorMapper,
         dateProvider: @escaping DateProvider
     ) {
         self.client = client
         self.cacheExpiry = cacheExpiry
         self.decoder = decoder
-        self.rateLimitManager = rateLimitManager
         self.errorMapper = errorMapper
         self.now = dateProvider
+        self.rateLimitManager = RateLimitManager(dateProvider: dateProvider)
     }
 
     func fetch<T: Endpoint>(_ endpoint: T, retryCount: Int, completion: @escaping (T.Result) -> Void) -> AsyncTask {
@@ -90,7 +89,6 @@ final class NetworkManagerImpl: NetworkManager {
             client: client,
             cacheExpiry: expiry,
             decoder: decoder,
-            rateLimitManager: rateLimitManager,
             errorMapper: errorMapper,
             dateProvider: now
         )
@@ -137,10 +135,6 @@ final class NetworkManagerImpl: NetworkManager {
     }
 
     private func handle(error: NetworkManagerError, retryCount: Int, completion: Handler, retryHandler: Handler) {
-        #if DEBUG
-        print("> NetworkManagerError: \(error)")
-        #endif
-
         switch error {
         case .tooManyRequests(let waitTime):
             // TODO: enqueue the task to retry after the limit reset
