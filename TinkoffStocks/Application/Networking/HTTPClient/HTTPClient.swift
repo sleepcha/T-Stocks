@@ -1,9 +1,16 @@
 import Foundation
 
+// MARK: - HTTPClientTask
+
+protocol HTTPClientTask {
+    func resume()
+    func cancel()
+}
+
 // MARK: - HTTPClient
 
 protocol HTTPClient {
-    /// Asynchronously fetches an HTTP resource using `URLSession` and passes the result to a completion handler.
+    /// Asynchronously fetches an HTTP resource and passes the result to a completion handler.
     ///
     /// - Parameters:
     ///     - httpRequest: An instance that contains the data for generating a URLRequest.
@@ -14,7 +21,7 @@ protocol HTTPClient {
         _ httpRequest: some HTTPRequest,
         cacheMode: CacheMode,
         completion: @escaping (Result<Data, HTTPClientError>) -> Void
-    ) -> URLSessionDataTask
+    ) -> HTTPClientTask
 
     /// Returns a cached version of the response.
     /// In case of failure `CacheError` is returned.
@@ -48,7 +55,7 @@ class HTTPClientImpl: HTTPClient {
         _ httpRequest: some HTTPRequest,
         cacheMode: CacheMode,
         completion: @escaping (Result<Data, HTTPClientError>) -> Void
-    ) -> URLSessionDataTask {
+    ) -> HTTPClientTask {
         let request = generateURLRequest(for: httpRequest)
         let task = session.dataTask(with: request)
         task.delegate = HTTPClientTaskDelegate(
@@ -101,7 +108,6 @@ class HTTPClientImpl: HTTPClient {
         urlRequest.httpMethod = httpRequest.method.rawValue
         urlRequest.httpBody = httpRequest.body
         httpRequest.headers.forEach { urlRequest.addValue($0.value, forHTTPHeaderField: $0.key) }
-        httpRequest.configure?(&urlRequest)
 
         return transformForCaching ? configuration.transformingCached(urlRequest) : urlRequest
     }
@@ -123,3 +129,7 @@ private extension URL {
         return components.url!
     }
 }
+
+// MARK: - URLSessionDataTask + HTTPClientTask
+
+extension URLSessionDataTask: HTTPClientTask {}

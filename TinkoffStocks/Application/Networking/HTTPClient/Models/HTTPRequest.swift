@@ -11,16 +11,12 @@ protocol HTTPRequest {
     var queryParameters: [String: String] { get }
     var headers: [String: String] { get }
     var body: Data? { get }
-
-    /// Allows to set some additional `URLRequest` properties (like `timeoutInterval`) before creating a data task.
-    var configure: ((inout URLRequest) -> Void)? { get }
 }
 
 extension HTTPRequest {
     var queryParameters: [String: String] { [:] }
     var headers: [String: String] { [:] }
     var body: Data? { nil }
-    var configure: ((inout URLRequest) -> Void)? { nil }
 }
 
 // MARK: - GET

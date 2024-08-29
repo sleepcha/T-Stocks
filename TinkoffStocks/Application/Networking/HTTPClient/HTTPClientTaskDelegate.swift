@@ -69,18 +69,31 @@ final class HTTPClientTaskDelegate: NSObject, URLSessionDataDelegate {
             return .failure(.emptyResponse)
         }
 
-        guard let response = response as? HTTPURLResponse else {
-            return .failure(.invalidHTTPResponse(response))
+        guard let response = (response as? HTTPURLResponse) else {
+            return .failure(.invalidHTTPResponse)
         }
 
         guard 200..<300 ~= response.statusCode else {
-            return .failure(.httpError(data, response))
+            return .failure(.httpError(HTTPResponse(response, data)))
         }
 
         guard let data, !data.isEmpty else {
-            return .failure(.emptyData(response))
+            return .failure(.emptyData(HTTPResponse(response)))
         }
 
         return .success(data)
+    }
+}
+
+// MARK: - Helpers
+
+private extension HTTPResponse {
+    init(_ response: HTTPURLResponse, _ data: Data? = nil) {
+        self.init(
+            url: response.url,
+            statusCode: response.statusCode,
+            headers: response.allHeaderFields.reduce(into: [:]) { $0["\($1.key)"] = "\($1.value)" },
+            data: data
+        )
     }
 }

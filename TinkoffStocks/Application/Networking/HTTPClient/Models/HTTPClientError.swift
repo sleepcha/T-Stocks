@@ -2,21 +2,21 @@ import Foundation
 
 enum HTTPClientError: LocalizedError {
     case emptyResponse
-    case invalidHTTPResponse(URLResponse)
-    case httpError(Data?, HTTPURLResponse)
-    case emptyData(HTTPURLResponse)
+    case invalidHTTPResponse
+    case httpError(HTTPResponse)
+    case emptyData(HTTPResponse)
     case networkError(Error)
 
     var errorDescription: String? {
         switch self {
         case .emptyResponse:
             String(localized: "HTTPClientError.emptyResponse", defaultValue: "Пустой ответ")
-        case .invalidHTTPResponse(let response):
-            String(localized: "HTTPClientError.invalidHTTPResponse", defaultValue: "Некорректный HTTP ответ:\n\(response.debugDescription)")
-        case .httpError(_, let response):
-            String(localized: "HTTPClientError.httpError", defaultValue: "Ошибка HTTP \(response.statusCode)")
+        case .invalidHTTPResponse:
+            String(localized: "HTTPClientError.invalidHTTPResponse", defaultValue: "Некорректный HTTP ответ")
+        case .httpError(let response):
+            String(localized: "HTTPClientError.httpError", defaultValue: "Ошибка HTTP \(response.description)")
         case .emptyData(let response):
-            String(localized: "HTTPClientError.emptyData", defaultValue: "Не получено данных от сервера. HTTP \(response.debugDescription)")
+            String(localized: "HTTPClientError.emptyData", defaultValue: "Не получено данных от сервера. HTTP \(response.description)")
         case .networkError(let underlyingError):
             String(localized: "HTTPClientError.networkError", defaultValue: "Ошибка сети: \(underlyingError.localizedDescription)")
         }
