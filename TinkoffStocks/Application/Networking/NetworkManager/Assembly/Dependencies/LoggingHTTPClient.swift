@@ -24,7 +24,7 @@ final class LoggingHTTPClient: HTTPClient {
     ) -> HTTPClientTask {
         let completion = { (result: Result<Data, HTTPClientError>) in
             if case .failure(let error) = result {
-                self.logger.debug("❌ \(error.description)")
+                self.logger.debug("❌ \(error.errorDescription ?? "")")
             }
             completion(result)
         }
@@ -42,21 +42,5 @@ final class LoggingHTTPClient: HTTPClient {
 
     func removeAllCachedResponses() {
         httpClient.removeAllCachedResponses()
-    }
-}
-
-// MARK: - Helpers
-
-private extension HTTPClientError {
-    var description: String {
-        let info: String = switch self {
-        case .httpError(let response), .emptyData(let response):
-            response.description
-        case .networkError(let error):
-            error.localizedDescription
-        default: ""
-        }
-
-        return "\(errorDescription ?? "")\n\(info)"
     }
 }
