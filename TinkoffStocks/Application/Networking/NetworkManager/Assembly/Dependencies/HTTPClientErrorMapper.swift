@@ -46,7 +46,6 @@ enum HTTPClientErrorMapper {
         case 403: .forbidden(message)
         case 404: .notFound(message)
         case 429: .tooManyRequests(wait: rateLimitReset ?? Constants.defaultRateLimitReset)
-        case 500...599: .serverError(statusCode: response.statusCode)
         default: .httpError(response)
         }
     }
