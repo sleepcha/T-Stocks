@@ -27,7 +27,7 @@ extension RepositoryError {
         self = switch networkManagerError {
         case .networkError, .connectionLost, .timedOut:
             .networkError
-        case .badRequest, .notFound, .httpError, .serverError, .invalidResponse:
+        case .badRequest, .notFound, .httpError, .invalidResponse:
             .serverError
         case .unauthorized, .forbidden:
             .noAccess
