@@ -7,6 +7,12 @@ struct HTTPResponse: CustomStringConvertible {
     let data: Data?
 
     var description: String {
-        "\(statusCode): \(url?.absoluteString ?? "[NO URL]")\n\(headers)"
+        let urlString = url?.absoluteString ?? "[No URL]"
+        let headers = headers
+            .sorted { $0.key < $1.key }
+            .map { "\($0.key): \($0.value)" }
+            .joined(separator: "\n")
+
+        return "HTTP \(statusCode): \(urlString)\n\(headers)"
     }
 }
