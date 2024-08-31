@@ -14,9 +14,9 @@ enum HTTPClientError: LocalizedError {
         case .invalidHTTPResponse:
             String(localized: "HTTPClientError.invalidHTTPResponse", defaultValue: "Некорректный HTTP ответ")
         case .httpError(let response):
-            String(localized: "HTTPClientError.httpError", defaultValue: "Ошибка HTTP \(response.description)")
+            String(localized: "HTTPClientError.httpError", defaultValue: "Ошибка \(response.description)")
         case .emptyData(let response):
-            String(localized: "HTTPClientError.emptyData", defaultValue: "Не получено данных от сервера. HTTP \(response.description)")
+            String(localized: "HTTPClientError.emptyData", defaultValue: "Не получено данных от сервера. \(response.description)")
         case .networkError(let underlyingError):
             String(localized: "HTTPClientError.networkError", defaultValue: "Ошибка сети: \(underlyingError.localizedDescription)")
         }
