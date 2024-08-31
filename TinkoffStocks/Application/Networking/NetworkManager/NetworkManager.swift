@@ -80,7 +80,7 @@ final class NetworkManagerImpl: NetworkManager {
                 return
             }
 
-            networkFetch(endpoint, retryCount: retryCount, parentTask: task, completion: completion)
+            networkFetch(endpoint, attempts: (left: retryCount, max: retryCount), parentTask: task, completion: completion)
         }
     }
 
@@ -100,7 +100,7 @@ final class NetworkManagerImpl: NetworkManager {
 
     // MARK: Private
 
-    private func networkFetch<T: Endpoint>(_ endpoint: T, retryCount: Int, parentTask: AsyncTask, completion: @escaping (T.Result) -> Void) {
+    private func networkFetch<T: Endpoint>(_ endpoint: T, attempts: (left: Int, max: Int), parentTask: AsyncTask, completion: @escaping (T.Result) -> Void) {
         if let waitTime = rateLimitManager.getResetInterval() {
             completion(.failure(.tooManyRequests(wait: waitTime)))
             return
@@ -122,9 +122,12 @@ final class NetworkManagerImpl: NetworkManager {
             case .failure(let error):
                 handle(
                     error: error,
-                    retryCount: retryCount,
+                    attempts: attempts,
                     completion: { completion(.failure(error)) },
-                    retryHandler: { networkFetch(endpoint, retryCount: retryCount - 1, parentTask: parentTask, completion: completion) }
+                    retryHandler: {
+                        let retryAttempts = (left: attempts.left - 1, max: attempts.max)
+                        self.networkFetch(endpoint, attempts: retryAttempts, parentTask: parentTask, completion: completion)
+                    }
                 )
             case .success(let response):
                 completion(.success(response))
@@ -134,17 +137,33 @@ final class NetworkManagerImpl: NetworkManager {
         dataTask.resume()
     }
 
-    private func handle(error: NetworkManagerError, retryCount: Int, completion: Handler, retryHandler: Handler) {
+    private func handle(error: NetworkManagerError, attempts: (left: Int, max: Int), completion: Handler, retryHandler: @escaping Handler) {
         switch error {
         case .tooManyRequests(let waitTime):
             // TODO: enqueue the task to retry after the limit reset
             rateLimitManager.setResetInterval(waitTime)
             completion()
-        case .timedOut, .connectionLost, .serverError:
-            retryCount > 0 ? retryHandler() : completion()
+        case .timedOut, .connectionLost:
+            attempts.left > 0 ? retryHandler() : completion()
+        case .httpError(let response) where 500...599 ~= response.statusCode:
+            if attempts.left > 0 {
+                let attempt = attempts.max - attempts.left
+                let delay = maxBackoffJitter(attempt: attempt)
+                DispatchQueue.global().asyncAfter(deadline: .now() + delay, execute: retryHandler)
+            } else {
+                completion()
+            }
         default:
             completion()
         }
+    }
+
+    /// Returns the value of max exponential backoff with jitter in seconds.
+    private func maxBackoffJitter(attempt: Int) -> TimeInterval {
+        let base: TimeInterval = 1
+        let maxDelay: TimeInterval = 10
+        let exponential = base * pow(2.0, Double(attempt))
+        return Double.random(in: 0...min(exponential, maxDelay))
     }
 }
 
