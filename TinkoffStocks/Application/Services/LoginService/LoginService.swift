@@ -48,7 +48,7 @@ final class LoginServiceImpl: LoginService {
     }
 
     func getStoredAuthData(completion: @escaping (AuthData?) -> Void) {
-        keychainService.read(.authToken, type: AuthData.self) {
+        keychainService.read(C.Keys.authTokenKeychain, type: AuthData.self) {
             completion($0.success)
         }
     }
@@ -79,13 +79,13 @@ final class LoginServiceImpl: LoginService {
         guard networkManager != nil else { return }
         networkManager?.clearCache()
         networkManager = nil
-        keychainService.delete(.authToken) { _ in }
+        keychainService.delete(C.Keys.authTokenKeychain) { _ in }
     }
 
     // MARK: Private
 
     private func saveAuthData(_ auth: AuthData) {
-        keychainService.save(.authToken, data: auth) { error in
+        keychainService.save(C.Keys.authTokenKeychain, data: auth) { error in
             if let error { print(error.localizedDescription) }
         }
     }
