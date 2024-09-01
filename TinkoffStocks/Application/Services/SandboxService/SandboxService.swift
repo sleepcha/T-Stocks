@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Constants
 
-private enum Constants {
+private extension C {
     static let newAccountName = String(localized: "SandboxService.newAccountName", defaultValue: "Брокерский счёт")
     static let topUpAmount = Decimal(5_000_000)
     static let sandboxAccountAssets = [
@@ -61,7 +61,7 @@ final class SandboxServiceImpl: SandboxService {
         var accountID: String?
 
         return AsyncChain {
-            let openSandboxAccount = API.openSandboxAccount(OpenSandboxAccountRequest(name: Constants.newAccountName))
+            let openSandboxAccount = API.openSandboxAccount(OpenSandboxAccountRequest(name: C.newAccountName))
             return self.networkManager.fetch(openSandboxAccount, retryCount: 0) { accountID = $0.success?.accountId }
         }.then {
             guard let accountID else { return .empty() }
@@ -83,10 +83,10 @@ final class SandboxServiceImpl: SandboxService {
 
     private func fillPortfolio(_ accountID: String) -> AsyncTask {
         AsyncChain {
-            let payIn = API.sandboxPayIn(SandboxPayInRequest(accountId: accountID, amount: Constants.topUpAmount.asMoney("RUB")))
+            let payIn = API.sandboxPayIn(SandboxPayInRequest(accountId: accountID, amount: C.topUpAmount.asMoney("RUB")))
             return self.networkManager.fetch(payIn) { _ in }
         }.then {
-            let postOrders = Constants.sandboxAccountAssets
+            let postOrders = C.sandboxAccountAssets
                 .map { (accountID, $0) }
                 .map(self.postOrder)
             return AsyncGroup(postOrders)

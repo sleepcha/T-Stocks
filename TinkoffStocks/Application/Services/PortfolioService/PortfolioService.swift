@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Constants
 
-private extension String {
+private extension C {
     static let emptyAssetName = String(localized: "PortfolioService.emptyAssetName", defaultValue: "Неизвестный актив")
 }
 
@@ -51,6 +51,9 @@ final class PortfoliosServiceImpl: PortfolioService {
             return AsyncGroup(tasks, shouldCancelOnError: .always)
         }.handle { state in
             switch state {
+            case .completed:
+                let portfolios = self.makePortfolios(portfoliosData: portfoliosData, assets: assets, closePrices: closePrices)
+                completion(.success(portfolios))
             case .cancelled:
                 completion(.failure(.taskCancelled))
             case .failed(let error as RepositoryError):
@@ -58,9 +61,6 @@ final class PortfoliosServiceImpl: PortfolioService {
             case .failed:
                 // degenerate case, does not happen if all tasks in the chain complete with RepositoryError
                 completion(.failure(.serverError))
-            case .completed:
-                let portfolios = self.makePortfolios(portfoliosData: portfoliosData, assets: assets, closePrices: closePrices)
-                completion(.success(portfolios))
             case .ready, .executing:
                 // impossible states
                 break
@@ -117,7 +117,7 @@ private extension Asset {
     static func empty(id: String) -> Asset {
         Asset(
             id: id,
-            name: .emptyAssetName,
+            name: C.emptyAssetName,
             ticker: "?",
             logoName: "",
             currency: .other,

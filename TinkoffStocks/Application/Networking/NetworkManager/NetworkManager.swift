@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Constants
 
-private extension Int {
+private extension C {
     static let defaultRetryCount = 2
 }
 
@@ -31,7 +31,7 @@ protocol NetworkManager {
 
 extension NetworkManager {
     func fetch<T: Endpoint>(_ endpoint: T, completion: @escaping (T.Result) -> Void) -> AsyncTask {
-        fetch(endpoint, retryCount: .defaultRetryCount, completion: completion)
+        fetch(endpoint, retryCount: C.defaultRetryCount, completion: completion)
     }
 }
 

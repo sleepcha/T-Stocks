@@ -9,11 +9,11 @@ import Foundation
 
 // MARK: - Constants
 
-private extension Expiry.Period {
+private extension C {
     #if DEBUG
-    static let assetCachingPeriod = Self.month(12)
+    static let assetCachingPeriod = Expiry.Period.month(12)
     #else
-    static let assetCachingPeriod = Self.month(1)
+    static let assetCachingPeriod = Expiry.Period.month(1)
     #endif
 }
 
@@ -32,7 +32,7 @@ final class AssetRepositoryImpl: AssetRepository {
 
     init(networkManager: NetworkManager) {
         self.networkManager = networkManager
-        self.cachingManager = networkManager.caching(.for(.assetCachingPeriod))
+        self.cachingManager = networkManager.caching(.for(C.assetCachingPeriod))
     }
 
     func getAssets(_ assetIDs: [String], completion: @escaping (RepositoryResult<[String: Asset]>) -> Void) -> AsyncTask {
