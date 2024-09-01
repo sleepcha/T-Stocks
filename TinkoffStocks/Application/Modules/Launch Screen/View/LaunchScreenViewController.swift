@@ -1,5 +1,5 @@
 //
-//  SplashScreenViewController.swift
+//  LaunchScreenViewController.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/13/24.
@@ -9,13 +9,13 @@ import UIKit
 
 // MARK: - Constants
 
-private enum Constants {
+private extension C {
     static let logoImageSize = 128
 }
 
-// MARK: - SplashScreenViewController
+// MARK: - LaunchScreenViewController
 
-final class SplashScreenViewController: UIViewController {
+final class LaunchScreenViewController: UIViewController {
     private let spinner = UIActivityIndicatorView {
         $0.color = .white
         $0.style = .large
@@ -39,7 +39,7 @@ final class SplashScreenViewController: UIViewController {
     private func setupConstraints() {
         imageView.snp.makeConstraints { make in
             make.center.equalTo(view.safeAreaLayoutGuide)
-            make.width.height.equalTo(Constants.logoImageSize)
+            make.width.height.equalTo(C.logoImageSize)
         }
 
         spinner.snp.makeConstraints { make in
@@ -49,6 +49,6 @@ final class SplashScreenViewController: UIViewController {
     }
 
     #if DEBUG
-        deinit { print("> SplashScreenViewController.deinit()") }
+    deinit { print("> LaunchScreenViewController.deinit()") }
     #endif
 }
