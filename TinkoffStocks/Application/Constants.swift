@@ -15,4 +15,8 @@ public enum C {
         static let serverError = String(localized: "Constants.Errors.serverError", defaultValue: "Ошибка сервера.\nПопробуйте позже")
         static let unknownError = String(localized: "Constants.Errors.unknownError", defaultValue: "Неизвестная ошибка")
     }
+
+    public enum Keys {
+        static let authTokenKeychain = "authToken"
+    }
 }
