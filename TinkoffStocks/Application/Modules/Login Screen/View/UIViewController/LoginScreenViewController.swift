@@ -20,6 +20,10 @@ final class LoginScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewActions()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         presenter.viewReady()
     }
 
@@ -51,9 +55,8 @@ extension LoginScreenViewController: LoginScreenView {
     func switchState(isLoading: Bool) {
         ui.endEditing(true)
         let controls = [ui.tokenField, ui.sandboxSwitch, ui.rememberMeSwitch, ui.sandboxSwitch]
-        ui.loginButton.isLoading = isLoading
-        ui.loginButton.isUserInteractionEnabled = !isLoading
         controls.forEach { $0.isEnabled = !isLoading }
+        ui.loginButton.isLoading = isLoading
     }
 
     func indicateInvalidToken() {
