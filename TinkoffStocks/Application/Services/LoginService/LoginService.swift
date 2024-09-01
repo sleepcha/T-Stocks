@@ -70,6 +70,7 @@ final class LoginServiceImpl: LoginService {
                     completion(.success(accounts.compactMap(AccountData.init)))
                 }
             case .failure(let networkManagerError):
+                if case .unauthorized = networkManagerError { self.removeAuthData() }
                 completion(.failure(RepositoryError(networkManagerError)))
             }
         }.perform()
@@ -79,15 +80,17 @@ final class LoginServiceImpl: LoginService {
         guard networkManager != nil else { return }
         networkManager?.clearCache()
         networkManager = nil
-        keychainService.delete(C.Keys.authTokenKeychain) { _ in }
+        removeAuthData()
     }
-
-    // MARK: Private
 
     private func saveAuthData(_ auth: AuthData) {
         keychainService.save(C.Keys.authTokenKeychain, data: auth) { error in
             if let error { print(error.localizedDescription) }
         }
+    }
+
+    private func removeAuthData() {
+        keychainService.delete(C.Keys.authTokenKeychain) { _ in }
     }
 
     private func createStubAccount(networkManager: NetworkManager, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
