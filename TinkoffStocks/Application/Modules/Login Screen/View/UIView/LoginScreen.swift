@@ -10,11 +10,8 @@ import UIKit
 
 // MARK: - Constants
 
-private enum Constants {
+private extension C {
     static let defaultSpacing: CGFloat = 48
-}
-
-private extension String {
     static let tokenFieldPlaceholder = String(localized: "LoginScreen.tokenField.placeholder", defaultValue: "Ваш токен Invest API")
     static let loginButtonTitle = String(localized: "LoginScreen.loginButton.title", defaultValue: "Войти")
     static let sandboxLabelText = String(localized: "LoginScreen.sandboxLabel.text", defaultValue: "Режим песочницы")
@@ -27,7 +24,7 @@ private extension String {
 
 final class LoginScreen: UIView {
     lazy var tokenField = PaddedTextField {
-        $0.placeholder = .tokenFieldPlaceholder
+        $0.placeholder = C.tokenFieldPlaceholder
         $0.tintColor = .brand
         $0.backgroundColor = .secondarySystemBackground
         $0.font = .preferredFont(forTextStyle: .body)
@@ -61,7 +58,7 @@ final class LoginScreen: UIView {
     }
 
     let loginButton = LoadingButton {
-        $0.setTitle(.loginButtonTitle, for: .normal)
+        $0.setTitle(C.loginButtonTitle, for: .normal)
         $0.tintColor = .brand
         $0.setTitleColor(.black, for: .normal)
         $0.setTitleColor(.black.withAlphaComponent(0.5), for: .highlighted)
@@ -72,7 +69,7 @@ final class LoginScreen: UIView {
     private lazy var mainStack = {
         let sandboxStack = UIStackView(
             views: [
-                UILabel(.sandboxLabelText, style: .body),
+                UILabel(C.sandboxLabelText, style: .body),
                 sandboxSwitch,
             ],
             alignment: .center,
@@ -81,7 +78,7 @@ final class LoginScreen: UIView {
 
         let rememberMeStack = UIStackView(
             views: [
-                UILabel(.rememberMeLabelText, style: .body),
+                UILabel(C.rememberMeLabelText, style: .body),
                 rememberMeSwitch,
             ],
             alignment: .center,
@@ -90,8 +87,8 @@ final class LoginScreen: UIView {
 
         let titleStack = UIStackView(
             views: [
-                UILabel(.title, style: .title),
-                UILabel(.subtitle, style: .subtitle),
+                UILabel(C.title, style: .title),
+                UILabel(C.subtitle, style: .subtitle),
             ],
             axis: .vertical,
             spacing: 16
@@ -114,7 +111,7 @@ final class LoginScreen: UIView {
                 loginButton,
             ],
             axis: .vertical,
-            spacing: Constants.defaultSpacing
+            spacing: C.defaultSpacing
         )
     }()
 
@@ -144,7 +141,7 @@ final class LoginScreen: UIView {
         }
 
         mainStack.snp.makeConstraints { make in
-            make.directionalEdges.equalToSuperview().inset(Constants.defaultSpacing)
+            make.directionalEdges.equalToSuperview().inset(C.defaultSpacing)
         }
 
         scrollView.snp.makeConstraints { make in

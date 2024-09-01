@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Constants
 
-private enum Constants {
+private extension C {
     static let tokenLength = 88
     static let tokenPrefix = "t."
 }
@@ -44,7 +44,7 @@ final class LoginServiceImpl: LoginService {
     }
 
     func isValidToken(text: String) -> Bool {
-        text.count == Constants.tokenLength && text.hasPrefix(Constants.tokenPrefix)
+        text.count == C.tokenLength && text.hasPrefix(C.tokenPrefix)
     }
 
     func getStoredAuthData(completion: @escaping (AuthData?) -> Void) {

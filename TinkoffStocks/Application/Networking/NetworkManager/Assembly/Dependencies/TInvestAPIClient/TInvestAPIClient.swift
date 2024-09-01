@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Constants
 
-private enum Constants {
+private extension C {
     static let prodURL: URL = "https://invest-public-api.tinkoff.ru/rest/"
     static let sandboxURL: URL = "https://sandbox-invest-public-api.tinkoff.ru/rest/"
     #if DEBUG
@@ -35,16 +35,16 @@ private enum Constants {
 final class TInvestAPIClient: HTTPClientImpl {
     init(token: String, isSandbox: Bool) {
         let sessionConfiguration = URLSessionConfiguration.ephemeral
-        sessionConfiguration.httpAdditionalHeaders = Constants.headers
-        sessionConfiguration.httpAdditionalHeaders?[Constants.auth.key] = Constants.auth.value + token
-        sessionConfiguration.timeoutIntervalForRequest = Constants.requestTimeout
-        sessionConfiguration.timeoutIntervalForResource = Constants.resourceTimeout
+        sessionConfiguration.httpAdditionalHeaders = C.headers
+        sessionConfiguration.httpAdditionalHeaders?[C.auth.key] = C.auth.value + token
+        sessionConfiguration.timeoutIntervalForRequest = C.requestTimeout
+        sessionConfiguration.timeoutIntervalForResource = C.resourceTimeout
         sessionConfiguration.requestCachePolicy = .reloadIgnoringLocalCacheData
         sessionConfiguration.networkServiceType = .responsiveData
         sessionConfiguration.urlCache = URLCache(
-            memoryCapacity: Constants.cacheMemoryCapacity,
-            diskCapacity: Constants.cacheDiskCapacity,
-            diskPath: Constants.cacheDiskPath
+            memoryCapacity: C.cacheMemoryCapacity,
+            diskCapacity: C.cacheDiskCapacity,
+            diskPath: C.cacheDiskPath
         )
 
         let requestTransformer = { (original: URLRequest) in
@@ -55,7 +55,7 @@ final class TInvestAPIClient: HTTPClientImpl {
             request.httpMethod = HTTPMethod.get.rawValue
 
             // 2. Authorization header is removed to prevent storing the token as plaintext.
-            request.setValue(nil, forHTTPHeaderField: Constants.auth.key)
+            request.setValue(nil, forHTTPHeaderField: C.auth.key)
 
             return request
         }
@@ -63,7 +63,7 @@ final class TInvestAPIClient: HTTPClientImpl {
         super.init(
             session: URLSession(configuration: sessionConfiguration),
             configuration: HTTPClientConfiguration(
-                baseURL: isSandbox ? Constants.sandboxURL : Constants.prodURL,
+                baseURL: isSandbox ? C.sandboxURL : C.prodURL,
                 allowedCharacters: .rfc3986Allowed,
                 transformCachedRequest: requestTransformer
             )

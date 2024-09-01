@@ -9,11 +9,9 @@ import Foundation
 
 // MARK: - Constants
 
-private enum Constants {
+private extension C {
     static let defaultRateLimitReset: TimeInterval = 60
-}
 
-private extension String {
     static let rateLimitResetHeader = "x-ratelimit-reset"
     static let grpcMessageHeader = "grpc-trailer-message"
 }
@@ -37,15 +35,15 @@ enum HTTPClientErrorMapper {
     }
 
     private static func processHTTPResponse(_ response: HTTPResponse) -> NetworkManagerError {
-        var rateLimitReset: TimeInterval? { response.headers[.rateLimitResetHeader].flatMap(TimeInterval.init) }
-        var message: String { response.headers[.grpcMessageHeader] ?? "" }
+        var rateLimitReset: TimeInterval? { response.headers[C.rateLimitResetHeader].flatMap(TimeInterval.init) }
+        var message: String { response.headers[C.grpcMessageHeader] ?? "" }
 
         return switch response.statusCode {
         case 400: .badRequest(message)
         case 401: .unauthorized(message)
         case 403: .forbidden(message)
         case 404: .notFound(message)
-        case 429: .tooManyRequests(wait: rateLimitReset ?? Constants.defaultRateLimitReset)
+        case 429: .tooManyRequests(wait: rateLimitReset ?? C.defaultRateLimitReset)
         default: .httpError(response)
         }
     }

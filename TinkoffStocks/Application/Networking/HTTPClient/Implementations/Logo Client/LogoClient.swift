@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Constants
 
-private enum Constants {
+private extension C {
     static let logoCDNURL: URL = "https://invest-brands.cdn-tinkoff.ru/"
     static let requestTimeout: TimeInterval = 15
     static let resourceTimeout: TimeInterval = 60
@@ -24,18 +24,18 @@ private enum Constants {
 final class LogoClient: HTTPClientImpl {
     init() {
         let sessionConfiguration = URLSessionConfiguration.ephemeral
-        sessionConfiguration.timeoutIntervalForRequest = Constants.requestTimeout
-        sessionConfiguration.timeoutIntervalForResource = Constants.resourceTimeout
+        sessionConfiguration.timeoutIntervalForRequest = C.requestTimeout
+        sessionConfiguration.timeoutIntervalForResource = C.resourceTimeout
         sessionConfiguration.requestCachePolicy = .useProtocolCachePolicy
         sessionConfiguration.urlCache = URLCache(
-            memoryCapacity: Constants.cacheMemoryCapacity,
-            diskCapacity: Constants.cacheDiskCapacity,
-            diskPath: Constants.cacheDiskPath
+            memoryCapacity: C.cacheMemoryCapacity,
+            diskCapacity: C.cacheDiskCapacity,
+            diskPath: C.cacheDiskPath
         )
 
         super.init(
             session: URLSession(configuration: sessionConfiguration),
-            configuration: HTTPClientConfiguration(baseURL: Constants.logoCDNURL)
+            configuration: HTTPClientConfiguration(baseURL: C.logoCDNURL)
         )
     }
 }
