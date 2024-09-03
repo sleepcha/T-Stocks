@@ -46,8 +46,6 @@ final class PortfolioDataRepositoryImpl: PortfolioDataRepository {
         }
     }
 
-    // MARK: Private
-
     private func getPortfolioData(accountID: String, completion: @escaping (RepositoryResult<PortfolioData>) -> Void) -> AsyncTask {
         networkManager.fetch(
             API.getPortfolio(PortfolioRequest(accountId: accountID)),

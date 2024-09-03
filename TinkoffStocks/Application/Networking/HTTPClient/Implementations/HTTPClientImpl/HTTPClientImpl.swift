@@ -60,8 +60,6 @@ class HTTPClientImpl: HTTPClient {
         session.configuration.urlCache?.removeAllCachedResponses()
     }
 
-    // MARK: Private
-
     private func generateURLRequest(for httpRequest: some HTTPRequest, transformForCaching: Bool = false) -> URLRequest {
         let url = URL(
             string: httpRequest.path.absoluteString,

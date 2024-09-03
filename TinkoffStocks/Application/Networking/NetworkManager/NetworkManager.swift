@@ -98,8 +98,6 @@ final class NetworkManagerImpl: NetworkManager {
         client.removeAllCachedResponses()
     }
 
-    // MARK: Private
-
     private func networkFetch<T: Endpoint>(_ endpoint: T, attempts: (left: Int, max: Int), parentTask: AsyncTask, completion: @escaping (T.Result) -> Void) {
         if let waitTime = rateLimitManager.getResetInterval() {
             completion(.failure(.tooManyRequests(wait: waitTime)))
@@ -162,8 +160,8 @@ final class NetworkManagerImpl: NetworkManager {
     private func maxBackoffJitter(attempt: Int) -> TimeInterval {
         let base: TimeInterval = 1
         let maxDelay: TimeInterval = 10
-        let exponential = base * pow(2.0, Double(attempt))
-        return Double.random(in: 0...min(exponential, maxDelay))
+        let exponential = base * pow(2, Double(attempt))
+        return TimeInterval.random(in: 0...min(exponential, maxDelay))
     }
 }
 
