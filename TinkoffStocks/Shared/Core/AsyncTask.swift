@@ -81,7 +81,7 @@ class AsyncTask: Identifiable {
 
     /// Saves the closure that will execute when the task is cancelled. Will execute immediately if the task is already cancelled.
     func addCancellationHandler(_ handler: @escaping () -> Void) {
-        let didAddHandler = ifStateIs([.ready, .executing]) { cancellationHandlers.append(handler) }
+        let didAddHandler = ifStateIs(.ready, .executing) { cancellationHandlers.append(handler) }
         if !didAddHandler, state == .cancelled { handler() }
     }
 
@@ -93,7 +93,7 @@ class AsyncTask: Identifiable {
 
     /// Synchronizes a conditional execution of a closure.
     @discardableResult
-    fileprivate func ifStateIs(_ states: [State], execute closure: () -> Void) -> Bool {
+    fileprivate func ifStateIs(_ states: State..., execute closure: () -> Void) -> Bool {
         lock.withLock {
             if states.contains(_state) {
                 closure()
@@ -163,7 +163,7 @@ final class AsyncChain: AsyncTask {
             return
         }
 
-        let isReady = subTask.ifStateIs([.ready]) {
+        let isReady = subTask.ifStateIs(.ready) {
             subTask.finishHandler = { error in
                 if let error {
                     rootTask.done(error: error)
@@ -182,14 +182,14 @@ final class AsyncChain: AsyncTask {
     /// The chain execution breaks with any task completing with error (or starting off with a non-ready state).
     /// You can also cancel the chain by cancelling the root task (the one you're adding tasks to).
     func then(_ taskClosure: @escaping AsyncTaskProvider) -> AsyncChain {
-        ifStateIs([.ready, .executing]) { chain.append(taskClosure) }
+        ifStateIs(.ready, .executing) { chain.append(taskClosure) }
         return self
     }
 
     /// Sets the closure that will handle the completion of the chain.
     /// At the time of completion, the `State` argument will be in one of three states: `completed`, `cancelled`, or `failed`.
     func handle(on completionQueue: DispatchQueue = .global(qos: .userInitiated), completion: @escaping (State) -> Void) -> AsyncTask {
-        ifStateIs([.ready, .executing]) {
+        ifStateIs(.ready, .executing) {
             self.completionQueue = completionQueue
             self.completion = completion
         }
@@ -252,7 +252,7 @@ final class AsyncGroup: AsyncTask {
             for (index, task) in tasks.enumerated() {
                 guard case .executing = groupTask.state else { break }
 
-                task.ifStateIs([.ready]) {
+                task.ifStateIs(.ready) {
                     group.enter()
                     task.finishHandler = { error in
                         defer { group.leave() }
