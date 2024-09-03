@@ -62,7 +62,7 @@ final class PortfoliosServiceImpl: PortfolioService {
                 // degenerate case, does not happen if all tasks in the chain complete with RepositoryError
                 completion(.failure(.serverError))
             case .ready, .executing:
-                // impossible states
+                // impossible states, handle method is not called
                 break
             }
         }
@@ -97,7 +97,7 @@ final class PortfoliosServiceImpl: PortfolioService {
 private extension Portfolio.Position {
     init(item: PortfolioData.Item, asset: Asset, closePrice: Decimal?) {
         self.init(
-            id: item.id,
+            assetID: item.id,
             quantity: item.quantity,
             currentPrice: item.currentPrice,
             averagePrice: item.averagePrice,

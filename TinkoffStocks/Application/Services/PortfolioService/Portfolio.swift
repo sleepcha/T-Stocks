@@ -9,7 +9,7 @@ import Foundation
 
 struct Portfolio {
     struct Position {
-        let id: String
+        let assetID: String
         let quantity: Decimal
         let currentPrice: Decimal
         let averagePrice: Decimal
