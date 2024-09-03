@@ -24,7 +24,7 @@ class AsyncTask: Identifiable {
         }
     }
 
-    let id: UUID
+    let id: String
     var state: State { lock.withLock { _state } }
 
     fileprivate var finishHandler: ((Error?) -> Void)?
@@ -36,7 +36,7 @@ class AsyncTask: Identifiable {
     private var _state = State.ready
 
     /// You must manually signal the task completion by calling `$0.done(error:)` from inside the block.
-    init(id: UUID = .init(), _ block: @escaping (AsyncTask) -> Void) {
+    init(id: String = UUID().uuidString, _ block: @escaping (AsyncTask) -> Void) {
         self.id = id
         self.block = block
     }
@@ -126,11 +126,11 @@ class AsyncTask: Identifiable {
     }
 }
 
-// MARK: - CustomDebugStringConvertible, Equatable
+// MARK: - AsyncTask + CustomDebugStringConvertible, Equatable
 
 extension AsyncTask: CustomDebugStringConvertible, Equatable {
     var debugDescription: String {
-        "\(type(of: self)) <\(id.uuidString)>"
+        "\(type(of: self)) <\(id)>"
     }
 
     static func == (lhs: AsyncTask, rhs: AsyncTask) -> Bool {
