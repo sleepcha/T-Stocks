@@ -11,7 +11,7 @@ import OSLog
 
 final class LoggingHTTPClient: HTTPClient {
     private let httpClient: HTTPClient
-    private let logger = Logger(subsystem: "com.sleepcha.T-Stocks", category: "NetworkManager")
+    private let logger = Logger(subsystem: C.ID.loggerSubsystem, category: "HTTPClient")
 
     init(client: HTTPClient) {
         self.httpClient = client
@@ -22,9 +22,12 @@ final class LoggingHTTPClient: HTTPClient {
         cacheMode: CacheMode,
         completion: @escaping (Result<Data, HTTPClientError>) -> Void
     ) -> HTTPClientTask {
-        let completion = { (result: Result<Data, HTTPClientError>) in
-            if case .failure(let error) = result {
-                self.logger.debug("❌ \(error.errorDescription ?? "")")
+        let completion = { [logger] (result: Result<Data, HTTPClientError>) in
+            switch result {
+            case .success:
+                logger.debug("✅ \(httpRequest.path)")
+            case .failure(let error):
+                logger.warning("❌ \(error.errorDescription ?? "")")
             }
             completion(result)
         }

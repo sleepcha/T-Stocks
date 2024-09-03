@@ -13,7 +13,7 @@ private extension C {
     static let prodURL: URL = "https://invest-public-api.tinkoff.ru/rest/"
     static let sandboxURL: URL = "https://sandbox-invest-public-api.tinkoff.ru/rest/"
     #if DEBUG
-    static let requestTimeout: TimeInterval = 2
+    static let requestTimeout: TimeInterval = 1
     #else
     static let requestTimeout: TimeInterval = 15
     #endif
@@ -21,7 +21,7 @@ private extension C {
     static let headers = [
         "accept": "application/json",
         "Content-Type": "application/json",
-        "x-app-name": "sleepcha.T-Stocks",
+        "x-app-name": ID.appNameHeader,
     ]
     static let auth = (key: "Authorization", value: "Bearer ")
 
