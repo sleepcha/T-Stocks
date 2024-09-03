@@ -62,7 +62,7 @@ final class LogoRepositoryImpl: LogoRepository {
     }
 
     func getLogo(_ fileName: String, completion: @escaping (LogoResult) -> Void) -> AsyncTask {
-        AsyncTask { [self] task in
+        AsyncTask(id: "getLogo:\(fileName)") { [self] task in
             let completion = { (result: LogoResult) in
                 completion(result)
                 task.done(error: result.failure)

@@ -42,8 +42,8 @@ extension Endpoint {
 // MARK: - NetworkManagerImpl
 
 final class NetworkManagerImpl: NetworkManager {
-    typealias DateProvider = () -> Date
     typealias ErrorMapper = (HTTPClientError) -> NetworkManagerError
+    typealias DateProvider = () -> Date
 
     private let client: HTTPClient
     private let cacheExpiry: Expiry?
@@ -68,7 +68,7 @@ final class NetworkManagerImpl: NetworkManager {
     }
 
     func fetch<T: Endpoint>(_ endpoint: T, retryCount: Int, completion: @escaping (T.Result) -> Void) -> AsyncTask {
-        AsyncTask { [self] task in
+        AsyncTask(id: "fetch:\(endpoint.path)") { [self] task in
             let completion = { (result: T.Result) in
                 completion(result)
                 task.done(error: result.failure)
