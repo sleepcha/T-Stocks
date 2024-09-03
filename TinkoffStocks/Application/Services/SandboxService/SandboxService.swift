@@ -103,7 +103,7 @@ final class SandboxServiceImpl: SandboxService {
             quantity: String(Int.random(in: 1...50))
         )
 
-        return networkManager.fetch(API.postOrder(order)) {
+        return networkManager.fetch(API.postOrder(order), retryCount: 0) {
             if let err = $0.failure { print("buy_error: \(order.instrumentId) [\(err)]") }
         }
     }
