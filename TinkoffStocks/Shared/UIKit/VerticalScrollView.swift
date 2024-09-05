@@ -1,7 +1,11 @@
 import UIKit
 
+// MARK: - VerticalScrollView
+
 final class VerticalScrollView: UIScrollView {
     let contentView = UIView()
+    private var keyboardInset: CGFloat = 0
+    private var isKeyboardVisible: Bool = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -11,6 +15,7 @@ final class VerticalScrollView: UIScrollView {
         showsHorizontalScrollIndicator = false
         keyboardDismissMode = .interactive
         setupContentView()
+        addKeyboardObservers()
     }
 
     required init?(coder: NSCoder) {
@@ -41,5 +46,37 @@ final class VerticalScrollView: UIScrollView {
             contentView.leadingAnchor.constraint(equalTo: frameLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: frameLayoutGuide.trailingAnchor),
         ])
+    }
+}
+
+extension VerticalScrollView: KeyboardObserving {
+    // compresses the scrollView by increasing `contentInset.bottom`
+    @objc func keyboardWillShow(notification: Notification) {
+        guard
+            !isKeyboardVisible,
+            let superview,
+            let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey],
+            let keyboardFrame = (keyboardValue as? NSValue)?.cgRectValue
+        else { return }
+
+        let keyboardTop = keyboardFrame.minY
+        let scrollViewBottom = superview.convert(frame, to: nil).maxY
+        let overlap = scrollViewBottom - keyboardTop
+
+        keyboardInset = (overlap > 0) ? overlap : 0
+        isKeyboardVisible = true
+
+        contentInset.bottom += keyboardInset
+        scrollIndicatorInsets = contentInset
+    }
+
+    @objc func keyboardWillHide(notification: Notification) {
+        guard isKeyboardVisible else { return }
+
+        contentInset.bottom -= keyboardInset
+        scrollIndicatorInsets = contentInset
+
+        keyboardInset = 0
+        isKeyboardVisible = false
     }
 }
