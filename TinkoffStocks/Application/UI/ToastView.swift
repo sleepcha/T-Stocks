@@ -72,8 +72,7 @@ final class ToastView: UIVisualEffectView {
 
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
-
-        if let window { keyboardHeight = window.getKeyboardHeight() }
+        keyboardHeight = window?.getKeyboardHeight() ?? 0
         updateBlurEffect()
         updateFrames()
     }
@@ -106,17 +105,17 @@ final class ToastView: UIVisualEffectView {
     }
 
     private func updateFrames() {
-        guard let window else { return }
+        guard let superview else { return }
 
         let isKeyboardVisible = keyboardHeight > 0
-        let isInLandscape = window.bounds.width > window.bounds.height
+        let isInLandscape = superview.bounds.width > superview.bounds.height
         let insets = UIEdgeInsets(
-            top: window.safeAreaInsets.top,
+            top: superview.safeAreaInsets.top,
             left: 0,
-            bottom: isKeyboardVisible ? keyboardHeight : window.safeAreaInsets.bottom,
+            bottom: isKeyboardVisible ? keyboardHeight : superview.safeAreaInsets.bottom,
             right: 0
         )
-        let safeArea = window.bounds.inset(by: insets)
+        let safeArea = superview.bounds.inset(by: insets)
         let scale = (isKeyboardVisible && isInLandscape) ? scale * 1.5 : scale
         let side = min(safeArea.width, safeArea.height) * scale
         let mid = side / 2
@@ -193,14 +192,14 @@ extension UIViewController {
         size: ToastView.ToastSize = .medium,
         willAutohide: Bool = true
     ) {
-        guard let window = view.window ?? tabBarController?.tabBar.window else { return }
-
         let feedback = UINotificationFeedbackGenerator()
         feedback.prepare()
-        feedback.notificationOccurred(kind.feedback)
 
         let toast = ToastView(message: message, kind: kind, size: size)
-        window.addSubview(toast)
+        DispatchQueue.main.async {
+            self.view.addSubview(toast)
+            feedback.notificationOccurred(kind.feedback)
+        }
 
         guard willAutohide else { return }
 
