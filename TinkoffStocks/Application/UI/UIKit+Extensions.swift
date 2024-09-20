@@ -7,47 +7,45 @@
 
 import UIKit
 
-extension UILabel {
-    enum Style {
-        case title
-        case subtitle
-        case body
-
-        var font: UIFont {
-            switch self {
-            case .title:
-                .preferredFont(forTextStyle: .largeTitle).bold()
-            case .subtitle:
-                .preferredFont(forTextStyle: .subheadline)
-            case .body:
-                .preferredFont(forTextStyle: .body)
-            }
-        }
-
-        var color: UIColor {
-            switch self {
-            case .title:
-                .label
-            case .subtitle:
-                .secondaryLabel
-            case .body:
-                .label
-            }
-        }
+extension UITableView {
+    func register(_ cellType: UITableViewCell.Type) {
+        register(cellType, forCellReuseIdentifier: String(describing: cellType))
     }
 
-    convenience init(_ text: String, style: Style) {
-        self.init()
-        self.text = text
-        font = style.font
-        textColor = style.color
-        addAccessibility()
+    func dequeue<T: UITableViewCell>(_ cellType: T.Type, for indexPath: IndexPath) -> T? {
+        dequeueReusableCell(withIdentifier: String(describing: cellType), for: indexPath) as? T
+    }
+}
+
+extension UICollectionView {
+    func register<T: UICollectionViewCell>(_ cellType: T.Type) {
+        register(T.self, forCellWithReuseIdentifier: String(describing: T.self))
     }
 
-    private func addAccessibility() {
-        numberOfLines = 0
-        adjustsFontForContentSizeCategory = true
-        setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    func dequeue<T: UICollectionViewCell>(_ cellType: T.Type, for indexPath: IndexPath) -> T? {
+        dequeueReusableCell(withReuseIdentifier: String(describing: T.self), for: indexPath) as? T
+    }
+}
+
+extension UIFont {
+    func with(traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+        guard let descriptor = fontDescriptor.withSymbolicTraits(traits) else { return self }
+        return UIFont(descriptor: descriptor, size: 0)
+    }
+
+    func bold() -> UIFont {
+        with(traits: .traitBold)
+    }
+
+    func italic() -> UIFont {
+        with(traits: .traitItalic)
+    }
+}
+
+extension Collection where Element: UIResponder {
+    /// Useful for finding a specific subview.
+    func first(ofType typeName: String) -> Element? {
+        first { String(describing: type(of: $0)) == typeName }
     }
 }
 
@@ -66,12 +64,5 @@ extension UIView {
 
         feedback.notificationOccurred(.error)
         layer.add(animation, forKey: animationKey)
-    }
-}
-
-extension Collection where Element: UIResponder {
-    /// Useful for finding a specific subview.
-    func first(ofType typeName: String) -> Element? {
-        first { String(describing: type(of: $0)) == typeName }
     }
 }
