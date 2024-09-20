@@ -14,6 +14,6 @@ public struct BrandData: Decodable {
     /// Цвет бренда.
     public let logoBaseColor: String
 
-    /// Цвет текста для цвета логотипа бренда.
+    /// Цвет текста для цвета бренда.
     public let textColor: String
 }

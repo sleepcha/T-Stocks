@@ -7,15 +7,6 @@
 
 import Foundation
 
-// MARK: - Constants
-
-private extension C {
-    static let defaultRateLimitReset: TimeInterval = 60
-
-    static let rateLimitResetHeader = "x-ratelimit-reset"
-    static let grpcMessageHeader = "grpc-trailer-message"
-}
-
 // MARK: - HTTPClientErrorMapper
 
 enum HTTPClientErrorMapper {
@@ -43,8 +34,15 @@ enum HTTPClientErrorMapper {
         case 401: .unauthorized(message)
         case 403: .forbidden(message)
         case 404: .notFound(message)
-        case 429: .tooManyRequests(wait: rateLimitReset ?? C.defaultRateLimitReset)
+        case 429: .tooManyRequests(wait: rateLimitReset ?? C.Defaults.rateLimitReset)
         default: .httpError(response)
         }
     }
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let rateLimitResetHeader = "x-ratelimit-reset"
+    static let grpcMessageHeader = "grpc-trailer-message"
 }

@@ -43,7 +43,7 @@ public struct Etf: Decodable {
     public let forQualInvestorFlag: Bool
     public let weekendFlag: Bool
     public let blockedTcaFlag: Bool
-    
+
     public let focusType: String
     public let sector: String
     public let rebalancingFreq: String

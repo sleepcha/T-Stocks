@@ -7,8 +7,6 @@
 
 import OSLog
 
-// MARK: - LoggingHTTPClient
-
 final class LoggingHTTPClient: HTTPClient {
     private let httpClient: HTTPClient
     private let logger = Logger(subsystem: C.ID.loggerSubsystem, category: "HTTPClient")
@@ -18,7 +16,7 @@ final class LoggingHTTPClient: HTTPClient {
     }
 
     func fetchDataTask(
-        _ httpRequest: some HTTPRequest,
+        _ httpRequest: HTTPRequest,
         cacheMode: CacheMode,
         completion: @escaping (Result<Data, HTTPClientError>) -> Void
     ) -> HTTPClientTask {
@@ -35,11 +33,11 @@ final class LoggingHTTPClient: HTTPClient {
         return httpClient.fetchDataTask(httpRequest, cacheMode: cacheMode, completion: completion)
     }
 
-    func cached(_ httpRequest: some HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError> {
+    func cached(_ httpRequest: HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError> {
         httpClient.cached(httpRequest, isValid: isValid)
     }
 
-    func removeCached(_ httpRequest: some HTTPRequest) {
+    func removeCached(_ httpRequest: HTTPRequest) {
         httpClient.removeCached(httpRequest)
     }
 

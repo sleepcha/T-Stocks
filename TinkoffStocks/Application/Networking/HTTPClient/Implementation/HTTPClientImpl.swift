@@ -19,7 +19,7 @@ class HTTPClientImpl: HTTPClient {
     }
 
     func fetchDataTask(
-        _ httpRequest: some HTTPRequest,
+        _ httpRequest: HTTPRequest,
         cacheMode: CacheMode,
         completion: @escaping (Result<Data, HTTPClientError>) -> Void
     ) -> HTTPClientTask {
@@ -33,7 +33,7 @@ class HTTPClientImpl: HTTPClient {
         return task
     }
 
-    func cached(_ httpRequest: some HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError> {
+    func cached(_ httpRequest: HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError> {
         let request = generateURLRequest(for: httpRequest, transformForCaching: true)
 
         guard let urlCache = session.configuration.urlCache,
@@ -51,7 +51,7 @@ class HTTPClientImpl: HTTPClient {
         return .success(cachedResponse.data)
     }
 
-    func removeCached(_ httpRequest: some HTTPRequest) {
+    func removeCached(_ httpRequest: HTTPRequest) {
         let request = generateURLRequest(for: httpRequest, transformForCaching: true)
         session.configuration.urlCache?.removeCachedResponse(for: request)
     }
@@ -60,7 +60,7 @@ class HTTPClientImpl: HTTPClient {
         session.configuration.urlCache?.removeAllCachedResponses()
     }
 
-    private func generateURLRequest(for httpRequest: some HTTPRequest, transformForCaching: Bool = false) -> URLRequest {
+    private func generateURLRequest(for httpRequest: HTTPRequest, transformForCaching: Bool = false) -> URLRequest {
         let url = URL(
             string: httpRequest.path.absoluteString,
             relativeTo: configuration.baseURL

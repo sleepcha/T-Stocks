@@ -10,8 +10,14 @@ import Foundation
 /** Статус счёта. */
 
 public enum AccountStatus: String, Codable {
+    /// Статус счёта не определён.
     case unspecified = "ACCOUNT_STATUS_UNSPECIFIED"
+    /// Новый, в процессе открытия.
     case new = "ACCOUNT_STATUS_NEW"
+    /// Открытый и активный счёт.
     case open = "ACCOUNT_STATUS_OPEN"
+    /// Закрытый счёт.
     case closed = "ACCOUNT_STATUS_CLOSED"
+    /// Все счета
+    case all = "ACCOUNT_STATUS_ALL"
 }

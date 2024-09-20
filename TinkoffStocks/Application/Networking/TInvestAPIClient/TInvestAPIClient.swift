@@ -7,29 +7,6 @@
 
 import Foundation
 
-// MARK: - Constants
-
-private extension C {
-    static let prodURL: URL = "https://invest-public-api.tinkoff.ru/rest/"
-    static let sandboxURL: URL = "https://sandbox-invest-public-api.tinkoff.ru/rest/"
-    #if DEBUG
-    static let requestTimeout: TimeInterval = 1
-    #else
-    static let requestTimeout: TimeInterval = 15
-    #endif
-    static let resourceTimeout: TimeInterval = 30
-    static let headers = [
-        "accept": "application/json",
-        "Content-Type": "application/json",
-        "x-app-name": ID.appNameHeader,
-    ]
-    static let auth = (key: "Authorization", value: "Bearer ")
-
-    static let cacheMemoryCapacity = 32 * 1024 * 1024
-    static let cacheDiskCapacity = 512 * 1024 * 1024
-    static let cacheDiskPath = "API"
-}
-
 // MARK: - TInvestAPIClient
 
 final class TInvestAPIClient: HTTPClientImpl {
@@ -76,4 +53,27 @@ final class TInvestAPIClient: HTTPClientImpl {
 private extension CharacterSet {
     private static let specialCharacters = CharacterSet(charactersIn: "-._~")
     static let rfc3986Allowed = CharacterSet.alphanumerics.union(.specialCharacters)
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let prodURL = URL(string: "https://invest-public-api.tinkoff.ru/rest/")!
+    static let sandboxURL = URL(string: "https://sandbox-invest-public-api.tinkoff.ru/rest/")!
+    #if DEBUG
+    static let requestTimeout: TimeInterval = 5
+    #else
+    static let requestTimeout: TimeInterval = 15
+    #endif
+    static let resourceTimeout: TimeInterval = 30
+    static let headers = [
+        "accept": "application/json",
+        "Content-Type": "application/json",
+        "x-app-name": ID.appNameHeader,
+    ]
+    static let auth = (key: "Authorization", value: "Bearer ")
+
+    static let cacheMemoryCapacity = 0
+    static let cacheDiskCapacity = 512 * 1024 * 1024
+    static let cacheDiskPath = "API"
 }

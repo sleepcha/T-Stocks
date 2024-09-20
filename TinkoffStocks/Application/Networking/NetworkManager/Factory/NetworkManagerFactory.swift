@@ -7,15 +7,15 @@
 
 import Foundation
 
-// MARK: - NetworkManagerAssembly
+// MARK: - NetworkManagerFactory
 
-protocol NetworkManagerAssembly {
+protocol NetworkManagerFactory {
     func build(token: String, isSandbox: Bool) -> NetworkManager
 }
 
-// MARK: - NetworkManagerAssemblyImpl
+// MARK: - NetworkManagerFactoryImpl
 
-final class NetworkManagerAssemblyImpl: NetworkManagerAssembly {
+final class NetworkManagerFactoryImpl: NetworkManagerFactory {
     func build(token: String, isSandbox: Bool) -> NetworkManager {
         let apiClient = TInvestAPIClient(token: token, isSandbox: isSandbox)
         #if DEBUG
@@ -26,6 +26,7 @@ final class NetworkManagerAssemblyImpl: NetworkManagerAssembly {
 
         return NetworkManagerImpl(
             client: client,
+            encoder: JSONEncoder.custom,
             decoder: JSONDecoder.custom,
             errorMapper: HTTPClientErrorMapper.map,
             dateProvider: Date.init

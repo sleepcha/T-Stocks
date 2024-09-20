@@ -29,6 +29,7 @@ public struct Future: Decodable {
     public let dshort: Quotation?
     public let dlongMin: Quotation?
     public let dshortMin: Quotation?
+    public let minPriceIncrement: Quotation?
     public let first1minCandleDate: Date?
     public let first1dayCandleDate: Date?
     public let shortEnabledFlag: Bool
@@ -48,9 +49,6 @@ public struct Future: Decodable {
 
     /// Дата в часовом поясе UTC, до которой возможно проведение операций с фьючерсом.
     public let lastTradeDate: Date
-
-    /// Шаг цены в пунктах.
-    public let minPriceIncrement: Quotation?
 
     /// Стоимость шага цены в валюте.
     public let minPriceIncrementAmount: Quotation?

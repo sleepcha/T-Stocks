@@ -7,18 +7,6 @@
 
 import Foundation
 
-// MARK: - Constants
-
-private extension C {
-    static let logoCDNURL: URL = "https://invest-brands.cdn-tinkoff.ru/"
-    static let requestTimeout: TimeInterval = 15
-    static let resourceTimeout: TimeInterval = 60
-
-    static let cacheMemoryCapacity = 32 * 1024 * 1024
-    static let cacheDiskCapacity = 128 * 1024 * 1024
-    static let cacheDiskPath = "Images"
-}
-
 // MARK: - LogoClient
 
 final class LogoClient: HTTPClientImpl {
@@ -38,4 +26,16 @@ final class LogoClient: HTTPClientImpl {
             configuration: HTTPClientConfiguration(baseURL: C.logoCDNURL)
         )
     }
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let logoCDNURL = URL(string: "https://invest-brands.cdn-tinkoff.ru/")!
+    static let requestTimeout: TimeInterval = 15
+    static let resourceTimeout: TimeInterval = 60
+
+    static let cacheMemoryCapacity = 32 * 1024 * 1024
+    static let cacheDiskCapacity = 128 * 1024 * 1024
+    static let cacheDiskPath = "Images"
 }

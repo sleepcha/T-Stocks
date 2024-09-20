@@ -9,4 +9,6 @@ import Foundation
 
 /** Запрос получения счетов пользователя. */
 
-public struct GetAccountsRequest: Encodable {}
+public struct GetAccountsRequest: Encodable {
+    public let status: AccountStatus?
+}
