@@ -20,11 +20,17 @@ final class LoginScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewActions()
+        presenter.viewReady()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        presenter.viewReady()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
     }
 
     private func setupViewActions() {
@@ -59,13 +65,12 @@ extension LoginScreenViewController: LoginScreenView {
         ui.loginButton.isLoading = isLoading
     }
 
-    func indicateInvalidToken() {
+    func highlightInvalidToken() {
         ui.tokenField.shake()
     }
 
     func showErrorMessage(message: String) {
         showToast(message, kind: .error)
-        dismiss(animated: false)
     }
 
     func showHelpDialog(_ dialog: Dialog) {

@@ -5,27 +5,14 @@
 //  Created by sleepcha on 8/14/24.
 //
 
-import SnapKit
 import UIKit
-
-// MARK: - Constants
-
-private extension C {
-    static let defaultSpacing: CGFloat = 48
-    static let tokenFieldPlaceholder = String(localized: "LoginScreen.tokenField.placeholder", defaultValue: "Ваш токен Invest API")
-    static let loginButtonTitle = String(localized: "LoginScreen.loginButton.title", defaultValue: "Войти")
-    static let sandboxLabelText = String(localized: "LoginScreen.sandboxLabel.text", defaultValue: "Режим песочницы")
-    static let rememberMeLabelText = String(localized: "LoginScreen.rememberMeLabel.text", defaultValue: "Запомнить меня")
-    static let title = String(localized: "LoginScreen.title", defaultValue: "Введите токен")
-    static let subtitle = String(localized: "LoginScreen.subtitle", defaultValue: "Для входа в Т-Инвестиции")
-}
 
 // MARK: - LoginScreen
 
 final class LoginScreen: UIView {
     lazy var tokenField = PaddedTextField {
         $0.placeholder = C.tokenFieldPlaceholder
-        $0.tintColor = .brand
+        $0.tintColor = .brandAccent
         $0.backgroundColor = .secondarySystemBackground
         $0.font = .preferredFont(forTextStyle: .body)
         $0.adjustsFontForContentSizeCategory = true
@@ -49,17 +36,17 @@ final class LoginScreen: UIView {
 
     let sandboxSwitch = UISwitch {
         $0.isOn = false
-        $0.onTintColor = .brand
+        $0.onTintColor = .brandAccent
     }
 
     let rememberMeSwitch = UISwitch {
         $0.isOn = true
-        $0.onTintColor = .brand
+        $0.onTintColor = .brandAccent
     }
 
     let loginButton = LoadingButton {
         $0.setTitle(C.loginButtonTitle, for: .normal)
-        $0.tintColor = .brand
+        $0.tintColor = .brandAccent
         $0.setTitleColor(.black, for: .normal)
         $0.setTitleColor(.black.withAlphaComponent(0.5), for: .highlighted)
     }
@@ -69,7 +56,13 @@ final class LoginScreen: UIView {
     private lazy var mainStack = {
         let sandboxStack = UIStackView(
             views: [
-                UILabel(C.sandboxLabelText, style: .body),
+                UILabel {
+                    $0.text = C.sandboxLabelText
+                    $0.font = .preferredFont(forTextStyle: .body)
+                    $0.textColor = .label
+                    $0.adjustsFontForContentSizeCategory = true
+                    $0.numberOfLines = 0
+                },
                 sandboxSwitch,
             ],
             alignment: .center,
@@ -78,7 +71,13 @@ final class LoginScreen: UIView {
 
         let rememberMeStack = UIStackView(
             views: [
-                UILabel(C.rememberMeLabelText, style: .body),
+                UILabel {
+                    $0.text = C.rememberMeLabelText
+                    $0.font = .preferredFont(forTextStyle: .body)
+                    $0.textColor = .label
+                    $0.adjustsFontForContentSizeCategory = true
+                    $0.numberOfLines = 0
+                },
                 rememberMeSwitch,
             ],
             alignment: .center,
@@ -87,11 +86,23 @@ final class LoginScreen: UIView {
 
         let titleStack = UIStackView(
             views: [
-                UILabel(C.title, style: .title),
-                UILabel(C.subtitle, style: .subtitle),
+                UILabel {
+                    $0.text = C.title
+                    $0.font = .preferredFont(forTextStyle: .largeTitle).bold()
+                    $0.textColor = .label
+                    $0.adjustsFontForContentSizeCategory = true
+                    $0.numberOfLines = 0
+                },
+                UILabel {
+                    $0.text = C.subtitle
+                    $0.font = .preferredFont(forTextStyle: .subheadline)
+                    $0.textColor = .secondaryLabel
+                    $0.adjustsFontForContentSizeCategory = true
+                    $0.numberOfLines = 0
+                },
             ],
             axis: .vertical,
-            spacing: 16
+            spacing: C.UI.standardSpacing
         )
 
         let tokenStack = UIStackView(
@@ -101,7 +112,7 @@ final class LoginScreen: UIView {
                 rememberMeStack,
             ],
             axis: .vertical,
-            spacing: 24
+            spacing: C.UI.standardSpacing * 2
         )
 
         return UIStackView(
@@ -111,7 +122,7 @@ final class LoginScreen: UIView {
                 loginButton,
             ],
             axis: .vertical,
-            spacing: C.defaultSpacing
+            spacing: C.UI.standardSpacing * 3
         )
     }()
 
@@ -133,19 +144,33 @@ final class LoginScreen: UIView {
 
     private func setupConstraints() {
         tokenField.snp.makeConstraints { make in
-            make.height.equalTo(48)
+            make.height.equalTo(C.textFieldHeight)
         }
 
         loginButton.snp.makeConstraints { make in
-            make.height.equalTo(60)
+            make.height.equalTo(C.buttonHeight)
         }
 
         mainStack.snp.makeConstraints { make in
-            make.directionalEdges.equalToSuperview().inset(C.defaultSpacing)
+            make.directionalEdges.equalToSuperview().inset(C.UI.standardSpacing * 3)
         }
 
         scrollView.snp.makeConstraints { make in
             make.directionalEdges.equalTo(safeAreaLayoutGuide)
         }
     }
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let tokenFieldPlaceholder = String(localized: "LoginScreen.tokenField.placeholder", defaultValue: "Ваш токен Invest API")
+    static let loginButtonTitle = String(localized: "LoginScreen.loginButton.title", defaultValue: "Войти")
+    static let sandboxLabelText = String(localized: "LoginScreen.sandboxLabel.text", defaultValue: "Режим песочницы")
+    static let rememberMeLabelText = String(localized: "LoginScreen.rememberMeLabel.text", defaultValue: "Запомнить меня")
+    static let title = String(localized: "LoginScreen.title", defaultValue: "Введите токен")
+    static let subtitle = String(localized: "LoginScreen.subtitle", defaultValue: "Для входа в Т-Инвестиции")
+
+    static let textFieldHeight: CGFloat = 48
+    static let buttonHeight: CGFloat = 60
 }
