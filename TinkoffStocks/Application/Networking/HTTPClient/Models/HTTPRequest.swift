@@ -2,29 +2,25 @@ import Foundation
 
 // MARK: - HTTPRequest
 
-/// Protocol used for HTTP communication in ``HTTPClient``.
-///
-/// `body` parameter represents the data passed to `URLRequest` message body.
-protocol HTTPRequest {
-    var method: HTTPMethod { get }
-    var path: URL { get }
-    var queryParameters: [String: String] { get }
-    var headers: [String: String] { get }
-    var body: Data? { get }
-}
-
-extension HTTPRequest {
-    var queryParameters: [String: String] { [:] }
-    var headers: [String: String] { [:] }
-    var body: Data? { nil }
-}
-
-// MARK: - GET
-
-/// Example of a basic GET request.
-struct GET: HTTPRequest {
-    let method: HTTPMethod = .get
+/// Model used for HTTP communication in ``HTTPClient``.
+struct HTTPRequest {
+    let method: HTTPMethod
     let path: URL
+    let queryParameters: [String: String]
+    let headers: [String: String]
+    let body: Data?
 
-    init(_ path: URL) { self.path = path }
+    init(
+        _ method: HTTPMethod,
+        path: URL,
+        queryParameters: [String: String] = [:],
+        headers: [String: String] = [:],
+        body: Data? = nil
+    ) {
+        self.method = method
+        self.path = path
+        self.queryParameters = queryParameters
+        self.headers = headers
+        self.body = body
+    }
 }

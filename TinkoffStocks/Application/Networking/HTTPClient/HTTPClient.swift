@@ -18,7 +18,7 @@ protocol HTTPClient {
     ///     - completion: A completion handler that passes data in case of `.success`.
     ///     Otherwise `.failure(HTTPClientError)` is passed.
     func fetchDataTask(
-        _ httpRequest: some HTTPRequest,
+        _ httpRequest: HTTPRequest,
         cacheMode: CacheMode,
         completion: @escaping (Result<Data, HTTPClientError>) -> Void
     ) -> HTTPClientTask
@@ -31,10 +31,10 @@ protocol HTTPClient {
     /// - Parameters:
     ///     - httpRequest: An instance that contains the data used as a key to look up in the cache.
     ///     - isValid: A closure that checks whether the cached version has expired, given the creation date of the response.
-    func cached(_ httpRequest: some HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError>
+    func cached(_ httpRequest: HTTPRequest, isValid: (Date) -> Bool) -> Result<Data, HTTPClientCacheError>
 
     /// Removes a cached entry if there is one.
-    func removeCached(_ httpRequest: some HTTPRequest)
+    func removeCached(_ httpRequest: HTTPRequest)
 
     /// Clears the cache entirely.
     func removeAllCachedResponses()
