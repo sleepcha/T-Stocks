@@ -60,7 +60,6 @@ private extension PortfolioData {
     init(_ response: PortfolioResponse) {
         self.init(
             id: response.accountId,
-            gainPercent: response.expectedYield?.asDecimal ?? 0,
             totalAmount: response.totalAmountPortfolio.asDecimal ?? 0,
             items: response.positions.map(Item.init)
         )
@@ -71,11 +70,11 @@ private extension PortfolioData.Item {
     init(_ position: PortfolioPosition) {
         self.init(
             id: position.instrumentUid,
+            kind: Kind(rawValue: position.instrumentType.lowercased()) ?? .other,
+            isBlocked: position.blocked,
             quantity: position.quantity.asDecimal ?? 0,
             currentPrice: position.currentPrice?.asDecimal ?? 0,
-            averagePrice: position.averagePositionPriceFifo?.asDecimal ?? 0,
-            accruedInterest: position.currentNkd?.asDecimal ?? 0,
-            gain: position.expectedYieldFifo?.asDecimal ?? 0
+            averagePrice: position.averagePositionPriceFifo?.asDecimal ?? 0
         )
     }
 }
