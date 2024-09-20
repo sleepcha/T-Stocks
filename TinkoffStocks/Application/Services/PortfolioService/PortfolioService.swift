@@ -7,21 +7,15 @@
 
 import Foundation
 
-// MARK: - Constants
-
-private extension C {
-    static let emptyAssetName = String(localized: "PortfolioService.emptyAssetName", defaultValue: "Неизвестный актив")
-}
-
 // MARK: - PortfolioService
 
 protocol PortfolioService {
     func getAllPortfolios(completion: @escaping (RepositoryResult<[Portfolio]>) -> Void) -> AsyncTask
 }
 
-// MARK: - PortfoliosServiceImpl
+// MARK: - PortfolioServiceImpl
 
-final class PortfoliosServiceImpl: PortfolioService {
+final class PortfolioServiceImpl: PortfolioService {
     let accounts: [AccountData]
     let portfolioDataRepo: PortfolioDataRepository
     let assetRepo: AssetRepository
@@ -42,11 +36,12 @@ final class PortfoliosServiceImpl: PortfolioService {
                 portfoliosData = $0.success ?? [:]
             }
         }.then { [self] in
-            let itemIDs = portfoliosData.values.flatMap(\.items).map(\.id)
+            // flatMap + dictionary to get rid of duplicate assets across portfolios
+            let items = portfoliosData.values.flatMap(\.items).reduceToDictionary(key: \.id, value: \.kind.asAssetType)
 
             let tasks = [
-                assetRepo.getAssets(itemIDs) { assets = $0.success ?? [:] },
-                assetRepo.getClosePrices(itemIDs) { closePrices = $0.success ?? [:] },
+                assetRepo.getAssets(Array(items)) { assets = $0.success ?? [:] },
+                assetRepo.getClosePrices(items.map(\.key)) { closePrices = $0.success ?? [:] },
             ]
             return AsyncGroup(tasks, shouldCancelOnError: .always)
         }.handle { state in
@@ -54,16 +49,13 @@ final class PortfoliosServiceImpl: PortfolioService {
             case .completed:
                 let portfolios = self.makePortfolios(portfoliosData: portfoliosData, assets: assets, closePrices: closePrices)
                 completion(.success(portfolios))
-            case .cancelled:
-                completion(.failure(.taskCancelled))
             case .failed(let error as RepositoryError):
                 completion(.failure(error))
-            case .failed:
-                // degenerate case, does not happen if all tasks in the chain complete with RepositoryError
-                completion(.failure(.serverError))
-            case .ready, .executing:
-                // impossible states, handle method is not called
-                break
+            case .cancelled:
+                completion(.failure(.taskCancelled))
+            default:
+                // degenerate cases, do not happen if all tasks in the chain complete with RepositoryError
+                completion(.failure(.taskCancelled))
             }
         }
     }
@@ -84,7 +76,6 @@ final class PortfoliosServiceImpl: PortfolioService {
 
             return Portfolio(
                 account: account,
-                gainPercent: portfolioData.gainPercent,
                 totalAmount: portfolioData.totalAmount,
                 positions: positions
             )
@@ -97,19 +88,26 @@ final class PortfoliosServiceImpl: PortfolioService {
 private extension Portfolio.Position {
     init(item: PortfolioData.Item, asset: Asset, closePrice: Decimal?) {
         self.init(
-            assetID: item.id,
             quantity: item.quantity,
             currentPrice: item.currentPrice,
             averagePrice: item.averagePrice,
             closePrice: closePrice,
-            accruedInterest: item.accruedInterest,
-            gain: item.gain,
-            name: asset.name,
-            ticker: asset.ticker,
-            logoName: asset.logoName,
-            currency: asset.currency,
-            assetKind: asset.kind
+            asset: asset
         )
+    }
+}
+
+private extension PortfolioData.Item.Kind {
+    var asAssetType: AssetType {
+        switch self {
+        case .share: .share
+        case .bond: .bond
+        case .etf: .etf
+        case .option: .option
+        case .futures: .future
+        case .currency: .currency
+        case .sp, .other: .other
+        }
     }
 }
 
@@ -119,11 +117,22 @@ private extension Asset {
             id: id,
             name: C.emptyAssetName,
             ticker: "?",
-            logoName: "",
+            brand: Brand(
+                logoName: "",
+                bgColor: "",
+                textColor: ""
+            ),
             currency: .other,
             lot: 1,
+            minPriceIncrement: 1,
             isShortAvailable: false,
             kind: .other
         )
     }
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let emptyAssetName = String(localized: "PortfolioService.emptyAssetName", defaultValue: "Неизвестный актив")
 }

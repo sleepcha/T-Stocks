@@ -9,23 +9,14 @@ import Foundation
 
 struct Portfolio {
     struct Position {
-        let assetID: String
         let quantity: Decimal
         let currentPrice: Decimal
         let averagePrice: Decimal
         let closePrice: Decimal?
-        let accruedInterest: Decimal?
-        let gain: Decimal
-
-        let name: String
-        let ticker: String
-        let logoName: String
-        let currency: Asset.CurrencyType
-        let assetKind: Asset.Kind
+        let asset: Asset
     }
 
     let account: AccountData
-    let gainPercent: Decimal
     let totalAmount: Decimal
     let positions: [Position]
 }
