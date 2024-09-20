@@ -13,7 +13,6 @@ enum LogoRepositoryError: Error {
     case invalidURL
     case networkError
     case serverError
-    case invalidImage
 }
 
 // MARK: - Error mapping
