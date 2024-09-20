@@ -7,12 +7,6 @@
 
 import Foundation
 
-// MARK: - Constants
-
-private extension C {
-    static let defaultRetryCount = 2
-}
-
 // MARK: - NetworkManager
 
 protocol NetworkManager {
@@ -31,7 +25,7 @@ protocol NetworkManager {
 
 extension NetworkManager {
     func fetch<T: Endpoint>(_ endpoint: T, completion: @escaping (T.Result) -> Void) -> AsyncTask {
-        fetch(endpoint, retryCount: C.defaultRetryCount, completion: completion)
+        fetch(endpoint, retryCount: C.Defaults.retryCount, completion: completion)
     }
 }
 
@@ -47,6 +41,7 @@ final class NetworkManagerImpl: NetworkManager {
 
     private let client: HTTPClient
     private let cacheExpiry: Expiry?
+    private let encoder: JSONEncoder
     private let decoder: JSONDecoder
     private let errorMapper: ErrorMapper
     private let now: DateProvider
@@ -55,12 +50,14 @@ final class NetworkManagerImpl: NetworkManager {
     init(
         client: HTTPClient,
         cacheExpiry: Expiry? = nil,
+        encoder: JSONEncoder,
         decoder: JSONDecoder,
         errorMapper: @escaping ErrorMapper,
         dateProvider: @escaping DateProvider
     ) {
         self.client = client
         self.cacheExpiry = cacheExpiry
+        self.encoder = encoder
         self.decoder = decoder
         self.errorMapper = errorMapper
         self.now = dateProvider
@@ -69,18 +66,31 @@ final class NetworkManagerImpl: NetworkManager {
 
     func fetch<T: Endpoint>(_ endpoint: T, retryCount: Int, completion: @escaping (T.Result) -> Void) -> AsyncTask {
         AsyncTask(id: "fetch:\(endpoint.path)") { [self] task in
+            let request: HTTPRequest
+
             let completion = { (result: T.Result) in
                 completion(result)
                 task.done(error: result.failure)
             }
 
-            if let cacheExpiry, case .success(let response) = client.cached(endpoint, isValid: cacheExpiry.isValid(now())) {
-                let result = response.decoded(as: T.Response.self, using: decoder).mapError(NetworkManagerError.decodingError)
+            switch createHTTPRequest(with: endpoint) {
+            case .success(let httpRequest):
+                request = httpRequest
+            case .failure(let error):
+                print(error)
+                completion(.failure(.decodingError(error)))
+                return
+            }
+
+            if let cacheExpiry, case .success(let response) = client.cached(request, isValid: cacheExpiry.isValid(now())) {
+                let result = response
+                    .decoded(as: T.Response.self, using: decoder)
+                    .mapError(NetworkManagerError.decodingError)
                 completion(result)
                 return
             }
 
-            networkFetch(endpoint, attempts: (left: retryCount, max: retryCount), parentTask: task, completion: completion)
+            networkFetch(request, attempts: (left: retryCount, max: retryCount), parentTask: task, completion: completion)
         }
     }
 
@@ -88,6 +98,7 @@ final class NetworkManagerImpl: NetworkManager {
         NetworkManagerImpl(
             client: client,
             cacheExpiry: expiry,
+            encoder: encoder,
             decoder: decoder,
             errorMapper: errorMapper,
             dateProvider: now
@@ -98,7 +109,22 @@ final class NetworkManagerImpl: NetworkManager {
         client.removeAllCachedResponses()
     }
 
-    private func networkFetch<T: Endpoint>(_ endpoint: T, attempts: (left: Int, max: Int), parentTask: AsyncTask, completion: @escaping (T.Result) -> Void) {
+    private func createHTTPRequest<T: Endpoint>(with endpoint: T) -> Result<HTTPRequest, Error> {
+        switch endpoint {
+        case let endpoint as any POSTEndpoint:
+            Result { try encoder.encode(endpoint.request) }
+                .map { HTTPRequest(.post, path: endpoint.path, body: $0) }
+        default:
+            .success(HTTPRequest(.get, path: endpoint.path))
+        }
+    }
+
+    private func networkFetch<T: Decodable>(
+        _ httpRequest: HTTPRequest,
+        attempts: (left: Int, max: Int),
+        parentTask: AsyncTask,
+        completion: @escaping (Result<T, NetworkManagerError>) -> Void
+    ) {
         if let waitTime = rateLimitManager.getResetInterval() {
             completion(.failure(.tooManyRequests(wait: waitTime)))
             return
@@ -106,7 +132,7 @@ final class NetworkManagerImpl: NetworkManager {
 
         let cacheMode: CacheMode = (cacheExpiry == nil) ? .disabled : .manual
 
-        let dataTask = client.fetchDataTask(endpoint, cacheMode: cacheMode) { [self] result in
+        let dataTask = client.fetchDataTask(httpRequest, cacheMode: cacheMode) { [self] result in
             guard parentTask.state != .cancelled else {
                 completion(.failure(.taskCancelled))
                 return
@@ -114,7 +140,7 @@ final class NetworkManagerImpl: NetworkManager {
 
             let decodedResult = result
                 .mapError(errorMapper)
-                .flatMap { $0.decoded(as: T.Response.self, using: decoder).mapError(NetworkManagerError.decodingError) }
+                .flatMap { $0.decoded(as: T.self, using: decoder).mapError(NetworkManagerError.decodingError) }
 
             switch decodedResult {
             case .failure(let error):
@@ -123,8 +149,8 @@ final class NetworkManagerImpl: NetworkManager {
                     attempts: attempts,
                     completion: { completion(.failure(error)) },
                     retryHandler: {
-                        let retryAttempts = (left: attempts.left - 1, max: attempts.max)
-                        self.networkFetch(endpoint, attempts: retryAttempts, parentTask: parentTask, completion: completion)
+                        let attemptsLeft = (left: attempts.left - 1, max: attempts.max)
+                        self.networkFetch(httpRequest, attempts: attemptsLeft, parentTask: parentTask, completion: completion)
                     }
                 )
             case .success(let response):
@@ -135,7 +161,7 @@ final class NetworkManagerImpl: NetworkManager {
         dataTask.resume()
     }
 
-    private func handle(error: NetworkManagerError, attempts: (left: Int, max: Int), completion: Handler, retryHandler: @escaping Handler) {
+    private func handle(error: NetworkManagerError, attempts: (left: Int, max: Int), completion: VoidHandler, retryHandler: @escaping VoidHandler) {
         switch error {
         case .tooManyRequests(let waitTime):
             // TODO: enqueue the task to retry after the limit reset
