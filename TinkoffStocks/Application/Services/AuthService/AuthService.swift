@@ -1,5 +1,5 @@
 //
-//  LoginService.swift
+//  AuthService.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/6/24.
@@ -7,18 +7,12 @@
 
 import Foundation
 
-// MARK: - Constants
+// MARK: - AuthService
 
-private extension C {
-    static let tokenLength = 88
-    static let tokenPrefix = "t."
-}
-
-// MARK: - LoginService
-
-protocol LoginService {
+protocol AuthService {
     /// Non-nil value of `networkManager` indicates that the user is logged in.
     var networkManager: NetworkManager? { get }
+    var accounts: [AccountData] { get }
     var isSandbox: Bool { get }
 
     func isValidToken(text: String) -> Bool
@@ -27,20 +21,22 @@ protocol LoginService {
     func logout()
 }
 
-// MARK: - LoginServiceImpl
+// MARK: - AuthServiceImpl
 
-final class LoginServiceImpl: LoginService {
+final class AuthServiceImpl: AuthService {
     private(set) var networkManager: NetworkManager?
+    private(set) var accounts: [AccountData] = []
     private(set) var isSandbox: Bool = false
 
     private let keychainService: KeychainService
-    private let networkManagerAssembly: NetworkManagerAssembly
-    private let sandboxServiceAssembly: SandboxServiceAssembly
+    private let networkManagerFactory: NetworkManagerFactory
+    private let sandboxServiceFactory: SandboxServiceFactory
+    private let getAccounts = API.getAccounts(GetAccountsRequest(status: .open))
 
-    init(keychainService: KeychainService, networkManagerAssembly: NetworkManagerAssembly, sandboxServiceAssembly: SandboxServiceAssembly) {
+    init(keychainService: KeychainService, networkManagerFactory: NetworkManagerFactory, sandboxServiceFactory: SandboxServiceFactory) {
         self.keychainService = keychainService
-        self.networkManagerAssembly = networkManagerAssembly
-        self.sandboxServiceAssembly = sandboxServiceAssembly
+        self.networkManagerFactory = networkManagerFactory
+        self.sandboxServiceFactory = sandboxServiceFactory
     }
 
     func isValidToken(text: String) -> Bool {
@@ -54,32 +50,37 @@ final class LoginServiceImpl: LoginService {
     }
 
     func login(auth: AuthData, shouldSave: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
-        let networkManager = networkManagerAssembly.build(token: auth.token, isSandbox: auth.isSandbox)
+        let networkManager = networkManagerFactory.build(token: auth.token, isSandbox: auth.isSandbox)
 
-        networkManager.fetch(API.getAccounts) { result in
+        networkManager.fetch(getAccounts) { [self] result in
+            let completion: (RepositoryResult<[AccountData]>) -> Void = {
+                self.accounts = $0.success ?? []
+                completion($0)
+            }
+
             switch result {
             case .success(let response):
-                if shouldSave { self.saveAuthData(auth) }
+                if shouldSave { saveAuthData(auth) }
                 self.networkManager = networkManager
-                self.isSandbox = auth.isSandbox
+                isSandbox = auth.isSandbox
 
-                let accounts = response.accounts
-                if self.isSandbox, accounts.isEmpty {
-                    self.createStubAccount(networkManager: networkManager, completion: completion)
+                if isSandbox, response.accounts.isEmpty {
+                    createStubAccount(networkManager: networkManager, completion: completion)
                 } else {
-                    completion(.success(accounts.compactMap(AccountData.init)))
+                    let accountsData = response.accounts.compactMap(AccountData.init)
+                    completion(.success(accountsData))
                 }
             case .failure(let networkManagerError):
-                if case .unauthorized = networkManagerError { self.removeAuthData() }
+                if case .unauthorized = networkManagerError { removeAuthData() }
                 completion(.failure(RepositoryError(networkManagerError)))
             }
         }.perform()
     }
 
     func logout() {
-        guard networkManager != nil else { return }
         networkManager?.clearCache()
         networkManager = nil
+        accounts = []
         removeAuthData()
     }
 
@@ -94,16 +95,27 @@ final class LoginServiceImpl: LoginService {
     }
 
     private func createStubAccount(networkManager: NetworkManager, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
+        var accountsData = [AccountData]()
+
         AsyncChain {
-            self.sandboxServiceAssembly
+            self.sandboxServiceFactory
                 .build(networkManager: networkManager)
                 .createAccount { _ in }
         }.then {
-            networkManager.fetch(API.getAccounts) { result in
-                completion(result
-                    .map { $0.accounts.compactMap(AccountData.init) }
-                    .mapError { _ in RepositoryError.networkError }
-                )
+            networkManager.fetch(self.getAccounts) { result in
+                accountsData = result.success?.accounts.compactMap(AccountData.init) ?? []
+            }
+        }.handle { state in
+            switch state {
+            case .completed:
+                completion(.success(accountsData))
+            case .failed(let error as RepositoryError):
+                completion(.failure(error))
+            case .cancelled:
+                completion(.failure(.taskCancelled))
+            default:
+                // degenerate cases, do not happen if all tasks in the chain complete with RepositoryError
+                completion(.failure(.taskCancelled))
             }
         }.perform()
     }
@@ -113,10 +125,7 @@ final class LoginServiceImpl: LoginService {
 
 private extension AccountData {
     init?(_ account: Account) {
-        guard
-            account.status == .open,
-            account.accessLevel == .fullAccess || account.accessLevel == .readOnly
-        else { return nil }
+        guard [.fullAccess, .readOnly].contains(account.accessLevel) else { return nil }
 
         self.init(
             id: account.id,
@@ -132,4 +141,11 @@ private extension AccountData {
 
 private extension AuthData {
     var isSandbox: Bool { server == .sandbox }
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let tokenLength = 88
+    static let tokenPrefix = "t."
 }
