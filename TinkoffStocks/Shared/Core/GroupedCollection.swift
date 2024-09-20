@@ -1,13 +1,15 @@
 import Foundation
 
+// MARK: - GroupedCollection
+
 struct GroupedCollection<Group: Hashable, Element> {
-    var numberOfGroups: Int { result.count }
+    typealias GroupOfElements = (group: Group, elements: [Element])
 
     private let groupingKey: (Element) -> Group
     private let groupsComparator: KeyPathComparator<Group>
     private let elementsComparator: KeyPathComparator<Element>
 
-    private var result = [(group: Group, elements: [Element])]()
+    private var groups = [GroupOfElements]()
 
     init(
         _ array: [Element]? = nil,
@@ -23,23 +25,28 @@ struct GroupedCollection<Group: Hashable, Element> {
         if let array { set(with: array) }
     }
 
-    subscript(groupIndex: Int) -> (group: Group, numberOfElements: Int) {
-        (result[groupIndex].group, result[groupIndex].elements.count)
-    }
-
-    subscript(indexPath: IndexPath) -> Element {
-        let groupIndex = indexPath.section
-        let elementIndex = indexPath.row
-        return result[groupIndex].elements[elementIndex]
+    subscript(index: Int) -> GroupOfElements {
+        groups[index]
     }
 
     mutating func set(with array: [Element]) {
         let collections = Dictionary(grouping: array, by: groupingKey)
-        let groups = collections.keys.sorted(using: groupsComparator)
+        let groupKeys = collections.keys.sorted(using: groupsComparator)
 
         // array of tuples sorted by tuple's first item (group)
-        result = groups.map { group in
+        groups = groupKeys.map { group in
             (group, collections[group]!.sorted(using: elementsComparator))
         }
+    }
+}
+
+extension GroupedCollection {
+    func asDataSource<Item>(groupName: KeyPath<Group, String>?, transform: (Element) -> Item) -> DataSource<Item> {
+        DataSource(sections: groups.map {
+            DataSource.Section(
+                header: (groupName == nil) ? nil : $0.group[keyPath: groupName!],
+                items: $0.elements.map(transform)
+            )
+        })
     }
 }
