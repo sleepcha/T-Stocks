@@ -1,5 +1,5 @@
 //
-//  SandboxServiceAssembly.swift
+//  SandboxServiceFactory.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/16/24.
@@ -7,15 +7,15 @@
 
 import Foundation
 
-// MARK: - SandboxServiceAssembly
+// MARK: - SandboxServiceFactory
 
-protocol SandboxServiceAssembly {
+protocol SandboxServiceFactory {
     func build(networkManager: NetworkManager) -> SandboxService
 }
 
-// MARK: - SandboxServiceAssemblyImpl
+// MARK: - SandboxServiceFactoryImpl
 
-final class SandboxServiceAssemblyImpl: SandboxServiceAssembly {
+final class SandboxServiceFactoryImpl: SandboxServiceFactory {
     func build(networkManager: NetworkManager) -> SandboxService {
         SandboxServiceImpl(networkManager: networkManager)
     }
