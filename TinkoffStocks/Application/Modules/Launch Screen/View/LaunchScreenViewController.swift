@@ -7,19 +7,12 @@
 
 import UIKit
 
-// MARK: - Constants
-
-private extension C {
-    static let logoImageSize = 128
-}
-
 // MARK: - LaunchScreenViewController
 
 final class LaunchScreenViewController: UIViewController {
-    private let spinner = UIActivityIndicatorView {
+    private let loader = UIActivityIndicatorView {
         $0.color = .white
         $0.style = .large
-        $0.startAnimating()
     }
 
     private let imageView = UIImageView(image: .launchScreenLogo)
@@ -30,10 +23,14 @@ final class LaunchScreenViewController: UIViewController {
         setupConstraints()
     }
 
+    func startLoader() {
+        loader.startAnimating()
+    }
+
     private func setupViews() {
-        view.backgroundColor = .launchScreenBackground
+        view.backgroundColor = .brandBackground
         view.addSubview(imageView)
-        view.addSubview(spinner)
+        view.addSubview(loader)
     }
 
     private func setupConstraints() {
@@ -42,7 +39,7 @@ final class LaunchScreenViewController: UIViewController {
             make.width.height.equalTo(C.logoImageSize)
         }
 
-        spinner.snp.makeConstraints { make in
+        loader.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().multipliedBy(0.9)
         }
@@ -51,4 +48,10 @@ final class LaunchScreenViewController: UIViewController {
     #if DEBUG
     deinit { print("> LaunchScreenViewController.deinit()") }
     #endif
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let logoImageSize = 128
 }
