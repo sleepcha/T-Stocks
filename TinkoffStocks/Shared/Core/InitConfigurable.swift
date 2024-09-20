@@ -11,6 +11,11 @@ extension InitConfigurable {
         self.init()
         configure(self)
     }
+
+    func configuring(_ configure: (Self) -> Void) -> Self {
+        configure(self)
+        return self
+    }
 }
 
-extension UIResponder: InitConfigurable {}
+extension NSObject: InitConfigurable {}
