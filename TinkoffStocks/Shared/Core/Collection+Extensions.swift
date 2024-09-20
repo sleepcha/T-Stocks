@@ -1,10 +1,3 @@
-//
-//  Collection+Extensions.swift
-//  T-Stocks
-//
-//  Created by sleepcha on 9/14/24.
-//
-
 import Foundation
 
 public extension Collection {
