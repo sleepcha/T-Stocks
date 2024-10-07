@@ -1,6 +1,40 @@
 {
   "sourceLanguage" : "ru",
   "strings" : {
+    "AccountCell.sinceLastCloseTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "today"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "за сегодня"
+          }
+        }
+      }
+    },
+    "AccountCell.sincePurchaseTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "all time"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "за всё время"
+          }
+        }
+      }
+    },
     "HTTPClientCacheError.cacheExpired" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -290,13 +324,53 @@
         }
       }
     },
-    "MoneyFormatter.currencySymbol" : {
+    "LogoRepositoryError.invalidURL" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid URL"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "пт."
+            "value" : "Неверный URL"
+          }
+        }
+      }
+    },
+    "MoneyFormatter.amountSuffix" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pcs"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "шт"
+          }
+        }
+      }
+    },
+    "MoneyFormatter.metalWeightSuffix" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "g"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "г"
           }
         }
       }
@@ -505,23 +579,6 @@
         }
       }
     },
-    "PortfolioScreenPresenter.PositionCellModel.amountSuffix" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "pcs"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "шт"
-          }
-        }
-      }
-    },
     "PortfolioScreenPresenter.sections.bonds" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -692,6 +749,40 @@
         }
       }
     },
+    "PositionList.logoutButtonTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log out"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Выйти"
+          }
+        }
+      }
+    },
+    "PositionList.menuTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Меню"
+          }
+        }
+      }
+    },
     "RepositoryError.networkError" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -744,7 +835,6 @@
       }
     },
     "RepositoryError.taskCancelled" : {
-      "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -754,14 +844,13 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Операция отменена"
           }
         }
       }
     },
     "RepositoryError.tooManyRequests" : {
-      "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -771,8 +860,8 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Слишком много запросов.\nПопробуйте позже"
+            "state" : "translated",
+            "value" : "Слишком много запросов.\\nПопробуйте позже"
           }
         }
       }
