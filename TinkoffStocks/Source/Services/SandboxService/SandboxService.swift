@@ -52,7 +52,7 @@ final class SandboxServiceImpl: SandboxService {
             let payIn = API.sandboxPayIn(SandboxPayInRequest(accountId: accountID, amount: C.topUpAmount.asMoney("RUB")))
             return self.networkManager.fetch(payIn) { _ in }
         }.then {
-            let postOrders = C.sandboxAccountAssets2.map {
+            let postOrders = C.sandboxAccountAssets.map {
                 self.postOrder(accountID, instrumentID: $0.key, quantity: $0.value)
             }
             return AsyncGroup(postOrders)
@@ -100,9 +100,5 @@ private extension C {
         "a9ff2a1a-f8de-4648-8d5a-6b264f32fcdf": 5000, // Т-Bonds
         "4587ab1d-a9c9-4910-a0d6-86c7b9c42510": 20, // Юань
         "d6240afe-4e9c-49b6-8835-629f431c8506": 10, // Серебро
-    ]
-    
-    static let sandboxAccountAssets2 = [
-        "b16f3037-0910-4d3c-b688-124d96ff8558": 1
     ]
 }

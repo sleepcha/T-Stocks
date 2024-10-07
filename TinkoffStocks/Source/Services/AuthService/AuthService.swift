@@ -83,7 +83,6 @@ final class AuthServiceImpl: AuthService {
     }
 
     func logout() {
-        sandboxServiceFactory.build(networkManager: networkManager!).closeAccount(self.accounts.first!.id) { _ in }.perform()
         networkManager?.clearCache()
         networkManager = nil
         accounts = []
