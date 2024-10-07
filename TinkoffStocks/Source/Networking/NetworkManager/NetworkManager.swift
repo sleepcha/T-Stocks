@@ -69,7 +69,7 @@ final class NetworkManagerImpl: NetworkManager {
             let request: HTTPRequest
 
             let completion = { (result: T.Result) in
-                task.queue.sync { completion(result) }
+                completion(result)
                 task.done(error: result.failure)
             }
 
