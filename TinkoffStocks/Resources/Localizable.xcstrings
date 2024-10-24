@@ -324,6 +324,23 @@
         }
       }
     },
+    "LogoRepositoryError.invalidImage" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid image format"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Неверный формат изображения"
+          }
+        }
+      }
+    },
     "LogoRepositoryError.invalidURL" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -409,23 +426,6 @@
         }
       }
     },
-    "NetworkManagerError.decodingError" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unable to decode the data"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Не удалось декодировать объект"
-          }
-        }
-      }
-    },
     "NetworkManagerError.forbidden" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -477,6 +477,23 @@
         }
       }
     },
+    "NetworkManagerError.jsonError" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "JSON serialization error"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ошибка сериализации JSON"
+          }
+        }
+      }
+    },
     "NetworkManagerError.networkError" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -507,23 +524,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Неверный URL запроса или переданный параметр не определен"
-          }
-        }
-      }
-    },
-    "NetworkManagerError.taskCancelled" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Task was canceled"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Задача была отменена"
           }
         }
       }
@@ -575,6 +575,74 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Токен доступа не найден или не активен"
+          }
+        }
+      }
+    },
+    "PortfolioScreenPresenter.logoutDialog.cancelButtonTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Отмена"
+          }
+        }
+      }
+    },
+    "PortfolioScreenPresenter.logoutDialog.logoutButtonTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log out"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Выйти"
+          }
+        }
+      }
+    },
+    "PortfolioScreenPresenter.logoutDialog.text" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The token will be removed from your device, you will need to enter it again to log in"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Токен будет удалён с вашего устройства, для входа нужно будет ввести его заново"
+          }
+        }
+      }
+    },
+    "PortfolioScreenPresenter.logoutDialog.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to log out?"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Вы действительно хотите выйти?"
           }
         }
       }
@@ -715,6 +783,40 @@
         }
       }
     },
+    "PortfolioScreenVC.logoutButtonTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log out"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Выйти"
+          }
+        }
+      }
+    },
+    "PortfolioScreenVC.menuTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Меню"
+          }
+        }
+      }
+    },
     "PortfolioScreenViewController.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -749,40 +851,6 @@
         }
       }
     },
-    "PositionList.logoutButtonTitle" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log out"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Выйти"
-          }
-        }
-      }
-    },
-    "PositionList.menuTitle" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menu"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Меню"
-          }
-        }
-      }
-    },
     "RepositoryError.networkError" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -796,23 +864,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Проверьте ваше интернет-соединение"
-          }
-        }
-      }
-    },
-    "RepositoryError.noAccess" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Access error.\nPlease check the mode and token's expiration date"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Ошибка доступа.\nПроверьте режим и срок действия токена"
           }
         }
       }
@@ -862,6 +913,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Слишком много запросов.\\nПопробуйте позже"
+          }
+        }
+      }
+    },
+    "RepositoryError.unauthorized" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Access error.\nPlease check the mode and token's expiration date"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ошибка доступа.\nПроверьте режим и срок действия токена"
           }
         }
       }
