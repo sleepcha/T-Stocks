@@ -17,7 +17,7 @@ enum PortfolioFormatter {
         let gainState = GainState(value: gain)
 
         let initialValue = value - gain
-        let gainPercent = gain / (initialValue.isZero ? 0 : initialValue)
+        let gainPercent = initialValue.isZero ? 0 : gain / initialValue
 
         let valueString = value.formatted(.number.precision(precision))
         let gainString: NSAttributedString = {
