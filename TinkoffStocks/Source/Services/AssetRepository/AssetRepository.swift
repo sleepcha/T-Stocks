@@ -10,8 +10,8 @@ import Foundation
 // MARK: - AssetRepository
 
 protocol AssetRepository {
-    func getAssets(_ assetIDs: [(String, AssetType)], completion: @escaping (RepositoryResult<[String: Asset]>) -> Void) -> AsyncTask
-    func getClosePrices(_ assetIDs: [String], completion: @escaping (RepositoryResult<[String: Decimal]>) -> Void) -> AsyncTask
+    func getAsset(_ assetID: AssetID) -> AsyncTask<Asset, RepositoryError>
+    func getAsset(_ assetID: AssetID, completion: @escaping Handler<Result<Asset, RepositoryError>>)
 }
 
 // MARK: - AssetRepositoryImpl
@@ -25,61 +25,16 @@ final class AssetRepositoryImpl: AssetRepository {
         self.cachingManager = networkManager.caching(.for(C.assetCachingPeriod))
     }
 
-    func getAssets(_ assetIDs: [(String, AssetType)], completion: @escaping (RepositoryResult<[String: Asset]>) -> Void) -> AsyncTask {
-        guard !assetIDs.isEmpty else {
-            return AsyncTask.empty { completion(.success([:])) }
-        }
-
-        var assets = [String: Asset]()
-        let lock = NSLock()
-
-        let tasks = assetIDs.map { id, type in
-            self.getAsset(id, assetType: type) {
-                guard let asset = $0.success else { return }
-                lock.withLock { assets[id] = asset }
-            }
-        }
-
-        return AsyncGroup(tasks, shouldCancelOnError: .always) {
-            if let error = $0.first as? RepositoryError {
-                completion(.failure(error))
-            } else {
-                completion(.success(assets))
-            }
-        }
-    }
-
-    // TODO: implement in-memory cache since assetIDs array is not a stable key for the HTTPClient cache
-    func getClosePrices(_ assetIDs: [String], completion: @escaping (RepositoryResult<[String: Decimal]>) -> Void) -> AsyncTask {
-        guard !assetIDs.isEmpty else {
-            return AsyncTask.empty { completion(.success([:])) }
-        }
-
-        let instruments = assetIDs.map(InstrumentClosePriceRequest.init).sorted(using: KeyPathComparator(\.instrumentId))
-
-        return networkManager.fetch(API.getClosePrices(.init(instruments: instruments))) { result in
-            completion(result
-                .map(\.closePrices)
-                .map { prices in prices.reduceToDictionary(key: \.instrumentUid, optionalValue: \.price?.asDecimal) }
+    func getAsset(_ assetID: AssetID) -> AsyncTask<Asset, RepositoryError> {
+        func fetchAsset<Response: AnyInstrumentResponse>(_ postProvider: API.POSTProvider<InstrumentRequest, Response>) -> AsyncTask<Asset, RepositoryError> {
+            let request = InstrumentRequest(id: assetID.id, idType: .typeUid)
+            return cachingManager
+                .fetch(postProvider(request))
+                .map { Asset(from: $0.instrument) }
                 .mapError(RepositoryError.init)
-            )
-        }
-    }
-
-    private func getAsset(_ assetID: String, assetType: AssetType, completion: @escaping (RepositoryResult<Asset>) -> Void) -> AsyncTask {
-        func fetchAsset<Response: InstrumentResponseProtocol>(_ postProvider: API.POSTProvider<InstrumentRequest, Response>) -> AsyncTask {
-            let request = InstrumentRequest(id: assetID, idType: .typeUid)
-
-            return cachingManager.fetch(postProvider(request)) {
-                completion($0
-                    .map(\.instrument)
-                    .map(Asset.init)
-                    .mapError(RepositoryError.init)
-                )
-            }
         }
 
-        return switch assetType {
+        return switch assetID.kind {
         case .share: fetchAsset(API.getShareBy)
         case .bond: fetchAsset(API.getBondBy)
         case .etf: fetchAsset(API.getETFBy)
@@ -89,12 +44,16 @@ final class AssetRepositoryImpl: AssetRepository {
         case .other: fetchAsset(API.getInstrumentBy)
         }
     }
+
+    func getAsset(_ assetID: AssetID, completion: @escaping Handler<Result<Asset, RepositoryError>>) {
+        getAsset(assetID).run(completion: completion)
+    }
 }
 
 // MARK: - Model mapping
 
 private extension Asset {
-    init(instrument: InstrumentProtocol) {
+    init(from instrument: AnyInstrument) {
         let assetKind: Asset.Kind
 
         switch instrument {

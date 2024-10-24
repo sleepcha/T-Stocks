@@ -44,10 +44,6 @@ final class LaunchScreenVC: UIViewController {
             make.bottom.equalToSuperview().multipliedBy(0.9)
         }
     }
-
-    #if DEBUG
-    deinit { print("> LaunchScreenVC.deinit()") }
-    #endif
 }
 
 // MARK: - Constants

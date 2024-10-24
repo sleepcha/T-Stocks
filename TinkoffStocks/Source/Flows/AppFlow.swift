@@ -26,7 +26,9 @@ final class AppFlow {
     func start() {
         presentLaunchWindow()
 
-        authService.getStoredAuthData { [self] authData in
+        authService.getStoredAuthData { [weak self] authData in
+            guard let self else { return }
+
             startLaunchScreenLoader()
 
             guard let authData else {
@@ -37,6 +39,7 @@ final class AppFlow {
             authService.login(auth: authData, shouldSave: false) { result in
                 switch result {
                 case .failure(let error):
+                    if case .unauthorized = error { self.authService.logout() }
                     self.startLoginFlow(showing: error)
                 case .success:
                     self.startMainFlow()

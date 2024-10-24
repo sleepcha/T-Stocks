@@ -10,7 +10,7 @@ import Foundation
 // MARK: - PortfolioService
 
 protocol PortfolioService {
-    func getAllPortfolios(completion: @escaping (RepositoryResult<[Portfolio]>) -> Void) -> AsyncTask
+    func getAllPortfolios(completion: @escaping Handler<Result<[Portfolio], RepositoryError>>)
 }
 
 // MARK: - PortfolioServiceImpl
@@ -19,47 +19,76 @@ final class PortfolioServiceImpl: PortfolioService {
     let accounts: [AccountData]
     let portfolioDataRepo: PortfolioDataRepository
     let assetRepo: AssetRepository
+    let closePricesRepo: ClosePricesRepository
 
-    init(accounts: [AccountData], portfolioDataRepository: PortfolioDataRepository, assetRepository: AssetRepository) {
+    init(
+        accounts: [AccountData],
+        portfolioDataRepository: PortfolioDataRepository,
+        assetRepository: AssetRepository,
+        closePricesRepo: ClosePricesRepository
+    ) {
         self.accounts = accounts
         self.portfolioDataRepo = portfolioDataRepository
         self.assetRepo = assetRepository
+        self.closePricesRepo = closePricesRepo
     }
 
-    func getAllPortfolios(completion: @escaping (RepositoryResult<[Portfolio]>) -> Void) -> AsyncTask {
-        var portfoliosData = [String: PortfolioData]()
-        var assets = [String: Asset]()
-        var closePrices = [String: Decimal]()
+    func getAllPortfolios(completion: @escaping Handler<Result<[Portfolio], RepositoryError>>) {
+        guard !accounts.isEmpty else {
+            completion(.success([]))
+            return
+        }
 
-        return AsyncChain { [self] in
-            portfolioDataRepo.getPortfoliosData(accountIDs: accounts.map(\.id)) {
-                portfoliosData = $0.success ?? [:]
+        getAllPortfoliosData(accountIDs: accounts.map(\.id))
+            .then { portfoliosData in
+                // flatMap + Set() to get rid of duplicate assets across multiple portfolios
+                let assetIDs: [AssetID] = portfoliosData.values.flatMap(\.openPositions).apply(Set.init).map(\.assetID)
+                return self.getAssets(assetIDs).map { assets in (assetIDs.map(\.id), portfoliosData, assets) }
+            }.then { (assetIDs, portfoliosData, assets) in
+                self.closePricesRepo.getClosePrices(assetIDs).map { closePrices in (portfoliosData, assets, closePrices) }
+            }.onCancel {
+                completion(.failure(.taskCancelled))
+            }.run { result in
+                switch result {
+                case .success(let (portfoliosData, assets, closePrices)):
+                    let portfolios = self.makePortfolios(portfoliosData: portfoliosData, assets: assets, closePrices: closePrices)
+                    completion(.success(portfolios))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
-        }.then { [self] in
-            // flatMap + dictionary to get rid of duplicate assets across portfolios
-            let items = portfoliosData.values.flatMap(\.items).reduceToDictionary(key: \.id, value: \.kind.asAssetType)
+    }
 
-            let tasks = [
-                assetRepo.getAssets(Array(items)) { assets = $0.success ?? [:] },
-                assetRepo.getClosePrices(items.map(\.key)) { closePrices = $0.success ?? [:] },
-            ]
-            return AsyncGroup(tasks, shouldCancelOnError: .always)
-        }.handle { state in
-            switch state {
-            case .completed:
-                let portfolios = self.makePortfolios(portfoliosData: portfoliosData, assets: assets, closePrices: closePrices)
-                completion(.success(portfolios))
-            case .failed(let error as RepositoryError):
-                completion(.failure(error))
-            case .cancelled:
-                completion(.failure(.taskCancelled))
-            default:
-                // degenerate cases, do not happen if all tasks in the chain complete with RepositoryError
-                completion(.failure(.taskCancelled))
+    private func getAllPortfoliosData(accountIDs: [String]) -> AsyncTask<[String: PortfolioData], RepositoryError> {
+        var portfoliosData = [String: PortfolioData]()
+        let lock = NSLock()
+
+        let tasks = accountIDs.map { id in
+            portfolioDataRepo.getPortfolioData(id: id).onSuccess { data in
+                lock.withLock { portfoliosData[id] = data }
             }
         }
+
+        return AsyncTask.group(tasks, shouldCancelOnError: .always).map { portfoliosData }
     }
 
+    private func getAssets(_ assetIDs: [AssetID]) -> AsyncTask<[String: Asset], RepositoryError> {
+        guard !assetIDs.isEmpty else { return .empty(.success([:])) }
+
+        var assets = [String: Asset]()
+        let lock = NSLock()
+
+        let tasks = assetIDs.map { assetID in
+            self.assetRepo.getAsset(assetID).onSuccess { asset in
+                lock.withLock { assets[assetID.id] = asset }
+            }
+        }
+
+        return AsyncTask.group(tasks, shouldCancelOnError: .always).map { assets }
+    }
+
+    /// `portfoliosData` key corresponds to account ID.
+    /// `assets` and `closePrices` keys correspond to asset IDs.
     private func makePortfolios(
         portfoliosData: [String: PortfolioData],
         assets: [String: Asset],
@@ -69,15 +98,18 @@ final class PortfolioServiceImpl: PortfolioService {
             guard let portfolioData = portfoliosData[account.id]
             else { return nil }
 
-            let positions = portfolioData.items.map { item in
-                let asset = assets[item.id] ?? .empty(id: item.id)
-                return Portfolio.Position(item: item, asset: asset, closePrice: closePrices[item.id])
-            }
+            let positions = portfolioData.openPositions
+                .reduceToDictionary(key: \.id, value: \.self)
+                .mapValues { position in
+                    let id = position.instrumentID
+                    let asset = assets[id] ?? .empty(id: id)
+                    return Portfolio.Item(openPosition: position, asset: asset, closePrice: closePrices[id])
+                }
 
             return Portfolio(
                 account: account,
-                totalAmount: portfolioData.totalAmount,
-                positions: positions
+                totalAmount: portfolioData.totalValue,
+                items: positions
             )
         }
     }
@@ -85,30 +117,16 @@ final class PortfolioServiceImpl: PortfolioService {
 
 // MARK: - Model mapping
 
-private extension Portfolio.Position {
-    init(item: PortfolioData.Item, asset: Asset, closePrice: Decimal?) {
+private extension Portfolio.Item {
+    init(openPosition: PortfolioData.OpenPosition, asset: Asset, closePrice: Decimal?) {
         self.init(
-            quantity: item.quantity,
-            currentPrice: item.currentPrice,
-            averagePrice: item.averagePrice,
+            quantity: openPosition.quantity,
+            currentPrice: asset.isRuble ? 1 : openPosition.currentPrice,
+            averagePrice: openPosition.averagePrice,
             closePrice: closePrice,
-            isBlocked: item.isBlocked,
+            isBlocked: openPosition.isBlockedInstrument,
             asset: asset
         )
-    }
-}
-
-private extension PortfolioData.Item.Kind {
-    var asAssetType: AssetType {
-        switch self {
-        case .share: .share
-        case .bond: .bond
-        case .etf: .etf
-        case .option: .option
-        case .futures: .future
-        case .currency: .currency
-        case .sp, .other: .other
-        }
     }
 }
 
@@ -130,6 +148,28 @@ private extension Asset {
             kind: .other
         )
     }
+}
+
+extension PortfolioData.OpenPosition {
+    var assetID: AssetID {
+        let assetKind: AssetID.AssetKind = switch instrumentType {
+        case "share": .share
+        case "bond": .bond
+        case "etf": .etf
+        case "option": .option
+        case "futures": .future
+        case "currency": .currency
+        default: .other
+        }
+
+        return AssetID(id: instrumentID, kind: assetKind)
+    }
+}
+
+// MARK: - Helpers
+
+extension PortfolioData.OpenPosition: IdentifiableHashable {
+    var id: String { instrumentID }
 }
 
 // MARK: - Constants

@@ -10,17 +10,17 @@ import UIKit
 // MARK: - LoginScreenAssembly
 
 protocol LoginScreenAssembly {
-    func build(authService: AuthService, showing error: Error?, output: @escaping (LoginScreenOutput) -> Void) -> UIViewController
+    func build(authService: AuthService, showing error: Error?, outputHandler: @escaping Handler<LoginScreenOutput>) -> UIViewController
 }
 
 // MARK: - LoginScreenAssemblyImpl
 
 final class LoginScreenAssemblyImpl: LoginScreenAssembly {
-    func build(authService: AuthService, showing error: Error?, output: @escaping (LoginScreenOutput) -> Void) -> UIViewController {
+    func build(authService: AuthService, showing error: Error?, outputHandler: @escaping Handler<LoginScreenOutput>) -> UIViewController {
         let view = LoginScreenVC()
         let presenter = LoginScreenPresenterImpl(
             view: WeakRefMainQueueProxy(view),
-            outputHandler: output,
+            outputHandler: outputHandler,
             authService: authService,
             showing: error
         )

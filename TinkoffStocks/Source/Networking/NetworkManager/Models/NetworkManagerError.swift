@@ -20,8 +20,7 @@ enum NetworkManagerError: LocalizedError {
     case connectionLost
     case timedOut
     case invalidResponse
-    case decodingError(Error)
-    case taskCancelled
+    case jsonError(Error)
 
     var errorDescription: String? {
         switch self {
@@ -45,10 +44,8 @@ enum NetworkManagerError: LocalizedError {
             String(localized: "NetworkManagerError.timedOut", defaultValue: "Превышен лимит времени на запрос")
         case .invalidResponse:
             String(localized: "NetworkManagerError.invalidResponse", defaultValue: "Пустой или некорректный HTTP ответ")
-        case .decodingError:
-            String(localized: "NetworkManagerError.decodingError", defaultValue: "Не удалось декодировать объект")
-        case .taskCancelled:
-            String(localized: "NetworkManagerError.taskCancelled", defaultValue: "Задача была отменена")
+        case .jsonError:
+            String(localized: "NetworkManagerError.jsonError", defaultValue: "Ошибка сериализации JSON")
         }
     }
 }

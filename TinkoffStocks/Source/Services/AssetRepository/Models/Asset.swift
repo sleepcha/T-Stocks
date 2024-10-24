@@ -58,18 +58,14 @@ struct Asset {
     let minPriceIncrement: Decimal
     let isShortAvailable: Bool
     let kind: Kind
+
+    var isRuble: Bool { id == C.ID.rubleAsset }
 }
 
-extension Asset.Kind: Equatable, Hashable {
-    static func == (lhs: Asset.Kind, rhs: Asset.Kind) -> Bool {
-        lhs.id == rhs.id
-    }
+// MARK: - Asset.Kind + Hashable
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    private var id: Int {
+extension Asset.Kind: Hashable {
+    private var rawValue: Int {
         switch self {
         case .share: 0
         case .etf: 1
@@ -80,5 +76,13 @@ extension Asset.Kind: Equatable, Hashable {
         case .bond: 6
         case .future: 7
         }
+    }
+
+    static func == (lhs: Asset.Kind, rhs: Asset.Kind) -> Bool {
+        lhs.rawValue == rhs.rawValue
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue)
     }
 }

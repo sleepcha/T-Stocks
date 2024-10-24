@@ -10,9 +10,9 @@ import Foundation
 // MARK: - KeychainService
 
 protocol KeychainService {
-    func save<T: Encodable>(_ key: String, data: T, completion: @escaping (Error?) -> Void)
-    func read<T: Decodable>(_ key: String, type: T.Type, completion: @escaping (Result<T, Error>) -> Void)
-    func delete(_ key: String, completion: @escaping (Error?) -> Void)
+    func save<T: Encodable>(_ key: String, data: T, completion: @escaping Handler<Error?>)
+    func read<T: Decodable>(_ key: String, type: T.Type, completion: @escaping Handler<Result<T, Error>>)
+    func delete(_ key: String, completion: @escaping Handler<Error?>)
 }
 
 // MARK: - KeychainServiceImpl
@@ -28,7 +28,7 @@ final class KeychainServiceImpl: KeychainService {
         self.decoder = decoder
     }
 
-    func save(_ key: String, data: some Encodable, completion: @escaping (Error?) -> Void) {
+    func save(_ key: String, data: some Encodable, completion: @escaping Handler<Error?>) {
         DispatchQueue.global().async { [self] in
             let jsonData: Data
 
@@ -67,7 +67,7 @@ final class KeychainServiceImpl: KeychainService {
         }
     }
 
-    func read<T: Decodable>(_ key: String, type: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
+    func read<T: Decodable>(_ key: String, type: T.Type, completion: @escaping Handler<Result<T, Error>>) {
         DispatchQueue.global().async { [self] in
             let accessControl = SecAccessControlCreateWithFlags(
                 nil,
@@ -99,7 +99,7 @@ final class KeychainServiceImpl: KeychainService {
         }
     }
 
-    func delete(_ key: String, completion: @escaping (Error?) -> Void) {
+    func delete(_ key: String, completion: @escaping Handler<Error?>) {
         DispatchQueue.global().async { [self] in
             let query: [CFString: Any] = [
                 kSecClass: kSecClassGenericPassword,

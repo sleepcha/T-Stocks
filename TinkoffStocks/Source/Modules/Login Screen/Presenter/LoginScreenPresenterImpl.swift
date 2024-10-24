@@ -19,12 +19,12 @@ enum LoginScreenOutput {
 final class LoginScreenPresenterImpl: LoginScreenPresenter {
     private let view: LoginScreenView
     private let authService: AuthService
-    private let outputHandler: (LoginScreenOutput) -> Void
+    private let outputHandler: Handler<LoginScreenOutput>
     private var showError: VoidHandler?
 
     init(
         view: LoginScreenView,
-        outputHandler: @escaping (LoginScreenOutput) -> Void,
+        outputHandler: @escaping Handler<LoginScreenOutput>,
         authService: AuthService,
         showing error: Error? = nil
     ) {

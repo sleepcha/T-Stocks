@@ -8,7 +8,7 @@ final class WeakRefMainQueueProxy<View: AnyObject> {
         self.view = view
     }
 
-    func dispatch(_ completion: @escaping (View) -> Void) {
+    func dispatch(_ completion: (View) -> Void) {
         guard let view else { return }
         DispatchQueue.mainSync { completion(view) }
     }

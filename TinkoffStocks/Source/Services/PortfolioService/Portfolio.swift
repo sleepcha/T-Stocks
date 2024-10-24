@@ -8,7 +8,7 @@
 import Foundation
 
 struct Portfolio {
-    struct Position {
+    struct Item {
         let quantity: Decimal
         let currentPrice: Decimal
         let averagePrice: Decimal
@@ -19,5 +19,5 @@ struct Portfolio {
 
     let account: AccountData
     let totalAmount: Decimal
-    let positions: [Position]
+    let items: [String: Item]
 }

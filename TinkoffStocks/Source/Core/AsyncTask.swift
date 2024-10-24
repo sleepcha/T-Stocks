@@ -1,214 +1,239 @@
+//
+//  AsyncTask.swift
+//  T-Stocks
+//
+//  Created by sleepcha on 10/19/24.
+//
+
 import Foundation
 
 // MARK: - AsyncTask
 
-class AsyncTask: Identifiable {
-    enum State: Equatable {
+class AsyncTask<Output, Error: Swift.Error>: IdentifiableHashable {
+    enum State {
         case ready
-        case executing
-        case completed
+        case executing(AsyncTask)
+        case success(Output)
+        case failure(Error)
         case cancelled
-        case failed(Error)
 
-        static func == (lhs: State, rhs: State) -> Bool {
-            switch (lhs, rhs) {
-            case (.ready, .ready),
-                 (.executing, .executing),
-                 (.completed, .completed),
-                 (.cancelled, .cancelled),
-                 (.failed, .failed):
-                true
-            default:
-                false
+        init(result: Result<Output, Error>) {
+            self = switch result {
+            case .success(let output): .success(output)
+            case .failure(let error): .failure(error)
             }
         }
     }
 
-    let id: String
+    let id = UUID()
     var state: State { lock.withLock { _state } }
 
-    fileprivate var finishHandler: ((Error?) -> Void)?
-    fileprivate let lock = NSLock()
-    fileprivate var queue = DispatchQueue.main
+    var isCancelled: Bool {
+        if case .cancelled = state { true }
+        else { false }
+    }
 
+    private let label: String?
+    private let lock = NSLock()
     private var block: ((AsyncTask) -> Void)?
-    private var cancellationHandlers = [() -> Void]()
-    private var _state = State.ready
+    private var completionHandlers = [Handler<Result<Output, Error>>]()
+    private var cancellationHandlers = [VoidHandler]()
+    private var _state: State = .ready
 
-    /// You must manually signal the task completion by calling `$0.done(error:)` from inside the block.
-    init(id: String = UUID().uuidString, _ block: @escaping (AsyncTask) -> Void) {
-        self.id = id
+    private var isFinished: Bool {
+        switch _state {
+        case .success, .failure, .cancelled: true
+        default: false
+        }
+    }
+
+    /// You must manually signal the task completion by calling `$0.done(_:)` from inside the block.
+    init(label: String? = nil, _ block: @escaping Handler<AsyncTask>) {
+        self.label = label
         self.block = block
     }
 
-    /// Creates an `AsyncTask` that immediately completes without performing any actual work (except the completion handler).
-    /// The method is useful in scenarios where a task must be returned but no action is necessary.
-    static func empty(error: Error? = nil, completion: (() -> Void)? = nil) -> AsyncTask {
-        AsyncTask {
-            completion?()
-            $0.done(error: error)
-        }
+    /// Creates an `AsyncTask` that completes immediately without performing any actual work.
+    /// This method is useful in scenarios where a task is required but no action needs to be performed.
+    static func empty(_ result: Result<Output, Error>) -> AsyncTask {
+        AsyncTask { $0.done(result) }
     }
 
-    /// Executes the block on the `queue`. The queue will also be used to run cancellation handlers.
-    func perform(on queue: DispatchQueue = .global(qos: .userInitiated), delay: TimeInterval = 0) {
-        trySwitchState(to: .executing) {
-            self.queue = queue
-            queue.asyncAfter(deadline: .now() + delay) { [self] in
-                block?(self)
-                block = nil
+    /// Returns a new task that will have the current task as a dependecy. This new task will be performed immediately after the current task completes successfully.
+    /// The chain of tasks is started or cancelled by interacting with the last task in the chain.
+    ///
+    /// - Note: If the current task completes with an error, the chain is terminated, and the following tasks will not be executed.
+    ///
+    /// - Parameter nextTaskProvider: A closure that takes the output of the current task and returns the next task to be executed.
+    /// - Returns: A new `AsyncTask` that represents the next step in the task chain.
+
+    func then<NextOutput>(_ nextTaskProvider: @escaping (Output) -> AsyncTask<NextOutput, Error>) -> AsyncTask<NextOutput, Error> {
+        let wrapperTask = AsyncTask<NextOutput, Error> { _ in
+            // run the parent task
+            self.run()
+        }.onCancel {
+            // cancel the parent task
+            self.cancel()
+        }
+
+        lock.lock()
+        defer { lock.unlock() }
+
+        // ...and delegate finishing to the parent task's completion
+        completionHandlers.append { [weak wrapperTask] result in
+            guard let wrapperTask else { return }
+
+            switch result {
+            case .success(let output):
+                let nextTask = nextTaskProvider(output)
+                wrapperTask.onCancel(nextTask.cancel)
+                nextTask.run { wrapperTask.done($0) }
+            case .failure(let err):
+                wrapperTask.done(.failure(err))
             }
         }
+
+        return wrapperTask
     }
 
-    /// Indicates that the task has finished. Passing an error will get it stored and propagated to the group task.
-    /// It will also break the execution of the task chain if there is one.
-    func done(error: Error? = nil) {
-        trySwitchState(to: (error == nil) ? .completed : .failed(error!)) {
-            finish(with: error)
+    /// Returns a new task that executes the current task mapping the original output using the given transformation.
+    func map<NewOutput>(
+        _ transform: @escaping (Output) -> NewOutput
+    ) -> AsyncTask<NewOutput, Error> {
+        AsyncTask<NewOutput, Error>(label: label) { newTask in
+            self.run { newTask.done($0.map(transform)) }
+        }.onCancel {
+            self.cancel()
         }
     }
 
-    /// Finishes the task and calls cancellation handlers.
-    func cancel() {
-        trySwitchState(to: .cancelled) {
-            for handler in cancellationHandlers.reversed() {
-                queue.async { handler() }
-            }
-            finish(with: nil)
+    /// Returns a new task that executes the current task mapping the original error using the given transformation.
+    func mapError<NewError>(
+        _ transform: @escaping (Error) -> NewError
+    ) -> AsyncTask<Output, NewError> {
+        AsyncTask<Output, NewError>(label: label) { newTask in
+            self.run { newTask.done($0.mapError(transform)) }
+        }.onCancel {
+            self.cancel()
         }
     }
 
     /// Saves the closure that will execute when the task is cancelled. Will execute immediately if the task is already cancelled.
-    func addCancellationHandler(_ handler: @escaping () -> Void) {
-        let didAddHandler = ifStateIs(.ready, .executing) { cancellationHandlers.append(handler) }
-        if !didAddHandler, state == .cancelled { handler() }
-    }
-
-    fileprivate func finish(with error: Error?) {
-        finishHandler?(error)
-        finishHandler = nil
-        cancellationHandlers.removeAll()
-    }
-
-    /// Synchronizes a conditional execution of a closure.
     @discardableResult
-    fileprivate func ifStateIs(_ states: State..., execute closure: () -> Void) -> Bool {
-        lock.withLock {
-            if states.contains(_state) {
-                closure()
-                return true
-            } else {
-                return false
+    func onCancel(_ handler: @escaping VoidHandler) -> Self {
+        lock.lock()
+        if !isFinished { cancellationHandlers.append(handler) }
+        lock.unlock()
+        return self
+    }
+
+    /// Saves a completion handler to be called when the task finishes.
+    @discardableResult
+    func onCompletion(_ handler: @escaping Handler<Result<Output, Error>>) -> Self {
+        lock.lock()
+        if !isFinished { completionHandlers.append(handler) }
+        lock.unlock()
+        return self
+    }
+
+    /// A convenience method for `onCompletion` that handles only the successful result.
+    @discardableResult
+    func onSuccess(_ handler: @escaping Handler<Output>) -> Self {
+        lock.lock()
+        if !isFinished {
+            completionHandlers.append {
+                if case .success(let output) = $0 { handler(output) }
             }
+        }
+        lock.unlock()
+        return self
+    }
+
+    /// Starts the task and ensures the completion handler is called when the task finishes.
+    ///
+    /// The task is keeping a strong reference to itself until it completes to prevent deallocation.
+    /// If the task is currently executing, the completion handler is added to the collection of handlers that are called once the task finishes.
+    /// If the task has already completed, the completion handler is called immediately with the task's result.
+    ///
+    /// - Parameter completion: An optional handler that is called when the task completes with a `Result` containing either the output or an error.
+    func run(completion: Handler<Result<Output, Error>>? = nil) {
+        guard tryChangeState(
+            to: .executing(self),
+            andExecute: { if let completion { completionHandlers.append(completion) } }
+        )
+        else {
+            guard let completion else { return }
+
+            lock.lock()
+            switch _state {
+            case .success(let output):
+                lock.unlock()
+                completion(.success(output))
+                return
+            case .failure(let error):
+                lock.unlock()
+                completion(.failure(error))
+                return
+            case .executing:
+                completionHandlers.append(completion)
+            default: break
+            }
+
+            lock.unlock()
+            return
+        }
+
+        block?(self)
+        block = nil
+    }
+
+    /// This method signals that the task has completed. The result is stored in the state, and all completion handlers are called with the result.
+    func done(_ result: Result<Output, Error>) {
+        guard tryChangeState(to: State(result: result)) else { return }
+        for handler in completionHandlers { handler(result) }
+        finish()
+    }
+
+    /// Finishes the task and calls cancellation handlers.
+    func cancel() {
+        guard tryChangeState(to: .cancelled) else { return }
+        for handler in cancellationHandlers { handler() }
+        finish()
+    }
+
+    private func finish() {
+        lock.withLock {
+            completionHandlers.removeAll()
+            cancellationHandlers.removeAll()
         }
     }
 
-    /// Syncronizes state switching and executes a closure if the action is allowed.
-    private func trySwitchState(to newState: State, andExecute closure: () -> Void = {}) {
+    /// Syncronizes state switching and returns `true` if the switch was successful.
+    private func tryChangeState(to newState: State, andExecute closure: VoidHandler = {}) -> Bool {
         lock.withLock {
-            let success = switch (_state, newState) {
+            let isAllowed = switch (_state, newState) {
             case (.ready, .executing),
                  (.ready, .cancelled),
-                 (.executing, .completed),
-                 (.executing, .cancelled),
-                 (.executing, .failed):
+                 (.executing, .success),
+                 (.executing, .failure),
+                 (.executing, .cancelled):
                 true
             default:
                 false
             }
 
-            if success {
+            if isAllowed {
                 _state = newState
                 closure()
             }
+            return isAllowed
         }
     }
 }
 
-// MARK: - AsyncTask + CustomDebugStringConvertible, Equatable
+// MARK: - AsyncTask + group
 
-extension AsyncTask: CustomDebugStringConvertible, Equatable {
-    var debugDescription: String {
-        "\(type(of: self)) <\(id)>"
-    }
-
-    static func == (lhs: AsyncTask, rhs: AsyncTask) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
-// MARK: - AsyncChain
-
-final class AsyncChain: AsyncTask {
-    typealias AsyncTaskProvider = () -> AsyncTask
-
-    private var chain = LinkedList<AsyncTaskProvider>()
-    private var completionQueue: DispatchQueue = .global()
-    private var completion: ((State) -> Void)?
-
-    init(_ taskClosure: @escaping AsyncTaskProvider) {
-        chain.append(taskClosure)
-        super.init { task in
-            Self.performChain(rootTask: task as! AsyncChain)
-        }
-    }
-
-    private static func performChain(rootTask: AsyncChain) {
-        guard case .executing = rootTask.state else { return }
-
-        guard let subTask = rootTask.chain.popFirst()?() else {
-            // no more tasks in the chain
-            rootTask.done()
-            return
-        }
-
-        let isReady = subTask.ifStateIs(.ready) {
-            subTask.finishHandler = { error in
-                if let error {
-                    rootTask.done(error: error)
-                } else {
-                    performChain(rootTask: rootTask)
-                }
-            }
-            rootTask.addCancellationHandler(subTask.cancel)
-        }
-
-        isReady ? subTask.perform(on: rootTask.queue) : rootTask.cancel()
-    }
-
-    /// Adds another task to the chain of tasks that will be performed one after another.
-    ///
-    /// The chain execution breaks with any task completing with error (or starting off with a non-ready state).
-    /// You can also cancel the chain by cancelling the root task (the one you're adding tasks to).
-    func then(_ taskClosure: @escaping AsyncTaskProvider) -> AsyncChain {
-        ifStateIs(.ready, .executing) { chain.append(taskClosure) }
-        return self
-    }
-
-    /// Sets the closure that will handle the completion of the chain.
-    /// At the time of completion, the `State` argument will be in one of three states: `completed`, `cancelled`, or `failed`.
-    func handle(on completionQueue: DispatchQueue = .global(qos: .userInitiated), completion: @escaping (State) -> Void) -> AsyncTask {
-        ifStateIs(.ready, .executing) {
-            self.completionQueue = completionQueue
-            self.completion = completion
-        }
-        return self
-    }
-
-    override fileprivate func finish(with error: Error?) {
-        super.finish(with: error)
-        completionQueue.async { [self] in
-            completion?(state)
-            completion = nil
-        }
-        chain.removeAll()
-    }
-}
-
-// MARK: - AsyncGroup
-
-final class AsyncGroup: AsyncTask {
+extension AsyncTask {
     enum CancellationCondition {
         case never
         case always
@@ -226,57 +251,93 @@ final class AsyncGroup: AsyncTask {
         }
     }
 
-    /// Runs a group of tasks and collects each task's error until `shouldCancelOnError` closure returns `true`.
+    /// Runs a group of tasks concurrently, with an option to cancel the group when an error occurs, based on a specified condition.
     ///
-    /// `throttle` parameter adds a delay between each task's start by a specified the number of seconds.
-    init(
+    /// Tasks will continue executing until one of the tasks triggers a cancellation condition or until all tasks complete.
+    /// Cancelling the group will also cancel all remaining tasks in the group.
+    ///
+    /// - Parameter tasks: An array of `AsyncTask` instances to be executed in parallel.
+    /// - Parameter shouldCancelOnError: A `CancellationCondition` that defines when the group should cancel on error (default is `.never`).
+    /// - Parameter maxConcurrentTaskCount: An optional limit on how many tasks can run concurrently.
+    /// - Parameter taskQueue: An optional dispatch queue where tasks will be executed. If `nil`, tasks will run on a global concurrent queue.
+    /// - Returns: An `AsyncTask` representing the group of tasks.
+    static func group(
         _ tasks: [AsyncTask],
         shouldCancelOnError: CancellationCondition = .never,
-        throttle: TimeInterval = 0,
-        completionQueue: DispatchQueue = .global(qos: .userInitiated),
-        completion: (([Error]) -> Void)? = nil
-    ) {
-        super.init { groupTask in
-            let group = DispatchGroup()
-            let groupLock = NSLock()
-            var abortingError: Error?
-            var errors = [Error]()
-
-            let onCancel = {
-                for task in tasks {
-                    groupTask.queue.async { task.cancel() }
-                }
-            }
-            groupTask.addCancellationHandler(onCancel)
-
-            for (index, task) in tasks.enumerated() {
-                guard case .executing = groupTask.state else { break }
-
-                task.ifStateIs(.ready) {
-                    group.enter()
-                    task.finishHandler = { error in
-                        defer { group.leave() }
-                        guard let error else { return }
-
-                        groupLock.withLock {
-                            errors.append(error)
-                            guard
-                                abortingError == nil,
-                                shouldCancelOnError.check(error)
-                            else { return }
-
-                            abortingError = error
-                            onCancel()
-                        }
-                    }
-                }
-                task.perform(on: groupTask.queue, delay: TimeInterval(index) * throttle)
-            }
-
-            group.notify(queue: completionQueue) {
-                completion?(errors)
-                groupTask.done(error: abortingError)
+        maxConcurrentTaskCount: Int? = nil,
+        taskQueue: DispatchQueue? = nil
+    ) -> AsyncTask<Void, Error> {
+        let serialQueue = DispatchQueue(label: "AsyncTask.group.serialQueue")
+        let taskQueue = taskQueue ?? DispatchQueue(label: "AsyncTask.group.taskQueue", attributes: .concurrent)
+        let cancelAllTasks = {
+            for task in tasks {
+                taskQueue.async { task.cancel() }
             }
         }
+
+        return AsyncTask<Void, Error>(label: "Group") { groupTask in
+            let group = DispatchGroup()
+            let groupLock = NSLock()
+            let semaphore = maxConcurrentTaskCount.map(DispatchSemaphore.init)
+            var abortingError: Error?
+
+            for task in tasks {
+                guard case .executing = groupTask.state else { break }
+
+                // guarantee no state change until run() is dispatched
+                task.lock.lock()
+                defer { task.lock.unlock() }
+
+                guard case .ready = task._state else { continue }
+
+                task.cancellationHandlers.append {
+                    semaphore?.signal()
+                    group.leave()
+                }
+                task.completionHandlers.append {
+                    defer {
+                        semaphore?.signal()
+                        group.leave()
+                    }
+                    guard let error = $0.failure else { return }
+
+                    groupLock.withLock {
+                        guard abortingError == nil, shouldCancelOnError.check(error) else { return }
+
+                        abortingError = error
+                        cancelAllTasks()
+                    }
+                }
+
+                group.enter()
+
+                guard let semaphore else {
+                    taskQueue.async { task.run() }
+                    continue
+                }
+
+                serialQueue.async {
+                    // blocks only one thread on the serial queue
+                    semaphore.wait()
+                    taskQueue.async { task.run() }
+                }
+            }
+
+            group.notify(queue: taskQueue) {
+                let result: Result<Void, Error> = abortingError.map(Result.failure) ?? .success(())
+                groupTask.done(result)
+            }
+        }.onCancel {
+            cancelAllTasks()
+        }
+    }
+}
+
+// MARK: - AsyncTask + CustomDebugStringConvertible
+
+extension AsyncTask: CustomDebugStringConvertible {
+    var debugDescription: String {
+        let label = label.map { ".\($0)" } ?? ""
+        return "AsyncTask\(label) <\(id)>"
     }
 }
