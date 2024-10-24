@@ -16,7 +16,7 @@ final class LogoClient: HTTPClientImpl {
         sessionConfiguration.timeoutIntervalForResource = C.resourceTimeout
         sessionConfiguration.requestCachePolicy = .useProtocolCachePolicy
         sessionConfiguration.urlCache = URLCache(
-            memoryCapacity: C.cacheMemoryCapacity,
+            memoryCapacity: .zero,
             diskCapacity: C.cacheDiskCapacity,
             diskPath: C.cacheDiskPath
         )
@@ -35,7 +35,6 @@ private extension C {
     static let requestTimeout: TimeInterval = 15
     static let resourceTimeout: TimeInterval = 60
 
-    static let cacheMemoryCapacity = 32 * 1024 * 1024
     static let cacheDiskCapacity = 128 * 1024 * 1024
     static let cacheDiskPath = "Images"
 }
