@@ -16,8 +16,8 @@ protocol AuthService {
     var isSandbox: Bool { get }
 
     func isValidToken(text: String) -> Bool
-    func getStoredAuthData(completion: @escaping (AuthData?) -> Void)
-    func login(auth: AuthData, shouldSave: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void)
+    func getStoredAuthData(completion: @escaping Handler<AuthData?>)
+    func login(auth: AuthData, shouldSave: Bool, completion: @escaping Handler<Result<[AccountData], RepositoryError>>)
     func logout()
 }
 
@@ -31,7 +31,6 @@ final class AuthServiceImpl: AuthService {
     private let keychainService: KeychainService
     private let networkManagerFactory: NetworkManagerFactory
     private let sandboxServiceFactory: SandboxServiceFactory
-    private let getAccounts = API.getAccounts(GetAccountsRequest(status: .open))
 
     init(keychainService: KeychainService, networkManagerFactory: NetworkManagerFactory, sandboxServiceFactory: SandboxServiceFactory) {
         self.keychainService = keychainService
@@ -43,23 +42,20 @@ final class AuthServiceImpl: AuthService {
         text.count == C.tokenLength && text.hasPrefix(C.tokenPrefix)
     }
 
-    func getStoredAuthData(completion: @escaping (AuthData?) -> Void) {
+    func getStoredAuthData(completion: @escaping Handler<AuthData?>) {
         keychainService.read(C.Keys.authTokenKeychain, type: AuthData.self) {
             completion($0.success)
         }
     }
 
-    func login(auth: AuthData, shouldSave: Bool, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
+    func login(auth: AuthData, shouldSave: Bool, completion: @escaping Handler<Result<[AccountData], RepositoryError>>) {
         let networkManager = networkManagerFactory.build(token: auth.token, isSandbox: auth.isSandbox)
+        let endpoint = API.getAccounts(GetAccountsRequest(status: .open))
 
-        networkManager.fetch(getAccounts) { [weak self] result in
+        networkManager.fetch(endpoint).run { [weak self] result in
             guard let self else { return }
-            let completion: (RepositoryResult<[AccountData]>) -> Void = {
-                guard let accounts = $0.success else {
-                    self.logout()
-                    return
-                }
-                self.accounts = accounts
+            let completion: Handler<Result<[AccountData], RepositoryError>> = {
+                self.accounts = $0.success ?? []
                 completion($0)
             }
 
@@ -70,22 +66,24 @@ final class AuthServiceImpl: AuthService {
                 isSandbox = auth.isSandbox
 
                 if isSandbox, response.accounts.isEmpty {
-                    createStubAccount(networkManager: networkManager, completion: completion)
+                    sandboxServiceFactory
+                        .build(networkManager: networkManager)
+                        .createStubAccount(completion: completion)
                 } else {
                     let accountsData = response.accounts.compactMap(AccountData.init)
                     completion(.success(accountsData))
                 }
-            case .failure(let networkManagerError):
-                if case .unauthorized = networkManagerError { removeAuthData() }
-                completion(.failure(RepositoryError(networkManagerError)))
+            case .failure(let error):
+                completion(.failure(RepositoryError(networkManagerError: error)))
             }
-        }.perform()
+        }
     }
 
     func logout() {
         networkManager?.clearCache()
         networkManager = nil
         accounts = []
+        isSandbox = false
         removeAuthData()
     }
 
@@ -97,48 +95,6 @@ final class AuthServiceImpl: AuthService {
 
     private func removeAuthData() {
         keychainService.delete(C.Keys.authTokenKeychain) { _ in }
-    }
-
-    private func createStubAccount(networkManager: NetworkManager, completion: @escaping (RepositoryResult<[AccountData]>) -> Void) {
-        var accountsData = [AccountData]()
-
-        AsyncChain {
-            self.sandboxServiceFactory
-                .build(networkManager: networkManager)
-                .createAccount { _ in }
-        }.then {
-            networkManager.fetch(self.getAccounts) { result in
-                accountsData = result.success?.accounts.compactMap(AccountData.init) ?? []
-            }
-        }.handle { state in
-            switch state {
-            case .completed:
-                completion(.success(accountsData))
-            case .failed(let error as RepositoryError):
-                completion(.failure(error))
-            case .cancelled:
-                completion(.failure(.taskCancelled))
-            default:
-                // degenerate cases, do not happen if all tasks in the chain complete with RepositoryError
-                completion(.failure(.taskCancelled))
-            }
-        }.perform()
-    }
-}
-
-// MARK: - Model mapping
-
-private extension AccountData {
-    init?(_ account: Account) {
-        guard [.fullAccess, .readOnly].contains(account.accessLevel) else { return nil }
-
-        self.init(
-            id: account.id,
-            name: account.name,
-            openedDate: account.openedDate,
-            isIIS: account.type == .tinkoffIis,
-            isReadOnly: account.accessLevel == .readOnly
-        )
     }
 }
 
