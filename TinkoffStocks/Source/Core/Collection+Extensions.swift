@@ -49,4 +49,26 @@ public extension Collection {
             dict[element[keyPath: key]] = value
         }
     }
+
+    /// Groups and sorts the elements of a collection based on a specified grouping key and sorting criteria.
+    ///
+    /// Returns an array of tuples, where each tuple contains a grouping key and a corresponding array of elements.
+    func grouped<Group: Hashable>(
+        by groupingKey: @escaping (Element) -> Group,
+        sortedBy: KeyPath<Group, some Comparable>,
+        groupsOrder: SortOrder = .forward,
+        elementsSortedBy: KeyPath<Element, some Comparable>,
+        elementsOrder: SortOrder = .forward
+    ) -> [(group: Group, elements: [Element])] {
+        let groupsComparator = KeyPathComparator(sortedBy, order: groupsOrder)
+        let elementsComparator = KeyPathComparator(elementsSortedBy, order: elementsOrder)
+
+        let collections = Dictionary(grouping: self, by: groupingKey)
+        let groupKeys: [Group] = collections.keys.sorted(using: groupsComparator)
+
+        // array of tuples sorted by tuple's first item (group)
+        return groupKeys.map { group in
+            (group: group, elements: collections[group]!.sorted(using: elementsComparator))
+        }
+    }
 }
