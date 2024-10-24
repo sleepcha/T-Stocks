@@ -21,7 +21,6 @@ enum NetworkManagerError: LocalizedError {
     case timedOut
     case invalidResponse
     case decodingError(Error)
-    case taskCancelled
 
     var errorDescription: String? {
         switch self {
@@ -47,8 +46,6 @@ enum NetworkManagerError: LocalizedError {
             String(localized: "NetworkManagerError.invalidResponse", defaultValue: "Пустой или некорректный HTTP ответ")
         case .decodingError:
             String(localized: "NetworkManagerError.decodingError", defaultValue: "Не удалось декодировать объект")
-        case .taskCancelled:
-            String(localized: "NetworkManagerError.taskCancelled", defaultValue: "Задача была отменена")
         }
     }
 }
