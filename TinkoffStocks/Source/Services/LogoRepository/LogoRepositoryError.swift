@@ -11,6 +11,7 @@ import Foundation
 
 enum LogoRepositoryError: LocalizedError {
     case invalidURL
+    case invalidImage
     case taskCancelled
     case networkError
     case serverError
@@ -19,6 +20,8 @@ enum LogoRepositoryError: LocalizedError {
         switch self {
         case .invalidURL:
             String(localized: "LogoRepositoryError.invalidURL", defaultValue: "Неверный URL")
+        case .invalidImage:
+            String(localized: "LogoRepositoryError.invalidImage", defaultValue: "Неверный формат изображения")
         case .networkError:
             String(localized: "RepositoryError.networkError")
         case .serverError:
