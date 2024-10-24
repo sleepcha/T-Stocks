@@ -10,7 +10,7 @@ import Foundation
 // MARK: - SandboxService
 
 protocol SandboxService {
-    func createStubAccount(completion: @escaping Handler<Result<[AccountData], RepositoryError>>)
+    func createStubAccounts(completion: @escaping Handler<Result<[AccountData], RepositoryError>>)
     func closeAccount(_ accountID: String, completion: @escaping Handler<RepositoryError?>)
 }
 
@@ -23,22 +23,27 @@ final class SandboxServiceImpl: SandboxService {
         self.networkManager = networkManager
     }
 
-    func createStubAccount(completion: @escaping Handler<Result<[AccountData], RepositoryError>>) {
-        let endpoint = API.openSandboxAccount(OpenSandboxAccountRequest(name: C.newAccountName))
-        networkManager.fetch(endpoint, retryCount: 0)
-            .then { newAccount in
-                self.fillPortfolio(newAccount.accountId)
+    func createStubAccounts(completion: @escaping Handler<Result<[AccountData], RepositoryError>>) {
+        createStubAccount(accountName: C.newAccountName)
+            .then {
+                self.createStubAccount(accountName: C.anotherNewAccountName)
             }.then {
                 self.networkManager.fetch(API.getAccounts(GetAccountsRequest(status: .open)))
             }.onCancel {
                 completion(.failure(.taskCancelled))
-            }.run { result in
-                switch result {
-                case .success(let response):
-                    completion(.success(response.accounts.compactMap(AccountData.init)))
-                case .failure(let error):
-                    completion(.failure(RepositoryError(networkManagerError: error)))
-                }
+            }.run {
+                let result = $0.map { $0.accounts.compactMap(AccountData.init) }.mapError(RepositoryError.init)
+                completion(result)
+            }
+    }
+
+    private func createStubAccount(accountName: String) -> AsyncTask<Void, NetworkManagerError> {
+        let endpoint = API.openSandboxAccount(OpenSandboxAccountRequest(name: accountName))
+
+        return networkManager.fetch(endpoint, retryCount: 0)
+            .then { newAccount in
+                print("filling ",accountName)
+                return self.fillPortfolio(newAccount.accountId)
             }
     }
 
@@ -49,9 +54,10 @@ final class SandboxServiceImpl: SandboxService {
 
     private func fillPortfolio(_ accountID: String) -> AsyncTask<Void, NetworkManagerError> {
         let endpoint = API.sandboxPayIn(SandboxPayInRequest(accountId: accountID, amount: C.topUpAmount.asMoney("RUB")))
+
         return networkManager.fetch(endpoint)
             .then { _ in
-                let postOrders = C.sandboxAccountAssets.map {
+                let postOrders = C.sandboxAccountAssets.shuffled().prefix(10).map {
                     self.postOrder(accountID, instrumentID: $0.key, quantity: $0.value)
                 }
                 return AsyncTask.group(postOrders)
@@ -83,7 +89,8 @@ final class SandboxServiceImpl: SandboxService {
 
 private extension C {
     static let newAccountName = String(localized: "SandboxService.newAccountName", defaultValue: "Брокерский счёт")
-    static let topUpAmount = Decimal(5_000_000)
+    static let anotherNewAccountName = String(localized: "SandboxService.anotherNewAccountName", defaultValue: "ИИС")
+    static let topUpAmount = Decimal(3_000_000)
     static let sandboxAccountAssets = [
         "02cfdf61-6298-4c0f-a9ca-9cabc82afaf3": 30, // LKOH
         "e6123145-9665-43e0-8413-cd61b8aa9b13": 80, // SBER

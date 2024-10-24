@@ -934,6 +934,17 @@
         }
       }
     },
+    "SandboxService.anotherNewAccountName" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "ИИС"
+          }
+        }
+      }
+    },
     "SandboxService.newAccountName" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {

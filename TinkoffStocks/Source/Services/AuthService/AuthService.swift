@@ -68,7 +68,7 @@ final class AuthServiceImpl: AuthService {
                 if isSandbox, response.accounts.isEmpty {
                     sandboxServiceFactory
                         .build(networkManager: networkManager)
-                        .createStubAccount(completion: completion)
+                        .createStubAccounts(completion: completion)
                 } else {
                     let accountsData = response.accounts.compactMap(AccountData.init)
                     completion(.success(accountsData))
