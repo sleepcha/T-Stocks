@@ -7,6 +7,8 @@
 
 import OSLog
 
+// MARK: - LoggingHTTPClient
+
 final class LoggingHTTPClient: HTTPClient {
     private let httpClient: HTTPClient
     private let logger = Logger(subsystem: C.ID.loggerSubsystem, category: "HTTPClient")
@@ -25,7 +27,7 @@ final class LoggingHTTPClient: HTTPClient {
             case .success:
                 logger.debug("✅ \(httpRequest.path)")
             case .failure(let error):
-                logger.warning("❌ \(error.errorDescription ?? "")")
+                logger.warning("❌ \(error)\n\n\(httpRequest.body?.asString ?? "")")
             }
             completion(result)
         }
@@ -43,5 +45,11 @@ final class LoggingHTTPClient: HTTPClient {
 
     func removeAllCachedResponses() {
         httpClient.removeAllCachedResponses()
+    }
+}
+
+extension Data {
+    var asString: String? {
+        String(data: self, encoding: .utf8)
     }
 }
