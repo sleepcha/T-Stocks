@@ -123,6 +123,6 @@ private extension C {
     #if DEBUG
     static let assetCachingPeriod = Expiry.Period.month(1)
     #else
-    static let assetCachingPeriod = Expiry.Period.week(1)
+    static let assetCachingPeriod = Expiry.Period.day(7)
     #endif
 }
