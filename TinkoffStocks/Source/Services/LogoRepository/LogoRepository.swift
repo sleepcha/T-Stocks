@@ -10,8 +10,7 @@ import UIKit
 // MARK: - LogoRepository
 
 protocol LogoRepository {
-    typealias LogoResult = Result<UIImage, LogoRepositoryError>
-    func getLogo(_ fileName: String, completion: @escaping Handler<UIImage?>)
+    func getLogo(_ fileName: String, completion: @escaping Handler<Result<UIImage, LogoRepositoryError>>)
 }
 
 // MARK: - LogoRepositoryImpl
@@ -30,9 +29,9 @@ final class LogoRepositoryImpl: LogoRepository {
         self.logoSize = logoSize
     }
 
-    func getLogo(_ fileName: String, completion: @escaping Handler<UIImage?>) {
-        let completion = { (image: UIImage?) in
-            DispatchQueue.mainSync { completion(image) }
+    func getLogo(_ fileName: String, completion: @escaping Handler<Result<UIImage, LogoRepositoryError>>) {
+        let completion = { result in
+            DispatchQueue.mainSync { completion(result) }
         }
 
         let imageName = fileName.replacingOccurrences(
@@ -42,24 +41,26 @@ final class LogoRepositoryImpl: LogoRepository {
         )
 
         if let cachedImage = cache[imageName] {
-            completion(cachedImage)
+            completion(.success(cachedImage))
             return
         }
 
         guard let url = URL(string: imageName) else {
-            completion(nil)
+            completion(.failure(.invalidURL))
             return
         }
 
         let httpRequest = HTTPRequest(.get, path: url)
-        client.fetchDataTask(httpRequest, cacheMode: .policy) { [weak self] in
-            guard let data = $0.success, let image = UIImage(data: data) else {
-                completion(nil)
+        client.fetchDataTask(httpRequest, cacheMode: .policy) { [weak cache] result in
+            switch result {
+            case .success(let data):
+                let image = UIImage(data: data)
+                cache?[imageName] = image
+                completion(image.map(Result.success) ?? .failure(.invalidImage))
+            case .failure(let error):
+                completion(.failure(LogoRepositoryError(httpClientError: error)))
                 return
             }
-
-            completion(image)
-            self?.cache[imageName] = image
         }.resume()
     }
 }

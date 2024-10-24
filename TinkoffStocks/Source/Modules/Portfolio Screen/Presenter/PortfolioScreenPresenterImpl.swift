@@ -95,7 +95,7 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
         guard let logoName = portfolios[currentAccountIndex].items[id]?.asset.brand.logoName
         else { return }
 
-        logoRepo.getLogo(logoName, completion: handler)
+        logoRepo.getLogo(logoName) { handler($0.success) }
     }
 
     func logoutMenuItemTapped() {
