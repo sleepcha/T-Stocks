@@ -100,8 +100,8 @@ final class ToastView: UIVisualEffectView {
     }
 
     private func updateBlurEffect() {
-        let isInDarkMode = traitCollection.userInterfaceStyle == .dark
-        effect = UIBlurEffect(style: isInDarkMode ? .systemUltraThinMaterialLight : .systemThinMaterialDark)
+        let isInDarkMode = (traitCollection.userInterfaceStyle == .dark)
+        effect = UIBlurEffect(style: isInDarkMode ? .systemUltraThinMaterialDark : .systemThinMaterialDark)
     }
 
     private func updateFrames() {
