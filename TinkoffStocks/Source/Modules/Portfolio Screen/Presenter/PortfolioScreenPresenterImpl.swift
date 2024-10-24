@@ -26,7 +26,7 @@ final class PortfolioScreenPresenterImpl {
     // MARK: Dependencies
 
     private let view: PortfolioScreenView
-    private let accountsSliderView: AccountsSliderView
+    private let accountSliderView: AccountSliderView
     private let authService: AuthService
     private let portfolioService: PortfolioService
     private let logoRepo: LogoRepository
@@ -44,7 +44,7 @@ final class PortfolioScreenPresenterImpl {
 
     init(
         portfolioScreenView: PortfolioScreenView,
-        accountsSliderView: AccountsSliderView,
+        accountSliderView: AccountSliderView,
         authService: AuthService,
         portfolioService: PortfolioService,
         logoRepository: LogoRepository,
@@ -55,7 +55,7 @@ final class PortfolioScreenPresenterImpl {
         summaryMapper: @escaping PortfolioSummaryMapper = PortfolioFormatter.mapToPortfolioSummary
     ) {
         self.view = portfolioScreenView
-        self.accountsSliderView = accountsSliderView
+        self.accountSliderView = accountSliderView
         self.authService = authService
         self.portfolioService = portfolioService
         self.logoRepo = logoRepository
@@ -134,25 +134,25 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
                 }
             case .success(let newPortfolios):
                 portfolios = newPortfolios
-                updateAccountsSlider()
+                updateAccountSlider()
             }
             outputHandler(.finishedLoading)
         }
     }
 
-    private func updateAccountsSlider() {
+    private func updateAccountSlider() {
         let cellModels = portfolios.map { accountCellMapper($0, gainPeriod) }
-        accountsSliderView.update(cellModels)
+        accountSliderView.updateAccountList(cellModels)
     }
 }
 
-// MARK: - AccountsSliderPresenter
+// MARK: - AccountSliderPresenter
 
-extension PortfolioScreenPresenterImpl: AccountsSliderPresenter {
+extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
     func didTapGainPeriodButton() {
         gainPeriod.toggle()
         updatePortfolioItemList()
-        updateAccountsSlider()
+        updateAccountSlider()
     }
 
     func didSelectAccount(withIndex index: Int) {

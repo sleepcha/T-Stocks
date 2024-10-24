@@ -30,10 +30,10 @@ final class PortfolioScreenAssemblyImpl: PortfolioScreenAssembly {
         outputHandler: @escaping Handler<PortfolioScreenOutput>
     ) -> UIViewController {
         let portfolioScreen = PortfolioScreenVC()
-        let accountsSlider = AccountsSliderVC()
+        let accountSlider = AccountSliderVC()
         let presenter = PortfolioScreenPresenterImpl(
             portfolioScreenView: WeakRefMainQueueProxy(portfolioScreen),
-            accountsSliderView: WeakRefMainQueueProxy(accountsSlider),
+            accountSliderView: WeakRefMainQueueProxy(accountSlider),
             authService: authService,
             portfolioService: portfolioService,
             logoRepository: logoRepository,
@@ -41,9 +41,9 @@ final class PortfolioScreenAssemblyImpl: PortfolioScreenAssembly {
             outputHandler: outputHandler
         )
 
-        portfolioScreen.addChild(accountsSlider)
+        portfolioScreen.addChild(accountSlider)
         portfolioScreen.presenter = presenter
-        accountsSlider.presenter = presenter
+        accountSlider.presenter = presenter
 
         return portfolioScreen
     }
@@ -67,8 +67,8 @@ extension WeakRefMainQueueProxy: PortfolioScreenView where View: PortfolioScreen
 
 // MARK: - WeakRefMainQueueProxy + PortfolioScreenView
 
-extension WeakRefMainQueueProxy: AccountsSliderView where View: AccountsSliderView {
-    func update(_ newDataSource: [AccountCellModel]) {
-        dispatch { $0.update(newDataSource) }
+extension WeakRefMainQueueProxy: AccountSliderView where View: AccountSliderView {
+    func updateAccountList(_ newDataSource: [AccountCellModel]) {
+        dispatch { $0.updateAccountList(newDataSource) }
     }
 }
