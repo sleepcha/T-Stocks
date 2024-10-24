@@ -71,14 +71,14 @@ final class NetworkManagerImpl: NetworkManager {
                 #if DEBUG
                 print(error)
                 #endif
-                task.done(.failure(.codingError(error)))
+                task.done(.failure(.jsonError(error)))
                 return
             }
 
             if let cacheExpiry, case .success(let response) = client.cached(request, isValid: cacheExpiry.isValid(now())) {
                 let result = response
                     .decoded(as: T.Response.self, using: decoder)
-                    .mapError(NetworkManagerError.codingError)
+                    .mapError(NetworkManagerError.jsonError)
                 task.done(result)
                 return
             }
@@ -132,7 +132,7 @@ final class NetworkManagerImpl: NetworkManager {
 
             let decodedResult = result
                 .mapError(errorMapper)
-                .flatMap { $0.decoded(as: Response.self, using: decoder).mapError(NetworkManagerError.codingError) }
+                .flatMap { $0.decoded(as: Response.self, using: decoder).mapError(NetworkManagerError.jsonError) }
 
             switch decodedResult {
             case .failure(let error):
