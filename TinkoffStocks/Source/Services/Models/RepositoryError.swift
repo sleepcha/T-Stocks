@@ -7,15 +7,13 @@
 
 import Foundation
 
-typealias RepositoryResult<T> = Result<T, RepositoryError>
-
 // MARK: - RepositoryError
 
 enum RepositoryError: LocalizedError {
     case networkError
     case serverError
-    case noAccess
-    case tooManyRequests
+    case unauthorized
+    case tooManyRequests(wait: TimeInterval)
     case taskCancelled
 
     var errorDescription: String? {
@@ -24,8 +22,8 @@ enum RepositoryError: LocalizedError {
             String(localized: "RepositoryError.networkError", defaultValue: "Проверьте ваше интернет-соединение")
         case .serverError:
             String(localized: "RepositoryError.serverError", defaultValue: "Ошибка сервера.\nПопробуйте позже")
-        case .noAccess:
-            String(localized: "RepositoryError.noAccess", defaultValue: "Ошибка доступа.\nПроверьте режим и срок действия токена")
+        case .unauthorized:
+            String(localized: "RepositoryError.unauthorized", defaultValue: "Ошибка доступа.\nПроверьте режим и срок действия токена")
         case .tooManyRequests:
             String(localized: "RepositoryError.tooManyRequests", defaultValue: "Слишком много запросов.\nПопробуйте позже")
         case .taskCancelled:
@@ -37,18 +35,16 @@ enum RepositoryError: LocalizedError {
 // MARK: - Error mapping
 
 extension RepositoryError {
-    init(_ networkManagerError: NetworkManagerError) {
+    init(networkManagerError: NetworkManagerError) {
         self = switch networkManagerError {
         case .networkError, .connectionLost, .timedOut:
             .networkError
-        case .badRequest, .notFound, .httpError, .invalidResponse, .decodingError:
+        case .badRequest, .notFound, .forbidden, .httpError, .invalidResponse, .jsonError:
             .serverError
-        case .unauthorized, .forbidden:
-            .noAccess
-        case .tooManyRequests:
-            .tooManyRequests
-        case .taskCancelled:
-            .taskCancelled
+        case .unauthorized:
+            .unauthorized
+        case .tooManyRequests(let waitInterval):
+            .tooManyRequests(wait: waitInterval)
         }
     }
 }
