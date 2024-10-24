@@ -69,7 +69,7 @@ final class NetworkManagerImpl: NetworkManager {
                 request = httpRequest
             case .failure(let error):
                 #if DEBUG
-                print(error)
+                print("Unable to encode endpoint:", error)
                 #endif
                 task.done(.failure(.jsonError(error)))
                 return

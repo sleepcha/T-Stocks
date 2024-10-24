@@ -49,22 +49,16 @@ final class TimerManagerImpl: TimerManager {
 
         timer.invalidate()
         state = .invalid
-
-        #if DEBUG
-        print("TimerManager.invalidateTimer()")
-        #endif
     }
 
     func pause() {
         guard let timer, case .running = state else { return }
-        print("paused")
         state = .paused(nextFireDate: timer.fireDate)
         timer.fireDate = .distantFuture
     }
 
     func resume() {
         guard let timer, case .paused(let nextFireDate) = state else { return }
-        print("resumed")
         timer.fireDate = max(nextFireDate, .now)
         state = .running
     }

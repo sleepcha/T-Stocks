@@ -70,9 +70,11 @@ final class SandboxServiceImpl: SandboxService {
         let endpoint = API.postOrder(order)
 
         return networkManager.fetch(endpoint, retryCount: 1).onCompletion {
+            #if DEBUG
             if let error = $0.failure {
                 print("Failed to buy \(order.instrumentId): \(error)")
             }
+            #endif
         }
     }
 }

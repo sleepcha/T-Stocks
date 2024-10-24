@@ -89,7 +89,11 @@ final class AuthServiceImpl: AuthService {
 
     private func saveAuthData(_ auth: AuthData) {
         keychainService.save(C.Keys.authTokenKeychain, data: auth) { error in
-            if let error { print(error.localizedDescription) }
+            #if DEBUG
+            if let error {
+                print("Unable to save auth data:", error.localizedDescription)
+            }
+            #endif
         }
     }
 
