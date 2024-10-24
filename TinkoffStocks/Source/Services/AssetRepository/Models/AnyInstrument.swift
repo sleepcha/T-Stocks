@@ -1,5 +1,5 @@
 //
-//  InstrumentProtocol.swift
+//  AnyInstrument.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 7/27/24.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-// MARK: - InstrumentProtocol
+// MARK: - AnyInstrument
 
-protocol InstrumentProtocol {
+protocol AnyInstrument {
     var uid: String { get }
     var ticker: String { get }
     var classCode: String { get }
@@ -43,10 +43,10 @@ protocol InstrumentProtocol {
     var minPriceIncrement: Quotation? { get }
 }
 
-extension Instrument: InstrumentProtocol {}
-extension Share: InstrumentProtocol {}
-extension Bond: InstrumentProtocol {}
-extension Etf: InstrumentProtocol {}
-extension Future: InstrumentProtocol {}
-extension Option: InstrumentProtocol {}
-extension Currency: InstrumentProtocol {}
+extension Instrument: AnyInstrument {}
+extension Share: AnyInstrument {}
+extension Bond: AnyInstrument {}
+extension Etf: AnyInstrument {}
+extension Future: AnyInstrument {}
+extension Option: AnyInstrument {}
+extension Currency: AnyInstrument {}
