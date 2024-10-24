@@ -197,7 +197,8 @@ extension UIViewController {
 
         let toast = ToastView(message: message, kind: kind, size: size)
         DispatchQueue.main.async {
-            self.view.addSubview(toast)
+            let view = self.navigationController?.view ?? self.view!
+            view.addSubview(toast)
             feedback.notificationOccurred(kind.feedback)
         }
 
