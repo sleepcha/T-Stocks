@@ -28,16 +28,16 @@ extension UITableView {
         register(cellType, forCellReuseIdentifier: String(describing: cellType))
     }
 
-    func register(_ cellType: UITableViewHeaderFooterView.Type) {
-        register(cellType, forHeaderFooterViewReuseIdentifier: String(describing: cellType))
+    func register(_ headerFooterViewType: UITableViewHeaderFooterView.Type) {
+        register(headerFooterViewType, forHeaderFooterViewReuseIdentifier: String(describing: headerFooterViewType))
     }
 
     func dequeue<T: UITableViewCell>(_ cellType: T.Type, for indexPath: IndexPath) -> T? {
         dequeueReusableCell(withIdentifier: String(describing: cellType), for: indexPath) as? T
     }
 
-    func dequeue<T: UITableViewHeaderFooterView>(_ cellType: T.Type) -> T? {
-        dequeueReusableHeaderFooterView(withIdentifier: String(describing: cellType)) as? T
+    func dequeue<T: UITableViewHeaderFooterView>(_ headerFooterViewType: T.Type) -> T? {
+        dequeueReusableHeaderFooterView(withIdentifier: String(describing: headerFooterViewType)) as? T
     }
 }
 
