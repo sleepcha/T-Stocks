@@ -32,7 +32,15 @@ final class ClosePricesRepositoryImpl: ClosePricesRepository {
 
         return networkManager
             .fetch(API.getClosePrices(.init(instruments: instruments)))
-            .map { $0.closePrices.reduceToDictionary(key: \.instrumentUid, optionalValue: \.eveningSessionPrice?.asDecimal) }
+            .map { $0.closePrices.reduceToDictionary(key: \.instrumentUid, optionalValue: \.closePrice) }
             .mapError(RepositoryError.init)
+    }
+}
+
+// MARK: - Helpers
+
+private extension InstrumentClosePriceResponse {
+    var closePrice: Decimal? {
+        (eveningSessionPrice ?? price)?.asDecimal
     }
 }
