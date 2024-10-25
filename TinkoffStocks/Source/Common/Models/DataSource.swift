@@ -24,7 +24,7 @@ struct DataSource<Item> {
         return sections[section].items.count
     }
 
-    func item(at indexPath: IndexPath) -> Item {
+    subscript(indexPath: IndexPath) -> Item {
         sections[indexPath.section].items[indexPath.row]
     }
 }

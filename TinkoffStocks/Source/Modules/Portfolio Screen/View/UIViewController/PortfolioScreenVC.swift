@@ -52,7 +52,7 @@ final class PortfolioScreenVC: UITableViewController {
 
     private var tableHeaderView: UIView? { tableView.tableHeaderView }
     private var navBarHeight: CGFloat? { navigationController?.navigationBar.frame.height }
-    private var dataSource: DataSource<PortfolioItemCellModel>?
+    private var dataSource = DataSource<PortfolioItemCellModel>(sections: [])
 
     override func loadView() {
         tableView = UITableView(frame: .zero, style: .grouped).configuring {
@@ -159,31 +159,29 @@ extension PortfolioScreenVC {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        dataSource?.numberOfSections ?? 0
+        dataSource.numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dataSource?.numberOfItems(in: section) ?? 0
+        dataSource.numberOfItems(in: section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let model = dataSource?.item(at: indexPath),
-            let cell = tableView.dequeue(PortfolioItemCell.self, for: indexPath)
-        else { return UITableViewCell() }
+        let model = dataSource[indexPath]
+        let cell = tableView.dequeue(PortfolioItemCell.self, for: indexPath)!
 
         cell.configure(with: model)
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let model = dataSource?.item(at: indexPath) else { return }
+        let model = dataSource[indexPath]
         presenter.didSelectItem(withID: model.id)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let id = dataSource?.item(at: indexPath).id else { return }
+        let id = dataSource[indexPath].id
 
         presenter.willShowLogoForItem(withID: id) { image in
             guard let image else { return }
@@ -193,7 +191,7 @@ extension PortfolioScreenVC {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard
-            let title = dataSource?.sections[section].header,
+            let title = dataSource.sections[section].header,
             let headerView = tableView.dequeue(AssetKindHeaderView.self)
         else { return nil }
 
