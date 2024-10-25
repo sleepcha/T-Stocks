@@ -108,6 +108,8 @@ final class PortfolioItemCell: UITableViewCell {
         spacing: C.UI.logoImageViewSpacing
     )
 
+    private var isRealLogoSet: Bool = false
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -138,6 +140,7 @@ final class PortfolioItemCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         logoImageView.image = nil
+        isRealLogoSet = false
     }
 
     func configure(with cellModel: PortfolioItemCellModel) {
@@ -157,8 +160,10 @@ final class PortfolioItemCell: UITableViewCell {
     }
 
     func setLogo(image: UIImage) {
+        guard !isRealLogoSet else { return }
         logoImageView.layer.borderWidth = 0
         logoImageView.image = image
+        isRealLogoSet = true
     }
 
     private func setupViews() {
