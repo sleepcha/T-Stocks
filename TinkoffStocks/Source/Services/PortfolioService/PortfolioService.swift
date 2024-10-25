@@ -43,7 +43,6 @@ final class PortfolioServiceImpl: PortfolioService {
             .then { portfoliosData in
                 // get rid of duplicate assets (Set) across multiple portfolios (flatMap)
                 let assetIDs: Set<AssetID> = Set(portfoliosData.values.flatMap(\.openPositions).map(\.assetID))
-                print(portfoliosData.values.flatMap(\.openPositions).count, "vs", assetIDs.count)
                 return self.getAssets(Array(assetIDs)).map { assets in (assetIDs.map(\.id), portfoliosData, assets) }
             }.then { (assetIDs, portfoliosData, assets) in
                 self.closePricesRepo.getClosePrices(assetIDs).map { closePrices in (portfoliosData, assets, closePrices) }
