@@ -41,9 +41,10 @@ final class PortfolioServiceImpl: PortfolioService {
 
         getAllPortfoliosData(accountIDs: accounts.map(\.id))
             .then { portfoliosData in
-                // flatMap + Set() to get rid of duplicate assets across multiple portfolios
-                let assetIDs: [AssetID] = portfoliosData.values.flatMap(\.openPositions).apply(Set.init).map(\.assetID)
-                return self.getAssets(assetIDs).map { assets in (assetIDs.map(\.id), portfoliosData, assets) }
+                // get rid of duplicate assets (Set) across multiple portfolios (flatMap)
+                let assetIDs: Set<AssetID> = Set(portfoliosData.values.flatMap(\.openPositions).map(\.assetID))
+                print(portfoliosData.values.flatMap(\.openPositions).count, "vs", assetIDs.count)
+                return self.getAssets(Array(assetIDs)).map { assets in (assetIDs.map(\.id), portfoliosData, assets) }
             }.then { (assetIDs, portfoliosData, assets) in
                 self.closePricesRepo.getClosePrices(assetIDs).map { closePrices in (portfoliosData, assets, closePrices) }
             }.onCancel {
@@ -99,7 +100,7 @@ final class PortfolioServiceImpl: PortfolioService {
             else { return nil }
 
             let positions = portfolioData.openPositions
-                .reduceToDictionary(key: \.id, value: \.self)
+                .reduceToDictionary(key: \.instrumentID, value: \.self)
                 .mapValues { position in
                     let id = position.instrumentID
                     let asset = assets[id] ?? .empty(id: id)
@@ -164,12 +165,6 @@ extension PortfolioData.OpenPosition {
 
         return AssetID(id: instrumentID, kind: assetKind)
     }
-}
-
-// MARK: - Helpers
-
-extension PortfolioData.OpenPosition: IdentifiableHashable {
-    var id: String { instrumentID }
 }
 
 // MARK: - Constants

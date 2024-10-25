@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AssetID: Identifiable {
+struct AssetID: IdentifiableHashable {
     enum AssetKind {
         case share
         case bond
