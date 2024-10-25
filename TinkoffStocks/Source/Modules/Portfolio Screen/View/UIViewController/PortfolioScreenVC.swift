@@ -209,12 +209,12 @@ extension PortfolioScreenVC {
 // MARK: - ApplicationObserving
 
 extension PortfolioScreenVC: ApplicationObserving {
-    func willResignActive() {
+    func willResignActive(notification: Notification) {
         guard view.window != nil else { return }
         presenter.viewDisappearing()
     }
 
-    func didBecomeActive() {
+    func didBecomeActive(notification: Notification) {
         guard view.window != nil else { return }
         presenter.viewAppearing()
     }

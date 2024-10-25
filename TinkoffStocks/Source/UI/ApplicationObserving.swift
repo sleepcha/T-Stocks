@@ -3,18 +3,18 @@ import UIKit
 // MARK: - ApplicationObserving
 
 @objc protocol ApplicationObserving {
-    @objc optional func didFinishLaunching()
-    @objc optional func didEnterBackground()
-    @objc optional func willEnterForeground()
-    @objc optional func didBecomeActive()
-    @objc optional func willResignActive()
-    @objc optional func willTerminate()
-    @objc optional func didReceiveMemoryWarning()
-    @objc optional func significantTimeChange()
-    @objc optional func backgroundRefreshStatusDidChange()
-    @objc optional func protectedDataWillBecomeUnavailable()
-    @objc optional func protectedDataDidBecomeAvailable()
-    @objc optional func userDidTakeScreenshot()
+    @objc optional func didFinishLaunching(notification: Notification)
+    @objc optional func didEnterBackground(notification: Notification)
+    @objc optional func willEnterForeground(notification: Notification)
+    @objc optional func didBecomeActive(notification: Notification)
+    @objc optional func willResignActive(notification: Notification)
+    @objc optional func willTerminate(notification: Notification)
+    @objc optional func didReceiveMemoryWarning(notification: Notification)
+    @objc optional func significantTimeChange(notification: Notification)
+    @objc optional func backgroundRefreshStatusDidChange(notification: Notification)
+    @objc optional func protectedDataWillBecomeUnavailable(notification: Notification)
+    @objc optional func protectedDataDidBecomeAvailable(notification: Notification)
+    @objc optional func userDidTakeScreenshot(notification: Notification)
 }
 
 extension ApplicationObserving where Self: UIResponder {
