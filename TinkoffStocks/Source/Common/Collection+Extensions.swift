@@ -32,21 +32,10 @@ public extension Collection {
     /// ```
     func reduceToDictionary<Key: Hashable, Value>(
         key: KeyPath<Element, Key>,
-        value: KeyPath<Element, Value>
+        value: (Element) -> Value?
     ) -> [Key: Value] {
         reduce(into: [:]) { dict, element in
-            dict[element[keyPath: key]] = element[keyPath: value]
-        }
-    }
-
-    /// A version of ``reduceToDictionary(key:value:)``  with optional value.
-    func reduceToDictionary<Key: Hashable, Value>(
-        key: KeyPath<Element, Key>,
-        optionalValue: KeyPath<Element, Value?>
-    ) -> [Key: Value] {
-        reduce(into: [:]) { dict, element in
-            guard let value = element[keyPath: optionalValue] else { return }
-            dict[element[keyPath: key]] = value
+            dict[element[keyPath: key]] = value(element)
         }
     }
 
