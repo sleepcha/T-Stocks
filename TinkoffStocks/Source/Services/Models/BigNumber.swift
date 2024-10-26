@@ -9,6 +9,7 @@ import Foundation
 
 // MARK: - BigNumber
 
+/// https://russianinvestments.github.io/investAPI/faq_custom_types/#moneyvalue
 protocol BigNumber {
     var units: String { get }
     var nano: Int { get }
@@ -18,9 +19,8 @@ extension BigNumber {
     var asDecimal: Decimal? {
         guard let integer = Decimal(string: units) else { return nil }
 
-        let power = 9
         let significand = Decimal(nano)
-        let fractional = Decimal(sign: significand.sign, exponent: -power, significand: significand)
+        let fractional = Decimal(sign: significand.sign, exponent: -C.nanoLength, significand: significand)
 
         return integer + fractional
     }
@@ -31,7 +31,7 @@ extension Quotation: BigNumber {}
 extension MoneyValue: BigNumber {}
 
 extension Decimal {
-    private var integer: Decimal {
+    private var roundedToInteger: Decimal {
         let handler = NSDecimalNumberHandler(
             roundingMode: sign == .plus ? .down : .up,
             scale: 0,
@@ -43,20 +43,27 @@ extension Decimal {
         return (self as NSDecimalNumber).rounding(accordingToBehavior: handler) as Decimal
     }
 
+    /// Rounding is necessary since the bug is still reproducible:
+    /// https://github.com/swiftlang/swift-corelibs-foundation/issues/4315
     var asInt: Int {
-        Int(truncating: integer as NSNumber)
+        (roundedToInteger as NSDecimalNumber).intValue
     }
 
     var asQuotation: Quotation {
-        let power = 9
-        let fractional = self - integer
-        let nano = Decimal(sign: sign, exponent: exponent + power, significand: fractional.significand)
+        let fractional = self - roundedToInteger
+        let nano = Decimal(sign: sign, exponent: exponent + C.nanoLength, significand: fractional.significand)
 
-        return Quotation(units: "\(integer)", nano: nano.integer.asInt)
+        return Quotation(units: "\(roundedToInteger)", nano: nano.asInt)
     }
-    
+
     func asMoney(_ currency: String) -> MoneyValue {
         let q = asQuotation
         return MoneyValue(currency: currency, units: q.units, nano: q.nano)
     }
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let nanoLength = 9
 }
