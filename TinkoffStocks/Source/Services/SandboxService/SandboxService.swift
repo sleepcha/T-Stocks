@@ -41,10 +41,7 @@ final class SandboxServiceImpl: SandboxService {
         let endpoint = API.openSandboxAccount(OpenSandboxAccountRequest(name: accountName))
 
         return networkManager.fetch(endpoint, retryCount: 0)
-            .then { newAccount in
-                print("filling ",accountName)
-                return self.fillPortfolio(newAccount.accountId)
-            }
+            .then { self.fillPortfolio($0.accountId) }
     }
 
     func closeAccount(_ accountID: String, completion: @escaping Handler<RepositoryError?>) {
@@ -75,13 +72,10 @@ final class SandboxServiceImpl: SandboxService {
         )
         let endpoint = API.postOrder(order)
 
-        return networkManager.fetch(endpoint, retryCount: 1).onCompletion {
-            #if DEBUG
-            if let error = $0.failure {
-                print("Failed to buy \(order.instrumentId): \(error)")
-            }
-            #endif
-        }
+        return networkManager.fetch(endpoint, retryCount: 1)
+        #if DEBUG
+            .onError { print("Failed to buy \(order.instrumentId): \($0)") }
+        #endif
     }
 }
 

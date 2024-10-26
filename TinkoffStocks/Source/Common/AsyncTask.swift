@@ -40,7 +40,7 @@ class AsyncTask<Output, Error: Swift.Error>: IdentifiableHashable {
     private var cancellationHandlers = [VoidHandler]()
     private var _state: State = .ready
 
-    private var isFinished: Bool {
+    private var _isFinished: Bool {
         switch _state {
         case .success, .failure, .cancelled: true
         default: false
@@ -59,7 +59,7 @@ class AsyncTask<Output, Error: Swift.Error>: IdentifiableHashable {
         AsyncTask { $0.done(result) }
     }
 
-    /// Returns a new task that will have the current task as a dependecy. This new task will be performed immediately after the current task completes successfully.
+    /// Returns a new task that will have the current task as a dependency. This new task will be performed immediately after the current task completes successfully.
     /// The chain of tasks is started or cancelled by interacting with the last task in the chain.
     ///
     /// - Note: If the current task completes with an error, the chain is terminated, and the following tasks will not be executed.
@@ -121,31 +121,35 @@ class AsyncTask<Output, Error: Swift.Error>: IdentifiableHashable {
     /// Saves the closure that will execute when the task is cancelled. Will execute immediately if the task is already cancelled.
     @discardableResult
     func onCancel(_ handler: @escaping VoidHandler) -> Self {
-        lock.lock()
-        if !isFinished { cancellationHandlers.append(handler) }
-        lock.unlock()
+        lock.withLock {
+            if !_isFinished { cancellationHandlers.append(handler) }
+        }
         return self
     }
 
-    /// Saves a completion handler to be called when the task finishes.
-    @discardableResult
-    func onCompletion(_ handler: @escaping Handler<Result<Output, Error>>) -> Self {
-        lock.lock()
-        if !isFinished { completionHandlers.append(handler) }
-        lock.unlock()
-        return self
-    }
-
-    /// A convenience method for `onCompletion` that handles only the successful result.
+    /// Saves a completion handler to be called when the task finishes successfully.
     @discardableResult
     func onSuccess(_ handler: @escaping Handler<Output>) -> Self {
-        lock.lock()
-        if !isFinished {
-            completionHandlers.append {
-                if case .success(let output) = $0 { handler(output) }
+        lock.withLock {
+            guard !_isFinished else { return }
+
+            completionHandlers.append { result in
+                if case .success(let output) = result { handler(output) }
             }
         }
-        lock.unlock()
+        return self
+    }
+
+    /// Saves a completion handler to be called when the task finishes with error.
+    @discardableResult
+    func onError(_ handler: @escaping Handler<Error>) -> Self {
+        lock.withLock {
+            guard !_isFinished else { return }
+
+            completionHandlers.append { result in
+                if case .failure(let error) = result { handler(error) }
+            }
+        }
         return self
     }
 
@@ -208,7 +212,7 @@ class AsyncTask<Output, Error: Swift.Error>: IdentifiableHashable {
         }
     }
 
-    /// Syncronizes state switching and returns `true` if the switch was successful.
+    /// Synchronizes state switching and returns `true` if the switch was successful.
     private func tryChangeState(to newState: State, andExecute closure: VoidHandler = {}) -> Bool {
         lock.withLock {
             let isAllowed = switch (_state, newState) {
