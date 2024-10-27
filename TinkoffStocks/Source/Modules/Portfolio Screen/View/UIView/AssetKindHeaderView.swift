@@ -24,11 +24,11 @@ class AssetKindHeaderView: UITableViewHeaderFooterView {
         }
     }
 
-    func setTitle(_ title: String) {
-        titleLabel.text = title
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func setTitle(_ title: String) {
+        titleLabel.text = title
     }
 }

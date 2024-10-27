@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GradientView: UIView {
+final class GradientView: UIView {
     private let mainColor: UIColor
     private let accentColor: UIColor
 
