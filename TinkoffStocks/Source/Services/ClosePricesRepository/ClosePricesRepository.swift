@@ -17,23 +17,51 @@ protocol ClosePricesRepository {
 
 final class ClosePricesRepositoryImpl: ClosePricesRepository {
     private let networkManager: NetworkManager
+    private let cache: Cache<Decimal>
+    private let now: DateProvider
 
-    init(networkManager: NetworkManager) {
+    init(dateProvider: @escaping DateProvider = Date.init, networkManager: NetworkManager) {
         self.networkManager = networkManager
+        self.cache = Cache<Decimal>(dateProvider: dateProvider, countLimit: 10000)
+        self.now = dateProvider
     }
 
-    // TODO: implement in-memory cache since assetIDs array is not a consistent key for the HTTPClient cache
     func getClosePrices(_ assetIDs: [String]) -> AsyncTask<[String: Decimal], RepositoryError> {
         guard !assetIDs.isEmpty else {
             return AsyncTask.empty(.success([:]))
         }
 
-        let instruments = assetIDs.map(InstrumentClosePriceRequest.init)
+        var cachedPrices = [String: Decimal]()
+        var requests = [InstrumentClosePriceRequest]()
 
-        return networkManager
-            .fetch(API.getClosePrices(.init(instruments: instruments)))
-            .map { $0.closePrices.reduceToDictionary(key: \.instrumentUid, optionalValue: \.closePrice) }
+        for assetID in assetIDs {
+            guard assetID != C.ID.rubleAsset else { continue }
+
+            if let cachedPrice = cache.get(key: assetID) {
+                cachedPrices[assetID] = cachedPrice
+            } else {
+                requests.append(InstrumentClosePriceRequest(instrumentId: assetID))
+            }
+        }
+
+        guard !requests.isEmpty else {
+            return .empty(.success(cachedPrices))
+        }
+
+        return networkManager.fetch(API.getClosePrices(GetClosePricesRequest(instruments: requests)))
             .mapError(RepositoryError.init)
+            .map { [weak cache, now] response in
+                for item in response.closePrices {
+                    cache?.store(
+                        key: item.instrumentUid,
+                        value: item.closePrice,
+                        expiryDate: item.time?.nextWeekday ?? now()
+                    )
+                    cachedPrices[item.instrumentUid] = item.closePrice
+                }
+
+                return cachedPrices
+            }
     }
 }
 
@@ -41,6 +69,28 @@ final class ClosePricesRepositoryImpl: ClosePricesRepository {
 
 private extension InstrumentClosePriceResponse {
     var closePrice: Decimal? {
-        (eveningSessionPrice ?? price)?.asDecimal
+        let mainSessionPrice = price?.asDecimal ?? 0
+        let eveningSessionPrice = eveningSessionPrice?.asDecimal ?? 0
+
+        // sometimes backend returns zero eveningSessionPrice for future assets
+        return switch (mainSessionPrice, eveningSessionPrice) {
+        case (0, 0): 0
+        case (_, 0): mainSessionPrice
+        default: eveningSessionPrice
+        }
+    }
+}
+
+extension Date {
+    var nextWeekday: Date {
+        var date = self
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(abbreviation: "MSK")!
+
+        repeat {
+            date = date.adding(1, .day)
+        } while calendar.isDateInWeekend(date)
+
+        return date
     }
 }
