@@ -28,8 +28,7 @@ final class NetworkManagerFactoryImpl: NetworkManagerFactory {
             client: client,
             encoder: JSONEncoder.custom,
             decoder: JSONDecoder.custom,
-            errorMapper: HTTPClientErrorMapper.map,
-            dateProvider: Date.init
+            errorMapper: HTTPClientErrorMapper.map
         )
     }
 }
