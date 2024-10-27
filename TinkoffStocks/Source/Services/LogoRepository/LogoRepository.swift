@@ -24,7 +24,7 @@ final class LogoRepositoryImpl: LogoRepository {
     private let logoSize: LogoSize
     private let cache: Cache<UIImage>
 
-    init(client: HTTPClient = LogoClient(), logoSize: LogoSize, dateProvider: DateProvider = Date.init) {
+    init(client: HTTPClient = LogoClient(), logoSize: LogoSize, dateProvider: @escaping DateProvider = Date.init) {
         self.client = client
         self.logoSize = logoSize
         self.cache = Cache(dateProvider: dateProvider, countLimit: C.memoryCacheItemCountLimit)

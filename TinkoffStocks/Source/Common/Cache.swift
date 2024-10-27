@@ -19,9 +19,11 @@ final class Cache<Value> {
     }
 
     private let cache = NSCache<NSString, CacheItem>()
+    private let now: DateProvider
 
-    init(dateProvider: DateProvider, countLimit: Int = 0) {
+    init(dateProvider: @escaping DateProvider, countLimit: Int = 0) {
         cache.countLimit = countLimit
+        now = dateProvider
     }
 
     func get(key: String) -> Value? {
@@ -31,7 +33,7 @@ final class Cache<Value> {
             return nil
         }
 
-        guard item.expirationDate > .now else {
+        guard item.expirationDate > now() else {
             cache.removeObject(forKey: key)
             return nil
         }
