@@ -13,16 +13,13 @@ final class LoginFlow: StackFlowCoordinator {
 
     private let authService: AuthService
     private let error: Error?
-    private let onFinishLoading: VoidHandler
 
     init(
         authService: AuthService,
-        showing error: Error? = nil,
-        onFinishLoading: @escaping VoidHandler
+        showing error: Error? = nil
     ) {
         self.authService = authService
         self.error = error
-        self.onFinishLoading = onFinishLoading
     }
 
     func start() {
@@ -33,7 +30,6 @@ final class LoginFlow: StackFlowCoordinator {
         let loginScreen = LoginScreenAssemblyImpl().build(authService: authService, showing: error) { [self] result in
             switch result {
             case .receivedAccounts: stopFlow()
-            case .finishedLoading: onFinishLoading()
             }
         }
         push(module: loginScreen)

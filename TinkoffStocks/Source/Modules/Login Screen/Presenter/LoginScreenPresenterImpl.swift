@@ -11,7 +11,6 @@ import Foundation
 
 enum LoginScreenOutput {
     case receivedAccounts([AccountData])
-    case finishedLoading
 }
 
 // MARK: - LoginScreenPresenterImpl
@@ -37,7 +36,6 @@ final class LoginScreenPresenterImpl: LoginScreenPresenter {
     }
 
     func viewReady() {
-        outputHandler(.finishedLoading)
         showError?()
         showError = nil
     }

@@ -13,17 +13,15 @@ final class PortfolioFlow: StackFlowCoordinator {
 
     private let authService: AuthService
     private let error: Error?
-    private let onFinishLoading: VoidHandler
     private let tabBarItem = UITabBarItem(
         title: String(localized: "PortfolioScreenViewController.title", defaultValue: "Портфель"),
         image: UIImage(systemName: "case"),
         selectedImage: UIImage(systemName: "case.fill")
     )
 
-    init(authService: AuthService, showing error: Error? = nil, onFinishLoading: @escaping VoidHandler) {
+    init(authService: AuthService, showing error: Error? = nil) {
         self.authService = authService
         self.error = error
-        self.onFinishLoading = onFinishLoading
     }
 
     func start() {
@@ -50,8 +48,6 @@ final class PortfolioFlow: StackFlowCoordinator {
             timerManager: timerManager
         ) { [self] in
             switch $0 {
-            case .finishedLoading:
-                onFinishLoading()
             case .selectedAsset(let assetID):
                 pushAssetScreen(assetID: assetID)
             case .logout:

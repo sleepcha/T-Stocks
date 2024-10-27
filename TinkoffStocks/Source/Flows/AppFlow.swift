@@ -33,6 +33,7 @@ final class AppFlow {
 
             guard let authData else {
                 startLoginFlow()
+                dismissLaunchWindow()
                 return
             }
 
@@ -44,6 +45,7 @@ final class AppFlow {
                 case .success:
                     self.startMainFlow()
                 }
+                self.dismissLaunchWindow()
             }
         }
     }
@@ -63,7 +65,7 @@ final class AppFlow {
     private func startLoginFlow(showing error: Error? = nil) {
         DispatchQueue.mainSync {
             let navigator = UINavigationController()
-            let loginFlow = LoginFlow(authService: authService, showing: error, onFinishLoading: dismissLaunchWindow)
+            let loginFlow = LoginFlow(authService: authService, showing: error)
             loginFlow.navigator = navigator
             loginFlow.onStopFlow = { [weak self] in
                 self?.startMainFlow()
@@ -77,7 +79,7 @@ final class AppFlow {
 
     private func startMainFlow() {
         DispatchQueue.mainSync {
-            let mainFlow = MainFlow(authService: authService, onFinishLoading: dismissLaunchWindow)
+            let mainFlow = MainFlow(authService: authService)
             mainFlow.onStopFlow = { [weak self] in
                 self?.authService.logout()
                 self?.mainFlow = nil

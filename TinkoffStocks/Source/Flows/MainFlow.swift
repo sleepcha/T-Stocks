@@ -20,15 +20,13 @@ final class MainFlow: NSObject, TabFlowCoordinator, UITabBarControllerDelegate {
     var onStopFlow: VoidHandler?
 
     private let authService: AuthService
-    private let onFinishLoading: VoidHandler
 
-    init(authService: AuthService, onFinishLoading: @escaping VoidHandler) {
+    init(authService: AuthService) {
         self.authService = authService
-        self.onFinishLoading = onFinishLoading
     }
 
     func start() {
-        let portfolioFlow = PortfolioFlow(authService: authService, onFinishLoading: onFinishLoading)
+        let portfolioFlow = PortfolioFlow(authService: authService)
         portfolioFlow.onStopFlow = { [weak self] in self?.stopFlow() }
         startFlows(portfolioFlow)
     }
