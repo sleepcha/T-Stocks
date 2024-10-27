@@ -33,7 +33,6 @@ extension NetworkManager {
 
 final class NetworkManagerImpl: NetworkManager {
     typealias ErrorMapper = (HTTPClientError) -> NetworkManagerError
-    typealias DateProvider = () -> Date
 
     private let client: HTTPClient
     private let cacheExpiry: Expiry?
@@ -49,7 +48,7 @@ final class NetworkManagerImpl: NetworkManager {
         encoder: JSONEncoder,
         decoder: JSONDecoder,
         errorMapper: @escaping ErrorMapper,
-        dateProvider: @escaping DateProvider
+        dateProvider: @escaping DateProvider = Date.init
     ) {
         self.client = client
         self.cacheExpiry = cacheExpiry

@@ -2,20 +2,17 @@ import Foundation
 
 typealias VoidHandler = () -> Void
 typealias Handler<T> = (T) -> Void
+typealias DateProvider = () -> Date
 
 public extension Result {
     var failure: Failure? {
-        switch self {
-        case let .failure(failure): failure
-        default: nil
-        }
+        guard case .failure(let failure) = self else { return nil }
+        return failure
     }
 
     var success: Success? {
-        switch self {
-        case let .success(success): success
-        default: nil
-        }
+        guard case .success(let success) = self else { return nil }
+        return success
     }
 }
 
