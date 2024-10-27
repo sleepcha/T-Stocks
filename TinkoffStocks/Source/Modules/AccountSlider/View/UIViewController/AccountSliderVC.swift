@@ -101,15 +101,6 @@ extension AccountSliderVC: AccountSliderView {
         ui.pageControl.numberOfPages = newDataSource.count
         ui.accountsCollectionView.reloadData()
         didSelectAccount()
-    }
-}
-
-extension UICollectionView {
-    func update(onlyVisibleItem: Bool) {
-        guard onlyVisibleItem else {
-            reloadData()
-            return
-        }
-        reloadItems(at: indexPathsForVisibleItems)
+        ui.spinner.stopAnimating()
     }
 }

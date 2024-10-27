@@ -25,6 +25,13 @@ final class AccountSliderUI: UIView {
         $0.isUserInteractionEnabled = false
     }
 
+    let spinner = UIActivityIndicatorView {
+        $0.hidesWhenStopped = true
+        $0.color = .white
+        $0.style = .large
+        $0.startAnimating()
+    }
+
     private lazy var flowLayout = UICollectionViewFlowLayout {
         $0.scrollDirection = .horizontal
         $0.minimumLineSpacing = 0
@@ -52,6 +59,7 @@ final class AccountSliderUI: UIView {
         backgroundColor = .clear
         frame.size.height = C.UI.viewHeight
         addSubview(stack)
+        addSubview(spinner)
     }
 
     func setupConstraints() {
@@ -60,6 +68,11 @@ final class AccountSliderUI: UIView {
         stack.snp.makeConstraints { make in
             make.top.directionalHorizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview().inset(C.UI.doubleSpacing)
+        }
+        
+        spinner.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-C.UI.doubleSpacing)
         }
     }
 }
