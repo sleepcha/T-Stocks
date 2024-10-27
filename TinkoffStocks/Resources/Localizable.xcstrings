@@ -579,6 +579,23 @@
         }
       }
     },
+    "PortfolioErrorView.refreshButtonTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Обновить"
+          }
+        }
+      }
+    },
     "PortfolioScreenPresenter.logoutDialog.cancelButtonTitle" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -863,7 +880,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Проверьте ваше интернет-соединение"
+            "value" : "Ошибка при получении данных, проверьте ваше интернет-соединение"
           }
         }
       }
@@ -874,13 +891,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Server error.\nTry again later"
+            "value" : "Service is temporarily unavailable. Please try again later"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Ошибка сервера.\nПопробуйте позже"
+            "value" : "Сервис временно недоступен. Повторите, пожалуйста, позже"
           }
         }
       }
@@ -923,13 +940,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Access error.\nPlease check the mode and token's expiration date"
+            "value" : "Access error. Please check the mode and token's expiration date"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Ошибка доступа.\nПроверьте режим и срок действия токена"
+            "value" : "Ошибка доступа. Проверьте режим и срок действия токена"
           }
         }
       }
@@ -937,6 +954,12 @@
     "SandboxService.anotherNewAccountName" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IRA"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "new",
