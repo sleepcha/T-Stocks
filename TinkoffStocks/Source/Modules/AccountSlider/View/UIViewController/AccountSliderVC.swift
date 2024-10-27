@@ -13,7 +13,11 @@ class AccountSliderVC: UIViewController {
     var presenter: AccountSliderPresenter!
     private lazy var ui = AccountSliderUI()
 
+    private var feedback: UISelectionFeedbackGenerator!
     private var dataSource: [AccountCellModel] = []
+    private var currentAccountIndex: Int = 0 {
+        didSet { ui.pageControl.currentPage = currentAccountIndex }
+    }
 
     override func loadView() {
         view = ui
@@ -21,13 +25,13 @@ class AccountSliderVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        feedback = UISelectionFeedbackGenerator()
         setupViews()
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        let index = ui.pageControl.currentPage
-        ui.accountsCollectionView.contentOffset.x = CGFloat(index) * view.frame.width
+        ui.accountsCollectionView.contentOffset.x = CGFloat(currentAccountIndex) * view.frame.width
         ui.accountsCollectionView.collectionViewLayout.invalidateLayout()
     }
 
@@ -36,19 +40,26 @@ class AccountSliderVC: UIViewController {
         ui.accountsCollectionView.delegate = self
     }
 
-    private func didSelect() {
-//        presenter.didSelectAccount(withIndex: dataSource[ui.pageControl.currentPage].id)
-        presenter.didSelectAccount(withIndex: ui.pageControl.currentPage)
+    private func didSelectAccount() {
+        guard !dataSource.isEmpty else { return }
+        presenter.didSelectAccount(withID: dataSource[currentAccountIndex].id)
     }
 }
 
 extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: UICollectionViewDelegateFlowLayout
 
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        feedback.prepare()
+    }
+
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let currentAccountIndex = Int(scrollView.contentOffset.x / scrollView.frame.width)
-        ui.pageControl.currentPage = currentAccountIndex
-        didSelect()
+        let newAccountIndex = Int(scrollView.contentOffset.x / scrollView.frame.width)
+        guard newAccountIndex != currentAccountIndex else { print("do not update"); return }
+
+        currentAccountIndex = newAccountIndex
+        feedback.selectionChanged()
+        didSelectAccount()
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -89,7 +100,7 @@ extension AccountSliderVC: AccountSliderView {
         dataSource = newDataSource
         ui.pageControl.numberOfPages = newDataSource.count
         ui.accountsCollectionView.reloadData()
-        didSelect()
+        didSelectAccount()
     }
 }
 

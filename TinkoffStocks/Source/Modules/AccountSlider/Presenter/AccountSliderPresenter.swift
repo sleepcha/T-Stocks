@@ -7,5 +7,5 @@
 
 protocol AccountSliderPresenter {
     func didTapGainPeriodButton()
-    func didSelectAccount(withIndex index: Int)
+    func didSelectAccount(withID id: String)
 }
