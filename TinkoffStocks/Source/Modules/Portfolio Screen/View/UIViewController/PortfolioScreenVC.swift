@@ -12,6 +12,8 @@ import UIKit
 final class PortfolioScreenVC: UITableViewController {
     var presenter: PortfolioScreenPresenter!
 
+    private let summaryView = PortfolioSummaryView()
+
     private lazy var gradientView = GradientView(
         mainColor: .accountBackground,
         accentColor: .accountAccent
@@ -23,18 +25,6 @@ final class PortfolioScreenVC: UITableViewController {
         gradientView.snp.makeConstraints { make in
             make.directionalEdges.equalToSuperview()
         }
-    }
-
-    let valueLabel = UILabel {
-        $0.textColor = .white
-        $0.font = .preferredFont(forTextStyle: .headline)
-        $0.alpha = 0
-    }
-
-    let gainLabel = UILabel {
-        $0.textColor = .white
-        $0.font = .preferredFont(forTextStyle: .footnote)
-        $0.alpha = 0
     }
 
     private lazy var menuButton = UIBarButtonItem {
@@ -49,6 +39,20 @@ final class PortfolioScreenVC: UITableViewController {
         attributes: .destructive,
         handler: { [weak self] _ in self?.presenter.logoutMenuItemTapped() }
     )
+
+    private var isShowingError: Bool = false {
+        didSet {
+            guard oldValue != isShowingError else { return }
+            tableView.isScrollEnabled = !isShowingError
+            tableHeaderView?.isHidden = isShowingError
+            bounceAreaView.isHidden = isShowingError
+
+            guard isShowingError else { tableView.backgroundView = nil; return }
+            dataSource = DataSource(sections: [])
+            summaryView.update(with: nil)
+            tableView.reloadData()
+        }
+    }
 
     private var tableHeaderView: UIView? { tableView.tableHeaderView }
     private var navBarHeight: CGFloat? { navigationController?.navigationBar.frame.height }
@@ -92,26 +96,23 @@ final class PortfolioScreenVC: UITableViewController {
         tableView.register(AssetKindHeaderView.self)
         tableView.addSubview(bounceAreaView)
         tableView.sendSubviewToBack(bounceAreaView)
-
-        if let tableHeaderVC = children.first {
-            addChild(tableHeaderVC)
-            tableView.tableHeaderView = tableHeaderVC.view
-            tableHeaderVC.didMove(toParent: self)
-        }
+        setupTableHeaderView()
 
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.standardAppearance = UINavigationBarAppearance {
             $0.configureWithOpaqueBackground()
             $0.shadowColor = nil
         }
-        navigationItem.titleView = UIStackView(
-            views: [valueLabel, gainLabel],
-            axis: .vertical,
-            alignment: .center,
-            distribution: .equalSpacing,
-            spacing: 0
-        )
+        navigationItem.titleView = summaryView
         navigationItem.rightBarButtonItem = menuButton
+    }
+
+    // AccountSlider is injected in assembly
+    private func setupTableHeaderView() {
+        guard let tableHeaderVC = children.first else { return }
+        addChild(tableHeaderVC)
+        tableView.tableHeaderView = tableHeaderVC.view
+        tableHeaderVC.didMove(toParent: self)
     }
 
     private func updateBounceAreaFrame() {
@@ -137,14 +138,13 @@ final class PortfolioScreenVC: UITableViewController {
     private func setHeaderAlpha(to alpha: CGFloat) {
         let alpha = min(max(alpha, 0), 1)
         tableHeaderView?.alpha = alpha
-        bounceAreaView.subviews.first?.alpha = alpha
+        gradientView.alpha = alpha
     }
 
     private func setNavBarAlpha(to alpha: CGFloat) {
         let alpha = min(max(alpha, 0), 1)
         navigationItem.standardAppearance?.backgroundColor = .accountBackground.withAlphaComponent(alpha)
-        valueLabel.alpha = alpha
-        gainLabel.alpha = alpha
+        summaryView.contentView.alpha = alpha
     }
 }
 
@@ -181,9 +181,9 @@ extension PortfolioScreenVC {
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let id = dataSource[indexPath].id
+        let model = dataSource[indexPath]
 
-        presenter.willShowLogoForItem(withID: id) { image in
+        presenter.willShowLogoForItem(withID: model.id) { image in
             guard let image else { return }
             (cell as? PortfolioItemCell)?.setLogo(image: image)
         }
@@ -224,14 +224,18 @@ extension PortfolioScreenVC: ApplicationObserving {
 
 extension PortfolioScreenVC: PortfolioScreenView {
     func updateItemList(with newDataSource: DataSource<PortfolioItemCellModel>, portfolioSummary: PortfolioSummary) {
+        isShowingError = false
+
+        summaryView.update(with: portfolioSummary)
         dataSource = newDataSource
-        valueLabel.text = portfolioSummary.total
-        gainLabel.attributedText = portfolioSummary.gain
         tableView.reloadData()
     }
 
     func showErrorMessage(message: String) {
-        showToast(message, kind: .error)
+        isShowingError = true
+        tableView.backgroundView = PortfolioErrorView(errorMessage: message) { [weak self] in
+            self?.presenter.didTapRefreshButton()
+        }
     }
 
     func showDialog(dialog: Dialog) {
