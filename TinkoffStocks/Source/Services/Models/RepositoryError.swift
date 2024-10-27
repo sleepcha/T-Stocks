@@ -19,13 +19,13 @@ enum RepositoryError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .networkError:
-            String(localized: "RepositoryError.networkError", defaultValue: "Проверьте ваше интернет-соединение")
+            String(localized: "RepositoryError.networkError", defaultValue: "Ошибка при получении данных, проверьте ваше интернет-соединение")
         case .serverError:
-            String(localized: "RepositoryError.serverError", defaultValue: "Ошибка сервера.\nПопробуйте позже")
+            String(localized: "RepositoryError.serverError", defaultValue: "Сервис временно недоступен. Повторите, пожалуйста, позже")
         case .unauthorized:
-            String(localized: "RepositoryError.unauthorized", defaultValue: "Ошибка доступа.\nПроверьте режим и срок действия токена")
+            String(localized: "RepositoryError.unauthorized", defaultValue: "Ошибка доступа. Проверьте режим и срок действия токена")
         case .tooManyRequests:
-            String(localized: "RepositoryError.tooManyRequests", defaultValue: "Слишком много запросов.\nПопробуйте позже")
+            String(localized: "RepositoryError.tooManyRequests", defaultValue: "Превышено количество обращений к сервису. Попробуйте позже")
         case .taskCancelled:
             String(localized: "RepositoryError.taskCancelled", defaultValue: "Операция отменена")
         }
