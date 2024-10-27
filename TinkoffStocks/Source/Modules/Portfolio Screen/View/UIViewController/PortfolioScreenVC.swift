@@ -46,6 +46,7 @@ final class PortfolioScreenVC: UITableViewController {
             tableView.isScrollEnabled = !isShowingError
             tableHeaderView?.isHidden = isShowingError
             bounceAreaView.isHidden = isShowingError
+            menuButton.tintColor = isShowingError ? .brandLabel : .white
 
             guard isShowingError else { tableView.backgroundView = nil; return }
             dataSource = DataSource(sections: [])
