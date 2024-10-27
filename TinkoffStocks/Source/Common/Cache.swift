@@ -20,37 +20,35 @@ final class Cache<Value> {
 
     private let cache = NSCache<NSString, CacheItem>()
 
-    init(countLimit: Int = 0) {
+    init(dateProvider: DateProvider, countLimit: Int = 0) {
         cache.countLimit = countLimit
     }
 
-    /// `expiry` parameter is only used in the setter.
-    subscript(key: String, expiry expiry: Date? = nil) -> Value? {
-        get {
-            let key = key as NSString
+    func get(key: String) -> Value? {
+        let key = key as NSString
 
-            guard let item = cache.object(forKey: key) else {
-                return nil
-            }
-
-            guard item.expirationDate > .now else {
-                cache.removeObject(forKey: key)
-                return nil
-            }
-
-            return item.value
+        guard let item = cache.object(forKey: key) else {
+            return nil
         }
-        set {
-            let key = key as NSString
 
-            guard let newValue else {
-                cache.removeObject(forKey: key)
-                return
-            }
-
-            let item = CacheItem(newValue, expiresOn: expiry ?? .distantFuture)
-            cache.setObject(item, forKey: key)
+        guard item.expirationDate > .now else {
+            cache.removeObject(forKey: key)
+            return nil
         }
+
+        return item.value
+    }
+
+    func store(key: String, value: Value?, expiryDate: Date? = nil) {
+        let key = key as NSString
+
+        guard let value else {
+            cache.removeObject(forKey: key)
+            return
+        }
+
+        let item = CacheItem(value, expiresOn: expiryDate ?? .distantFuture)
+        cache.setObject(item, forKey: key)
     }
 
     func empty() {

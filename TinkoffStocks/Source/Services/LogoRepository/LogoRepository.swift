@@ -21,12 +21,13 @@ final class LogoRepositoryImpl: LogoRepository {
     }
 
     private let client: HTTPClient
-    private let cache = Cache<UIImage>(countLimit: C.memoryCacheItemCountLimit)
     private let logoSize: LogoSize
+    private let cache: Cache<UIImage>
 
-    init(client: HTTPClient = LogoClient(), logoSize: LogoSize) {
+    init(client: HTTPClient = LogoClient(), logoSize: LogoSize, dateProvider: DateProvider = Date.init) {
         self.client = client
         self.logoSize = logoSize
+        self.cache = Cache(dateProvider: dateProvider, countLimit: C.memoryCacheItemCountLimit)
     }
 
     func getLogo(_ fileName: String, completion: @escaping Handler<Result<UIImage, LogoRepositoryError>>) {
@@ -40,7 +41,7 @@ final class LogoRepositoryImpl: LogoRepository {
             options: [.anchored, .backwards]
         )
 
-        if let cachedImage = cache[imageName] {
+        if let cachedImage = cache.get(key: imageName) {
             completion(.success(cachedImage))
             return
         }
@@ -55,7 +56,7 @@ final class LogoRepositoryImpl: LogoRepository {
             switch result {
             case .success(let data):
                 let image = UIImage(data: data)
-                cache?[imageName] = image
+                cache?.store(key: imageName, value: image)
                 completion(image.map(Result.success) ?? .failure(.invalidImage))
             case .failure(let error):
                 completion(.failure(LogoRepositoryError(httpClientError: error)))
