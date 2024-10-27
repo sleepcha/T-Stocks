@@ -10,8 +10,11 @@ import UIKit
 class FilledButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.configuration = .filled()
-        configuration?.cornerStyle = .large
+
+        var configuration = UIButton.Configuration.filled()
+        configuration.buttonSize = .large
+        configuration.cornerStyle = .large
+        self.configuration = configuration
     }
 
     required init?(coder: NSCoder) {
