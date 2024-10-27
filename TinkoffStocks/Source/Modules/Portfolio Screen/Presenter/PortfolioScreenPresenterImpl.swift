@@ -11,7 +11,6 @@ import UIKit
 // MARK: - PortfolioScreenOutput
 
 enum PortfolioScreenOutput {
-    case finishedLoading
     case selectedAsset(assetID: String)
     case logout
 }
@@ -87,6 +86,11 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
         timerManager.pause()
     }
 
+    func didTapRefreshButton() {
+        updatePortfolios()
+        timerManager.resume()
+    }
+
     func didSelectItem(withID id: String) {
         outputHandler(.selectedAsset(assetID: id))
     }
@@ -116,27 +120,26 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
 
             switch result {
             case .failure(let error):
+                timerManager.pause()
+
                 switch error {
-                case .networkError:
-                    // TODO: pause the timer, show "update" button and a network error message label
-                    timerManager.pause()
-                case .serverError:
-                    break
+                case .networkError, .serverError, .taskCancelled:
+                    view.showErrorMessage(message: error.localizedDescription)
                 case .unauthorized:
                     outputHandler(.logout)
                 case .tooManyRequests(let seconds):
-                    timerManager.pause()
-                    DispatchQueue.global().asyncAfter(deadline: .now() + seconds) {
-                        [weak timerManager] in timerManager?.resume()
+                    if portfolios.isEmpty {
+                        view.showErrorMessage(message: error.localizedDescription)
                     }
-                default:
-                    view.showErrorMessage(message: error.localizedDescription)
+                    DispatchQueue.global().asyncAfter(deadline: .now() + seconds) { [weak timerManager] in
+                        timerManager?.resume()
+                    }
                 }
             case .success(let newPortfolios):
+                guard newPortfolios.count >= portfolios.count else { return }
                 portfolios = newPortfolios
                 updateAccountSlider()
             }
-            outputHandler(.finishedLoading)
         }
     }
 
@@ -151,12 +154,12 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
 extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
     func didTapGainPeriodButton() {
         gainPeriod.toggle()
-        updatePortfolioItemList()
         updateAccountSlider()
+        updatePortfolioItemList()
     }
 
-    func didSelectAccount(withIndex index: Int) {
-        currentAccountIndex = index
+    func didSelectAccount(withID id: String) {
+        currentAccountIndex = portfolios.firstIndex { $0.account.id == id } ?? 0
         updatePortfolioItemList()
     }
 
