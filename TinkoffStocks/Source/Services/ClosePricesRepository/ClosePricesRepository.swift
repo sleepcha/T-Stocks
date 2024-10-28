@@ -80,17 +80,3 @@ private extension InstrumentClosePriceResponse {
         }
     }
 }
-
-extension Date {
-    var nextWeekday: Date {
-        var date = self
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(abbreviation: "MSK")!
-
-        repeat {
-            date = date.adding(1, .day)
-        } while calendar.isDateInWeekend(date)
-
-        return date
-    }
-}

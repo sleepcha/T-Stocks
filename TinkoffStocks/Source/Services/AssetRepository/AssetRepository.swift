@@ -20,9 +20,9 @@ final class AssetRepositoryImpl: AssetRepository {
     private let networkManager: NetworkManager
     private let cachingManager: NetworkManager
 
-    init(networkManager: NetworkManager) {
+    init(networkManager: NetworkManager, dateProvider: DateProvider = Date.init) {
         self.networkManager = networkManager
-        self.cachingManager = networkManager.caching(.for(C.assetCachingPeriod))
+        self.cachingManager = networkManager.caching(until: { $0.nextWeekdayMorning })
     }
 
     func getAsset(_ assetID: AssetID) -> AsyncTask<Asset, RepositoryError> {
@@ -115,14 +115,4 @@ private extension Asset {
             kind: assetKind
         )
     }
-}
-
-// MARK: - Constants
-
-private extension C {
-    #if DEBUG
-    static let assetCachingPeriod = Expiry.Period.month(1)
-    #else
-    static let assetCachingPeriod = Expiry.Period.day(7)
-    #endif
 }
