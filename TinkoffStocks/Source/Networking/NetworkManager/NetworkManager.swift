@@ -7,6 +7,9 @@
 
 import Foundation
 
+/// A closure that takes a creation date as an argument and returns the expiration date.
+typealias Expiry = (Date) -> Date
+
 // MARK: - NetworkManager
 
 protocol NetworkManager {
@@ -17,7 +20,7 @@ protocol NetworkManager {
     func fetch<T: Endpoint>(_ endpoint: T) -> AsyncTask<T.Response, NetworkManagerError>
 
     /// Returns a modified instance that will cache each response with the specified expiry.
-    func caching(_ expiry: Expiry) -> NetworkManager
+    func caching(until expiry: @escaping Expiry) -> NetworkManager
 
     /// Removes all cached responses.
     func clearCache()
@@ -74,7 +77,7 @@ final class NetworkManagerImpl: NetworkManager {
                 return
             }
 
-            if let cacheExpiry, case .success(let response) = client.cached(request, isValid: cacheExpiry.isValid(now())) {
+            if let cacheExpiry, case .success(let response) = client.cached(request, isValid: { now() < cacheExpiry($0) }) {
                 let result = response
                     .decoded(as: T.Response.self, using: decoder)
                     .mapError(NetworkManagerError.jsonError)
@@ -86,7 +89,7 @@ final class NetworkManagerImpl: NetworkManager {
         }
     }
 
-    func caching(_ expiry: Expiry) -> NetworkManager {
+    func caching(until expiry: @escaping Expiry) -> NetworkManager {
         NetworkManagerImpl(
             client: client,
             cacheExpiry: expiry,
@@ -179,21 +182,5 @@ final class NetworkManagerImpl: NetworkManager {
         let maxDelay: TimeInterval = 10
         let exponential = base * pow(2, Double(attempt))
         return TimeInterval.random(in: 0...min(exponential, maxDelay))
-    }
-}
-
-// MARK: - Helpers
-
-private extension Expiry {
-    func isValid(_ currentDate: Date) -> (Date) -> Bool {
-        { creationDate in
-            let expirationDate = switch self {
-            case let .for(period):
-                period.expiration(for: creationDate)
-            case let .until(deadline):
-                deadline
-            }
-            return currentDate < expirationDate
-        }
     }
 }
