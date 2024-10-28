@@ -96,8 +96,7 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
     }
 
     func willShowLogoForItem(withID id: String, handler: @escaping Handler<UIImage?>) {
-        guard let logoName = portfolios[currentAccountIndex].items[id]?.asset.brand.logoName
-        else { return }
+        guard let logoName = portfolios[currentAccountIndex].items[id]?.asset.brand.logoName else { return }
 
         logoRepo.getLogo(logoName) { handler($0.success) }
     }

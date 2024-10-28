@@ -31,7 +31,7 @@ final class LogoRepositoryImpl: LogoRepository {
     }
 
     func getLogo(_ fileName: String, completion: @escaping Handler<Result<UIImage, LogoRepositoryError>>) {
-        let completion = { result in
+        let completion = { (result: Result<UIImage, LogoRepositoryError>) in
             DispatchQueue.mainSync { completion(result) }
         }
 

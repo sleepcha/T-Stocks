@@ -55,7 +55,7 @@ extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateF
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let newAccountIndex = Int(scrollView.contentOffset.x / scrollView.frame.width)
-        guard newAccountIndex != currentAccountIndex else { print("do not update"); return }
+        guard newAccountIndex != currentAccountIndex else { return }
 
         currentAccountIndex = newAccountIndex
         feedback.selectionChanged()

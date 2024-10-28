@@ -20,7 +20,7 @@ final class ClosePricesRepositoryImpl: ClosePricesRepository {
     private let cache: Cache<Decimal>
     private let now: DateProvider
 
-    init(dateProvider: @escaping DateProvider = Date.init, networkManager: NetworkManager) {
+    init(networkManager: NetworkManager, dateProvider: @escaping DateProvider = Date.init) {
         self.networkManager = networkManager
         self.cache = Cache<Decimal>(dateProvider: dateProvider, countLimit: 10000)
         self.now = dateProvider
