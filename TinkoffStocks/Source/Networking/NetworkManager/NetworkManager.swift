@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// A closure that takes a creation date as an argument and returns the expiration date.
+/// A closure that returns expiration date base on a passed creation date.
 typealias Expiry = (Date) -> Date
 
 // MARK: - NetworkManager
