@@ -69,7 +69,7 @@ private extension C {
     static let headers = [
         "accept": "application/json",
         "Content-Type": "application/json",
-        "x-app-name": ID.appNameHeader,
+        "x-app-name": C.ID.appNameHeader,
     ]
     static let auth = (key: "Authorization", value: "Bearer ")
 

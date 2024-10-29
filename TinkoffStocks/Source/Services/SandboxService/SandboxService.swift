@@ -40,19 +40,23 @@ final class SandboxServiceImpl: SandboxService {
     private func createStubAccount(accountName: String) -> AsyncTask<Void, NetworkManagerError> {
         let endpoint = API.openSandboxAccount(OpenSandboxAccountRequest(name: accountName))
 
-        return networkManager.fetch(endpoint, retryCount: 0)
+        return networkManager
+            .fetch(endpoint, retryCount: 1)
             .then { self.fillPortfolio($0.accountId) }
     }
 
     func closeAccount(_ accountID: String, completion: @escaping Handler<RepositoryError?>) {
         let endpoint = API.closeSandboxAccount(CloseSandboxAccountRequest(accountId: accountID))
-        networkManager.fetch(endpoint).run { completion($0.failure.map(RepositoryError.init)) }
+        networkManager
+            .fetch(endpoint)
+            .run { completion($0.failure.map(RepositoryError.init)) }
     }
 
     private func fillPortfolio(_ accountID: String) -> AsyncTask<Void, NetworkManagerError> {
         let endpoint = API.sandboxPayIn(SandboxPayInRequest(accountId: accountID, amount: C.topUpAmount.asMoney("RUB")))
 
-        return networkManager.fetch(endpoint)
+        return networkManager
+            .fetch(endpoint)
             .then { _ in
                 let postOrders = C.sandboxAccountAssets.shuffled().prefix(10).map {
                     self.postOrder(accountID, instrumentID: $0.key, quantity: $0.value)
@@ -70,9 +74,9 @@ final class SandboxServiceImpl: SandboxService {
             direction: .buy,
             quantity: String(quantity)
         )
-        let endpoint = API.postOrder(order)
 
-        return networkManager.fetch(endpoint, retryCount: 1)
+        return networkManager
+            .fetch(API.postOrder(order), retryCount: 1)
         #if DEBUG
             .onError { print("Failed to buy \(order.instrumentId): \($0)") }
         #endif

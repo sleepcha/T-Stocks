@@ -22,7 +22,8 @@ final class PortfolioDataRepositoryImpl: PortfolioDataRepository {
     }
 
     func getPortfolioData(id: String) -> AsyncTask<PortfolioData, RepositoryError> {
-        networkManager.fetch(API.getPortfolio(PortfolioRequest(accountId: id)))
+        networkManager
+            .fetch(API.getPortfolio(PortfolioRequest(accountId: id)))
             .map(PortfolioData.init)
             .mapError(RepositoryError.init)
     }

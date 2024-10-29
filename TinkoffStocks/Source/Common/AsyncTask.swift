@@ -155,9 +155,9 @@ class AsyncTask<Output, Error: Swift.Error>: IdentifiableHashable {
 
     /// Starts the task and ensures the completion handler is called when the task finishes.
     ///
-    /// The task is keeping a strong reference to itself until it completes to prevent deallocation.
     /// If the task is currently executing, the completion handler is added to the collection of handlers that are called once the task finishes.
     /// If the task has already completed, the completion handler is called immediately with the task's result.
+    /// The task is keeping a strong reference to itself until it completes to prevent deallocation (while preceding tasks in the chain are running).
     ///
     /// - Parameter completion: An optional handler that is called when the task completes with a `Result` containing either the output or an error.
     func run(completion: Handler<Result<Output, Error>>? = nil) {

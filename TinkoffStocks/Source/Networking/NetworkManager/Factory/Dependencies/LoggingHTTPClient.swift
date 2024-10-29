@@ -27,7 +27,7 @@ final class LoggingHTTPClient: HTTPClient {
             case .success:
                 logger.debug("✅ \(httpRequest.path)")
             case .failure(let error):
-                logger.warning("❌ \(error)\n\n\(httpRequest.body?.asString ?? "")")
+                logger.warning("❌ \(error.localizedDescription)\n\n\(httpRequest.path) \(httpRequest.body?.asString ?? "")")
             }
             completion(result)
         }

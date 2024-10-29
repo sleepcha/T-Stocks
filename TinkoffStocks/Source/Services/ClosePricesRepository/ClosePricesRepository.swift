@@ -48,7 +48,8 @@ final class ClosePricesRepositoryImpl: ClosePricesRepository {
             return .empty(.success(cachedPrices))
         }
 
-        return networkManager.fetch(API.getClosePrices(GetClosePricesRequest(instruments: requests)))
+        return networkManager
+            .fetch(API.getClosePrices(GetClosePricesRequest(instruments: requests)))
             .mapError(RepositoryError.init)
             .map { [weak cache, now] response in
                 for item in response.closePrices {
