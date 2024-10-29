@@ -87,7 +87,6 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
     }
 
     func didTapRefreshButton() {
-        updatePortfolios()
         timerManager.resume()
     }
 
