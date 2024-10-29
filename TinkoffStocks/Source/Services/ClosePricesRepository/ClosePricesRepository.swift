@@ -56,7 +56,7 @@ final class ClosePricesRepositoryImpl: ClosePricesRepository {
                     cache?.store(
                         key: item.instrumentUid,
                         value: item.closePrice,
-                        expiryDate: item.time?.nextWeekday ?? now()
+                        expiryDate: now().secondToMidnight
                     )
                     cachedPrices[item.instrumentUid] = item.closePrice
                 }
