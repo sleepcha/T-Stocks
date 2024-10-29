@@ -23,11 +23,12 @@ final class LoggingHTTPClient: HTTPClient {
         completion: @escaping (Result<Data, HTTPClientError>) -> Void
     ) -> HTTPClientTask {
         let completion = { [logger] (result: Result<Data, HTTPClientError>) in
+            let json = httpRequest.body?.asString ?? ""
             switch result {
             case .success:
-                logger.debug("✅ \(httpRequest.path)")
+                logger.debug("✅ \(httpRequest.path) \(json)")
             case .failure(let error):
-                logger.warning("❌ \(error.localizedDescription)\n\n\(httpRequest.path) \(httpRequest.body?.asString ?? "")")
+                logger.warning("❌ \(httpRequest.path) \(json)\n\(error.localizedDescription)")
             }
             completion(result)
         }
@@ -47,6 +48,8 @@ final class LoggingHTTPClient: HTTPClient {
         httpClient.removeAllCachedResponses()
     }
 }
+
+// MARK: - Helpers
 
 extension Data {
     var asString: String? {
