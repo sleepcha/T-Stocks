@@ -184,10 +184,6 @@ final class PortfolioItemCell: UITableViewCell {
             make.size.equalTo(C.UI.logoSize)
         }
 
-        valueLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        gainLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        quantityLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-
         tickerLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         priceChangeLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)

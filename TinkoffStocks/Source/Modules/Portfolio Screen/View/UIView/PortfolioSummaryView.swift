@@ -14,8 +14,7 @@ final class PortfolioSummaryView: UIView {
         views: [valueLabel, gainLabel],
         axis: .vertical,
         alignment: .center,
-        distribution: .equalSpacing,
-        spacing: 0
+        distribution: .fillProportionally
     )
 
     private let valueLabel = UILabel {
