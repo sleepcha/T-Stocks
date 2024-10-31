@@ -103,7 +103,8 @@ final class AccountCell: UICollectionViewCell {
     private func setupConstraints() {
         verticalStack.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.bottom.directionalHorizontalEdges.equalToSuperview().inset(C.UI.doubleSpacing * 2)
+            make.directionalHorizontalEdges.equalToSuperview().inset(C.UI.doubleSpacing * 2)
+            make.height.equalTo(C.UI.cellHeight)
         }
         gainLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         gainPeriodButton.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
@@ -122,4 +123,5 @@ private extension UIColor {
 
 private extension C.UI {
     static let animationDuration: TimeInterval = 3.333
+    static let cellHeight: CGFloat = 120
 }

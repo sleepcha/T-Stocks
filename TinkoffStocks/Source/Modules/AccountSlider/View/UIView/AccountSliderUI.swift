@@ -21,9 +21,7 @@ final class AccountSliderUI: UIView {
         $0.register(AccountCell.self)
     }
 
-    let pageControl = UIPageControl {
-        $0.isUserInteractionEnabled = false
-    }
+    let pageIndicator = PageIndicatorView()
 
     let spinner = UIActivityIndicatorView {
         $0.hidesWhenStopped = true
@@ -36,14 +34,6 @@ final class AccountSliderUI: UIView {
         $0.scrollDirection = .horizontal
         $0.minimumLineSpacing = 0
     }
-
-    private lazy var stack = UIStackView(
-        views: [accountsCollectionView, pageControl],
-        axis: .vertical,
-        alignment: .fill,
-        distribution: .fill,
-        spacing: 0
-    )
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,18 +48,21 @@ final class AccountSliderUI: UIView {
     private func setupViews() {
         backgroundColor = .clear
         frame.size.height = C.UI.viewHeight
-        addSubview(stack)
+        addSubview(accountsCollectionView)
+        addSubview(pageIndicator)
         addSubview(spinner)
     }
 
-    func setupConstraints() {
-        pageControl.snp.makeConstraints { $0.height.equalTo(C.UI.pageControlHeight) }
-
-        stack.snp.makeConstraints { make in
-            make.top.directionalHorizontalEdges.equalToSuperview()
-            make.bottom.equalToSuperview().inset(C.UI.doubleSpacing)
+    private func setupConstraints() {
+        accountsCollectionView.snp.makeConstraints { make in
+            make.directionalEdges.equalToSuperview()
         }
-        
+
+        pageIndicator.snp.makeConstraints { make in
+            make.directionalHorizontalEdges.equalTo(safeAreaLayoutGuide).inset(C.UI.doubleSpacing)
+            make.top.equalTo(snp.bottom).inset(C.UI.doubleSpacing * 2)
+        }
+
         spinner.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-C.UI.doubleSpacing)
@@ -81,5 +74,4 @@ final class AccountSliderUI: UIView {
 
 private extension C.UI {
     static let viewHeight: CGFloat = 200
-    static let pageControlHeight: CGFloat = 26
 }

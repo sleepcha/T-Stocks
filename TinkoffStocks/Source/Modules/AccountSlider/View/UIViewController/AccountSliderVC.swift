@@ -15,9 +15,7 @@ class AccountSliderVC: UIViewController {
 
     private var feedback: UISelectionFeedbackGenerator!
     private var dataSource: [AccountCellModel] = []
-    private var currentAccountIndex: Int = 0 {
-        didSet { ui.pageControl.currentPage = currentAccountIndex }
-    }
+    private var currentAccountIndex: Int = 0
 
     override func loadView() {
         view = ui
@@ -41,13 +39,19 @@ class AccountSliderVC: UIViewController {
     }
 
     private func didSelectAccount() {
-        guard !dataSource.isEmpty else { return }
+        guard currentAccountIndex < dataSource.count else { return }
         presenter.didSelectAccount(withID: dataSource[currentAccountIndex].id)
     }
 }
 
 extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: UICollectionViewDelegateFlowLayout
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView.isDragging || scrollView.isDecelerating else { return }
+
+        ui.pageIndicator.position = scrollView.contentOffset.x / scrollView.contentSize.width
+    }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         feedback.prepare()
@@ -98,7 +102,7 @@ extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateF
 extension AccountSliderVC: AccountSliderView {
     func updateAccountList(_ newDataSource: [AccountCellModel]) {
         dataSource = newDataSource
-        ui.pageControl.numberOfPages = newDataSource.count
+        ui.pageIndicator.numberOfPages = newDataSource.count
         ui.accountsCollectionView.reloadData()
         didSelectAccount()
         ui.spinner.stopAnimating()
