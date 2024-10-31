@@ -153,7 +153,6 @@ extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
     func didTapGainPeriodButton() {
         gainPeriod.toggle()
         updateAccountSlider()
-        updatePortfolioItemList()
     }
 
     func didSelectAccount(withID id: String) {
