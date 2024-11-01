@@ -7,4 +7,4 @@
   
 </details>
 
-![UI](UI.webp)
+![UI](UI.png)
