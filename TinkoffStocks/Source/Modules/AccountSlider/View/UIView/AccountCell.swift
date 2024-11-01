@@ -74,14 +74,6 @@ final class AccountCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        valueLabel.text = nil
-        gainLabel.text = nil
-        valueLabel.layer.removeAllAnimations()
-        gainStack.layer.removeAllAnimations()
-    }
-
     func configure(with account: AccountCellModel) {
         nameLabel.text = account.name
         valueLabel.text = account.value
