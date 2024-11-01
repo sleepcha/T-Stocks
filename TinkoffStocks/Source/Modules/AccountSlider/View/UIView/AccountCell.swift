@@ -115,7 +115,7 @@ final class AccountCell: UICollectionViewCell {
 
 private extension UIColor {
     var bgColor: UIColor {
-        withRelativeBrightness(0.6).withAlphaComponent(0.46)
+        withRelativeBrightness(0.6).withAlphaComponent(0.33)
     }
 }
 
