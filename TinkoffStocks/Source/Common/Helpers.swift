@@ -22,12 +22,6 @@ public extension Data {
     }
 }
 
-public extension Date {
-    func adding(_ value: Int, _ component: Calendar.Component) -> Date {
-        Calendar.current.date(byAdding: component, value: value, to: self) ?? self
-    }
-}
-
 public extension NSLock {
     func read<T>(_ autoclosure: @autoclosure () -> T) -> T {
         withLock { autoclosure() }
