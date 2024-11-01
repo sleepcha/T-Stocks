@@ -48,9 +48,13 @@ extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateF
     // MARK: UICollectionViewDelegateFlowLayout
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard scrollView.isDragging || scrollView.isDecelerating else { return }
-
-        ui.pageIndicator.position = scrollView.contentOffset.x / scrollView.contentSize.width
+        ui.pageIndicator.position = scrollView.offsetX
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard ui.accountsCollectionView.contentSize.width > 0 else { return }
+        ui.pageIndicator.position = ui.accountsCollectionView.offsetX
     }
 
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -102,9 +106,18 @@ extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateF
 extension AccountSliderVC: AccountSliderView {
     func updateAccountList(_ newDataSource: [AccountCellModel]) {
         dataSource = newDataSource
-        ui.pageIndicator.numberOfPages = newDataSource.count
+        ui.pageIndicator.setNumberOfPages(newDataSource.count, updatingPosition: !ui.accountsCollectionView.isDragging)
         ui.accountsCollectionView.reloadData()
         didSelectAccount()
         ui.spinner.stopAnimating()
+    }
+}
+
+// MARK: - Helpers
+
+private extension UIScrollView {
+    var offsetX: CGFloat {
+        guard contentSize.width > 0 else { return 0 }
+        return contentOffset.x / contentSize.width
     }
 }

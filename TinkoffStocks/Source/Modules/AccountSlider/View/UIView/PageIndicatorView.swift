@@ -7,20 +7,11 @@
 
 import UIKit
 
+// MARK: - PageIndicatorView
+
 final class PageIndicatorView: UIView {
     override var intrinsicContentSize: CGSize {
         CGSize(width: 100, height: 2)
-    }
-
-    var numberOfPages: Int = 0 {
-        willSet {
-            let newStep = (newValue == 0) ? 0 : 1 / CGFloat(newValue)
-            position = newStep * min(CGFloat(newValue - 1), CGFloat(currentPage))
-        }
-        didSet {
-            updateFrame()
-            layoutIfNeeded()
-        }
     }
 
     /// Current position in percentage points.
@@ -35,12 +26,11 @@ final class PageIndicatorView: UIView {
         Int(position * Double(numberOfPages))
     }
 
-    private let indicatorView = UIView {
-        $0.backgroundColor = .lightGray
-    }
+    private let indicatorView = UIView()
 
+    private(set) var numberOfPages: Int = 0
     private var indicatorWidth: CGFloat {
-        guard numberOfPages > 0, frame.width > 0 else { return .zero }
+        guard numberOfPages > 0, frame.width > 0 else { return 0 }
         return 1 / Double(numberOfPages) * frame.width
     }
 
@@ -60,8 +50,22 @@ final class PageIndicatorView: UIView {
         updateFrame()
     }
 
+    func setNumberOfPages(_ newValue: Int, updatingPosition: Bool) {
+        if updatingPosition {
+            let newStep = (newValue == 0) ? 0 : 1 / CGFloat(newValue)
+            position = newStep * min(CGFloat(newValue - 1), CGFloat(currentPage))
+        }
+
+        numberOfPages = newValue
+        isHidden = numberOfPages < 2
+        updateFrame()
+        layoutIfNeeded()
+    }
+
     private func setupViews() {
-        backgroundColor = .white.withAlphaComponent(0.1)
+        indicatorView.backgroundColor = C.indicatorColor
+        backgroundColor = C.indicatorColor.withAlphaComponent(0.18)
+        isHidden = true
         clipsToBounds = true
         addSubview(indicatorView)
     }
@@ -69,4 +73,10 @@ final class PageIndicatorView: UIView {
     private func updateFrame() {
         indicatorView.frame = CGRect(x: position * frame.width, y: 0, width: indicatorWidth, height: frame.height)
     }
+}
+
+// MARK: - Constants
+
+private extension C {
+    static let indicatorColor = UIColor(red: 0.77, green: 0.78, blue: 0.79, alpha: 1)
 }
