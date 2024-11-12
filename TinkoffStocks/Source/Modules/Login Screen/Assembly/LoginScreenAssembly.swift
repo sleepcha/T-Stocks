@@ -31,7 +31,7 @@ final class LoginScreenAssemblyImpl: LoginScreenAssembly {
 
 // MARK: - WeakRefMainQueueProxy + LoginScreenView
 
-extension WeakRefMainQueueProxy: LoginScreenView where View: LoginScreenView {
+extension WeakRefMainQueueProxy: LoginScreenView where Subject: LoginScreenView {
     func switchState(isLoading: Bool) {
         dispatch { $0.switchState(isLoading: isLoading) }
     }

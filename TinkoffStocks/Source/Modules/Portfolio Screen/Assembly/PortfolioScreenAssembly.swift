@@ -51,7 +51,7 @@ final class PortfolioScreenAssemblyImpl: PortfolioScreenAssembly {
 
 // MARK: - WeakRefMainQueueProxy + PortfolioScreenView
 
-extension WeakRefMainQueueProxy: PortfolioScreenView where View: PortfolioScreenView {
+extension WeakRefMainQueueProxy: PortfolioScreenView where Subject: PortfolioScreenView {
     func updateItemList(with newDataSource: DataSource<PortfolioItemCellModel>, portfolioSummary: PortfolioSummary) {
         dispatch { $0.updateItemList(with: newDataSource, portfolioSummary: portfolioSummary) }
     }
@@ -67,7 +67,7 @@ extension WeakRefMainQueueProxy: PortfolioScreenView where View: PortfolioScreen
 
 // MARK: - WeakRefMainQueueProxy + PortfolioScreenView
 
-extension WeakRefMainQueueProxy: AccountSliderView where View: AccountSliderView {
+extension WeakRefMainQueueProxy: AccountSliderView where Subject: AccountSliderView {
     func updateAccountList(_ newDataSource: [AccountCellModel]) {
         dispatch { $0.updateAccountList(newDataSource) }
     }
