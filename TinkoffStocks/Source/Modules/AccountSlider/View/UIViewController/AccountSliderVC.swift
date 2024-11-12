@@ -96,7 +96,12 @@ extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateF
         let cell = collectionView.dequeue(AccountCell.self, for: indexPath)!
 
         cell.configure(with: dataSource[indexPath.row])
-        cell.gainPeriodButtonTapHandler = { [presenter] in presenter?.didTapGainPeriodButton() }
+        cell.gainPeriodButtonTapHandler = { [weak self] in
+            guard let self else { return }
+            feedback.prepare()
+            presenter.didTapGainPeriodButton()
+            feedback.selectionChanged()
+        }
         return cell
     }
 }
