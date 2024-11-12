@@ -9,13 +9,14 @@ import UIKit
 
 // MARK: - TabFlowCoordinator
 
-protocol TabFlowCoordinator: Coordinator {
-    var tabBarController: UITabBarController { get set }
-    func startFlows(_ flows: StackFlowCoordinator...)
+class TabFlowCoordinator: BaseCoordinator {
+    weak var tabBarController: UITabBarController?
 }
 
 extension TabFlowCoordinator {
-    func startFlows(_ flows: StackFlowCoordinator...) {
+    func present(_ flows: StackFlowCoordinator...) {
+        guard let tabBarController else { return }
+
         let navigators = flows.map { flow in
             let navigator = UINavigationController()
             flow.navigator = navigator

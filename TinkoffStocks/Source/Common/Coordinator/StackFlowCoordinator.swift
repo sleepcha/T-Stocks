@@ -9,44 +9,101 @@ import UIKit
 
 // MARK: - StackFlowCoordinator
 
-protocol StackFlowCoordinator: Coordinator {
-    var navigator: UINavigationController? { get set }
+class StackFlowCoordinator: BaseCoordinator {
+    weak var navigator: UINavigationController? {
+        didSet { flowRootIndex = nil }
+    }
+
+    // store the first screen's stack index to be able to popToRoot later
+    private var flowRootIndex: Int?
 }
 
 extension StackFlowCoordinator {
-    func push(module viewController: UIViewController) {
-        navigator?.pushViewController(viewController, animated: navigator?.topViewController != nil)
+    func push(screen: UIViewController) {
+        guard let navigator else { return }
+
+        flowRootIndex = flowRootIndex ?? navigator.viewControllers.count
+        let isFirstScreen = navigator.viewControllers.isEmpty
+        navigator.topPresentedNavigator.pushViewController(screen, animated: !isFirstScreen)
+    }
+
+    func present(
+        screen: UIViewController,
+        style: UIModalPresentationStyle = .automatic,
+        isModalInPresentation: Bool = false
+    ) {
+        guard let parentNavigator = navigator?.topPresentedNavigator else { return }
+
+        flowRootIndex = flowRootIndex ?? 0
+        let newNavigator = screen as? UINavigationController ?? UINavigationController(rootViewController: screen)
+        newNavigator.modalPresentationStyle = style
+        newNavigator.isModalInPresentation = isModalInPresentation
+        parentNavigator.present(newNavigator, animated: true)
     }
 
     func push(flow: StackFlowCoordinator) {
-        let topVC = navigator?.topViewController
-        flow.navigator = navigator
+        guard let parentNavigator = navigator?.topPresentedNavigator else { return }
 
-        let oldHandler = flow.onStopFlow
-        flow.onStopFlow = { [weak navigator] in
-            oldHandler?()
-            guard let topVC else { return }
-            navigator?.popToViewController(topVC, animated: true)
+        let parentVC = parentNavigator.topViewController
+        flow.navigator = parentNavigator
+
+        flow.onStopFlow { [weak parentNavigator, weak parentVC] in
+            guard let parentVC, let parentNavigator else { return }
+
+            // if by the time the flow stops there are some modal screens — dismiss them
+            parentNavigator.dismissPresented()
+            parentNavigator.popToViewController(parentVC, animated: true)
         }
         flow.start()
     }
 
-    func present(flow: StackFlowCoordinator, style: UIModalPresentationStyle = .automatic) {
-        let newNavigator = UINavigationController()
-        flow.navigator = newNavigator
+    func present(
+        flow: StackFlowCoordinator,
+        style: UIModalPresentationStyle = .automatic,
+        isModalInPresentation: Bool = false
+    ) {
+        guard let parentNavigator = navigator?.topPresentedNavigator else { return }
 
-        let oldHandler = flow.onStopFlow
-        flow.onStopFlow = { [weak newNavigator] in
-            oldHandler?()
-            newNavigator?.dismiss(animated: true)
+        let newNavigator = UINavigationController {
+            $0.modalPresentationStyle = style
+            $0.isModalInPresentation = isModalInPresentation
         }
 
+        flow.navigator = newNavigator
+        flow.onStopFlow { [weak parentNavigator] in
+            parentNavigator?.dismiss(animated: true)
+        }
         flow.start()
-        navigator?.modalPresentationStyle = style
-        navigator?.present(newNavigator, animated: true)
+
+        parentNavigator.present(newNavigator, animated: true)
     }
 
     func popToRoot() {
-        navigator?.popToRootViewController(animated: true)
+        guard let flowRootIndex else { return }
+        navigator?.dismissPresented()
+        navigator?.popToViewControllerAt(flowRootIndex)
+    }
+}
+
+// MARK: - Helpers
+
+private extension UINavigationController {
+    var topPresentedNavigator: UINavigationController {
+        var current = self
+        while let child = current.presentedViewController as? UINavigationController {
+            current = child
+        }
+        return current
+    }
+
+    func popToViewControllerAt(_ index: Int) {
+        guard let vc = viewControllers[safe: index] else { return }
+        popToViewController(vc, animated: true)
+    }
+}
+
+private extension UIViewController {
+    func dismissPresented() {
+        if presentedViewController != nil { dismiss(animated: true) }
     }
 }
