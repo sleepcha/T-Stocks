@@ -1,6 +1,11 @@
 import Foundation
 
 public extension Collection {
+    /// Safely accesses an element at the specified index.
+    subscript(safe index: Index) -> Element? {
+        indices.contains(index) ? self[index] : nil
+    }
+
     /// Applies a closure to the collection and returns the result.
     func apply<T>(_ transform: (Self) -> T) -> T {
         transform(self)
