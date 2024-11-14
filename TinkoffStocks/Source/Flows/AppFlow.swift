@@ -7,11 +7,9 @@
 
 import UIKit
 
-final class AppFlow {
+final class AppFlow: AppCoordinator {
     private let authService: AuthService
-    private let window: UIWindow
     private var launchWindow: UIWindow?
-    private var mainFlow: MainFlow?
 
     init(windowScene: UIWindowScene) {
         self.authService = AuthServiceImpl(
@@ -19,11 +17,11 @@ final class AppFlow {
             networkManagerFactory: NetworkManagerFactoryImpl(),
             sandboxServiceFactory: SandboxServiceFactoryImpl()
         )
-        self.window = UIWindow(windowScene: windowScene)
         self.launchWindow = UIWindow(windowScene: windowScene)
+        super.init(window: UIWindow(windowScene: windowScene))
     }
 
-    func start() {
+    override func start() {
         presentLaunchWindow()
 
         authService.getStoredAuthData { [weak self] authData in
@@ -39,7 +37,7 @@ final class AppFlow {
 
             authService.login(auth: authData, shouldSave: false) { result in
                 switch result {
-                case .failure(let error):
+                case let .failure(error):
                     if case .unauthorized = error { self.authService.logout() }
                     self.startLoginFlow(showing: error)
                 case .success:
@@ -64,33 +62,24 @@ final class AppFlow {
 
     private func startLoginFlow(showing error: Error? = nil) {
         DispatchQueue.mainSync {
-            let navigator = UINavigationController()
             let loginFlow = LoginFlow(authService: authService, showing: error)
-            loginFlow.navigator = navigator
-            loginFlow.onStopFlow = { [weak self] in
+            loginFlow.onStopFlow { [weak self] in
                 self?.startMainFlow()
             }
 
-            loginFlow.start()
-            window.rootViewController = navigator
-            window.makeKeyAndVisible()
+            present(loginFlow)
         }
     }
 
     private func startMainFlow() {
         DispatchQueue.mainSync {
             let mainFlow = MainFlow(authService: authService)
-            mainFlow.onStopFlow = { [weak self] in
+            mainFlow.onStopFlow { [weak self] in
                 self?.authService.logout()
-                self?.mainFlow = nil
                 self?.startLoginFlow()
             }
-            // retains the object
-            self.mainFlow = mainFlow
 
-            mainFlow.start()
-            window.rootViewController = mainFlow.tabBarController
-            window.makeKeyAndVisible()
+            present(mainFlow)
         }
     }
 

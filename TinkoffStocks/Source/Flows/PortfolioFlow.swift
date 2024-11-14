@@ -8,9 +8,6 @@
 import UIKit
 
 final class PortfolioFlow: StackFlowCoordinator {
-    weak var navigator: UINavigationController?
-    var onStopFlow: VoidHandler?
-
     private let authService: AuthService
     private let error: Error?
     private let tabBarItem = UITabBarItem(
@@ -24,7 +21,7 @@ final class PortfolioFlow: StackFlowCoordinator {
         self.error = error
     }
 
-    func start() {
+    override func start() {
         navigator?.tabBarItem = tabBarItem
         pushPortfolioScreen()
     }
@@ -48,14 +45,14 @@ final class PortfolioFlow: StackFlowCoordinator {
             timerManager: timerManager
         ) { [self] in
             switch $0 {
-            case .selectedAsset(let assetID):
+            case let .selectedAsset(assetID):
                 pushAssetScreen(assetID: assetID)
             case .logout:
-                stopFlow()
+                stop()
             }
         }
 
-        push(module: portfolioScreen)
+        push(screen: portfolioScreen)
     }
 
     private func pushAssetScreen(assetID: String) {

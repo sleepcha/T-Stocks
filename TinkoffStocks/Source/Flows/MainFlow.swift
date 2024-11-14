@@ -7,27 +7,27 @@
 
 import UIKit
 
-final class MainFlow: NSObject, TabFlowCoordinator, UITabBarControllerDelegate {
-    lazy var tabBarController: UITabBarController = UITabBarController {
-        let appearance = UITabBarAppearance()
-        appearance.configureWithDefaultBackground()
-        $0.tabBar.standardAppearance = appearance
-        $0.tabBar.scrollEdgeAppearance = appearance
-        $0.tabBar.tintColor = .tabBarIcon
-        $0.delegate = self
-    }
+// MARK: - MainFlow
 
-    var onStopFlow: VoidHandler?
-
+final class MainFlow: TabFlowCoordinator, UITabBarControllerDelegate {
     private let authService: AuthService
 
     init(authService: AuthService) {
         self.authService = authService
     }
 
-    func start() {
+    override func start() {
+        guard let tabBarController else { return }
+
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        tabBarController.tabBar.standardAppearance = appearance
+        tabBarController.tabBar.scrollEdgeAppearance = appearance
+        tabBarController.tabBar.tintColor = .tabBarIcon
+        tabBarController.delegate = self
+
         let portfolioFlow = PortfolioFlow(authService: authService)
-        portfolioFlow.onStopFlow = { [weak self] in self?.stopFlow() }
-        startFlows(portfolioFlow)
+        portfolioFlow.onStopFlow { [weak self] in self?.stop() }
+        present(portfolioFlow)
     }
 }
