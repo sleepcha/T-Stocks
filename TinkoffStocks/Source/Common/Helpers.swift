@@ -1,8 +1,8 @@
 import Foundation
 
-typealias VoidHandler = () -> Void
-typealias Handler<T> = (T) -> Void
-typealias DateProvider = () -> Date
+public typealias VoidHandler = () -> Void
+public typealias Handler<T> = (T) -> Void
+public typealias DateProvider = () -> Date
 
 public extension Result {
     var failure: Failure? {
