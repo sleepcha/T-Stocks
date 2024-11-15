@@ -11,6 +11,7 @@ import UIKit
 
 class AppCoordinator: NSObject, Coordinator {
     var window: UIWindow
+    private var currentFlow: Coordinator?
 
     init(window: UIWindow) {
         self.window = window
@@ -26,6 +27,12 @@ extension AppCoordinator {
         tabFlow.start()
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
+
+        // retain the child flow until it's finished
+        currentFlow = tabFlow
+        tabFlow.onStopFlow { [weak self] in
+            self?.currentFlow = nil
+        }
     }
 
     func present(_ stackFlow: StackFlowCoordinator) {
@@ -34,5 +41,11 @@ extension AppCoordinator {
         stackFlow.start()
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
+
+        // retain the child flow until it's finished
+        currentFlow = stackFlow
+        stackFlow.onStopFlow { [weak self] in
+            self?.currentFlow = nil
+        }
     }
 }
