@@ -45,7 +45,7 @@ final class PortfolioFlow: StackFlowCoordinator {
             timerManager: timerManager
         ) { [self] in
             switch $0 {
-            case let .selectedAsset(assetID):
+            case .selectedAsset(let assetID):
                 pushAssetScreen(assetID: assetID)
             case .logout:
                 stop()

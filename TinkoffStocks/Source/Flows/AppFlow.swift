@@ -37,7 +37,7 @@ final class AppFlow: AppCoordinator {
 
             authService.login(auth: authData, shouldSave: false) { result in
                 switch result {
-                case let .failure(error):
+                case .failure(let error):
                     if case .unauthorized = error { self.authService.logout() }
                     self.startLoginFlow(showing: error)
                 case .success:

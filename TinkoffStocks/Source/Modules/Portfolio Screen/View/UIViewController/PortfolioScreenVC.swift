@@ -127,7 +127,7 @@ final class PortfolioScreenVC: UITableViewController {
         guard let tableHeaderView, let navBarHeight, navBarHeight > 0 else { return }
 
         // update tableHeaderView alpha if we haven't scrolled it away yet
-        if (offset < tableHeaderView.frame.maxY) {
+        if offset < tableHeaderView.frame.maxY {
             setHeaderAlpha(to: 1 - offset / navBarHeight)
         }
 
