@@ -16,8 +16,8 @@ final class GradientView: UIView {
         $0.type = .radial
         $0.colors = [accentColor.cgColor, mainColor.cgColor]
         $0.locations = [0, 1]
-        $0.startPoint = CGPoint(x: 1.05, y: 0.5)
-        $0.endPoint = CGPoint(x: 2.05, y: 1)
+        $0.startPoint = CGPoint(x: 1.02, y: 0.55)
+        $0.endPoint = CGPoint(x: 2, y: 0.95)
         $0.drawsAsynchronously = true
         $0.shouldRasterize = true
         $0.isOpaque = true
