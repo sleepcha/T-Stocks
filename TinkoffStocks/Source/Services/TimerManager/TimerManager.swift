@@ -22,32 +22,36 @@ final class TimerManagerImpl: TimerManager {
     private enum State {
         case invalid
         case running
-        case paused
+        case suspended
     }
 
-    private let queue = DispatchQueue(label: "TimerManager.queue")
+    private let queue = DispatchQueue(label: "TimerManager.serialQueue")
     private var timer: DispatchSourceTimer?
     private var state = State.invalid
 
     func schedule(timeInterval: TimeInterval, tolerance: TimeInterval, repeats: Bool, action: @escaping VoidHandler) {
         invalidateTimer()
 
-        let timer = DispatchSource.makeTimerSource(queue: queue)
-        timer.setEventHandler { print("fire the timer @ \(Date())"); action() }
-        timer.schedule(
-            deadline: .now() + timeInterval,
-            repeating: repeats ? .init(timeInterval) : .never,
-            leeway: .init(tolerance)
-        )
-        timer.activate()
-        state = .running
-        self.timer = timer
+        queue.sync {
+            let timer = DispatchSource.makeTimerSource(queue: .global())
+            timer.setEventHandler(handler: action)
+            timer.schedule(
+                deadline: .now() + timeInterval,
+                repeating: repeats ? DispatchTimeInterval(timeInterval) : .never,
+                leeway: DispatchTimeInterval(tolerance)
+            )
+            timer.activate()
+            self.timer = timer
+            state = .running
+        }
     }
 
     func invalidateTimer() {
         queue.sync {
-            timer?.cancel()
-            timer = nil
+            guard let timer = self.timer else { return }
+            if case .suspended = state { timer.resume() }
+            timer.cancel()
+            self.timer = nil
             state = .invalid
         }
     }
@@ -56,13 +60,13 @@ final class TimerManagerImpl: TimerManager {
         queue.sync {
             guard let timer, case .running = state else { return }
             timer.suspend()
-            state = .paused
+            state = .suspended
         }
     }
 
     func resume() {
         queue.sync {
-            guard let timer, case .paused = state else { return }
+            guard let timer, case .suspended = state else { return }
             timer.resume()
             state = .running
         }
