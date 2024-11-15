@@ -231,6 +231,6 @@ private extension C {
         static let cancelButtonTitle = String(localized: "PortfolioScreenPresenter.logoutDialog.cancelButtonTitle", defaultValue: "Отмена")
     }
 
-    static let timerInterval: TimeInterval = 3
+    static let timerInterval: TimeInterval = 10
     static let timerTolerance: TimeInterval = 0.5
 }
