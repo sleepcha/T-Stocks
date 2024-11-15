@@ -71,11 +71,6 @@ final class PortfolioScreenPresenterImpl {
 extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
     func viewReady() {
         updatePortfolios()
-        timerManager.startTimer(
-            timeInterval: C.timerInterval,
-            tolerance: C.timerTolerance,
-            action: { [weak self] in self?.updatePortfolios() }
-        )
     }
 
     func viewAppearing() {
@@ -87,7 +82,7 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
     }
 
     func didTapRefreshButton() {
-        timerManager.resume()
+        updatePortfolios()
     }
 
     func didSelectItem(withID id: String) {
@@ -112,14 +107,21 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
         view.showDialog(dialog: logoutDialog)
     }
 
+    private func startTimer(interval: TimeInterval = C.timerInterval) {
+        timerManager.schedule(
+            timeInterval: interval,
+            tolerance: C.timerTolerance,
+            repeats: false,
+            action: { [weak self] in self?.updatePortfolios() }
+        )
+    }
+
     private func updatePortfolios() {
         portfolioService.getAllPortfolios { [weak self] result in
             guard let self else { return }
 
             switch result {
             case .failure(let error):
-                timerManager.pause()
-
                 switch error {
                 case .networkError, .serverError, .taskCancelled:
                     view.showErrorMessage(message: error.localizedDescription)
@@ -129,14 +131,13 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
                     if portfolios.isEmpty {
                         view.showErrorMessage(message: error.localizedDescription)
                     }
-                    DispatchQueue.global().asyncAfter(deadline: .now() + seconds) { [weak timerManager] in
-                        timerManager?.resume()
-                    }
+                    startTimer(interval: seconds)
                 }
             case .success(let newPortfolios):
                 guard newPortfolios.count >= portfolios.count else { return }
                 portfolios = newPortfolios
                 updateAccountSlider()
+                startTimer()
             }
         }
     }
@@ -230,6 +231,6 @@ private extension C {
         static let cancelButtonTitle = String(localized: "PortfolioScreenPresenter.logoutDialog.cancelButtonTitle", defaultValue: "Отмена")
     }
 
-    static let timerInterval: TimeInterval = 10
-    static let timerTolerance: TimeInterval = 1
+    static let timerInterval: TimeInterval = 3
+    static let timerTolerance: TimeInterval = 0.5
 }
