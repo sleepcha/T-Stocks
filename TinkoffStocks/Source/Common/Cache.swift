@@ -8,7 +8,7 @@
 import Foundation
 
 final class Cache<Value> {
-    final class CacheItem {
+    final class CacheItem: NSDiscardableContent {
         let value: Value
         let expirationDate: Date
 
@@ -16,14 +16,20 @@ final class Cache<Value> {
             self.value = value
             self.expirationDate = date
         }
+
+        func beginContentAccess() -> Bool { true }
+        func endContentAccess() {}
+        func discardContentIfPossible() {}
+        func isContentDiscarded() -> Bool { false }
     }
 
-    private let cache = NSCache<NSString, CacheItem>()
+    private let cache: NSCache<NSString, CacheItem>
     private let now: DateProvider
 
     init(dateProvider: @escaping DateProvider, countLimit: Int = 0) {
+        self.now = dateProvider
+        self.cache = NSCache<NSString, CacheItem>()
         cache.countLimit = countLimit
-        now = dateProvider
     }
 
     func get(key: String) -> Value? {
