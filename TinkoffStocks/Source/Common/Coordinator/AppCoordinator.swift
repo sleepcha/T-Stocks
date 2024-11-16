@@ -31,6 +31,7 @@ extension AppCoordinator {
         // retain the child flow until it's finished
         currentFlow = tabFlow
         tabFlow.onStopFlow { [weak self] in
+            self?.window.rootViewController = nil
             self?.currentFlow = nil
         }
     }
@@ -45,6 +46,7 @@ extension AppCoordinator {
         // retain the child flow until it's finished
         currentFlow = stackFlow
         stackFlow.onStopFlow { [weak self] in
+            self?.window.rootViewController = nil
             self?.currentFlow = nil
         }
     }
