@@ -56,9 +56,9 @@ final class LoginScreenPresenterImpl: LoginScreenPresenter {
             view.switchState(isLoading: false)
             switch result {
             case .failure(let error):
-                handleFailure(error)
+                view.showErrorMessage(message: error.localizedDescription)
             case .success(let accounts):
-                handleSuccess(accounts)
+                outputHandler(.receivedAccounts(accounts))
             }
         }
     }
@@ -81,14 +81,6 @@ final class LoginScreenPresenterImpl: LoginScreenPresenter {
             ]
         )
         view.showHelpDialog(dialog)
-    }
-
-    private func handleSuccess(_ accounts: [AccountData]) {
-        outputHandler(.receivedAccounts(accounts))
-    }
-
-    private func handleFailure(_ error: Error) {
-        view.showErrorMessage(message: error.localizedDescription)
     }
 }
 
