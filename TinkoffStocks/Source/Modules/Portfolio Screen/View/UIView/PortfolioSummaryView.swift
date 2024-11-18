@@ -37,8 +37,8 @@ final class PortfolioSummaryView: UIView {
     }
 
     func update(with summary: PortfolioSummary?) {
-        valueLabel.text = summary?.total ?? nil
-        gainLabel.attributedText = summary?.gain ?? nil
+        valueLabel.text = summary?.total
+        gainLabel.attributedText = summary?.gain
     }
 
     private func setupViews() {

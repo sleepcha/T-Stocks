@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol PortfolioScreenPresenter {
+protocol PortfolioScreenPresenter: AnyObject {
     func viewReady()
     func viewAppearing()
     func viewDisappearing()

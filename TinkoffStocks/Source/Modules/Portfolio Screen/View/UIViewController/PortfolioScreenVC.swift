@@ -226,7 +226,6 @@ extension PortfolioScreenVC: ApplicationObserving {
 extension PortfolioScreenVC: PortfolioScreenView {
     func updateItemList(with newDataSource: DataSource<PortfolioItemCellModel>, portfolioSummary: PortfolioSummary) {
         isShowingError = false
-
         summaryView.update(with: portfolioSummary)
         dataSource = newDataSource
         tableView.reloadData()
@@ -234,8 +233,8 @@ extension PortfolioScreenVC: PortfolioScreenView {
 
     func showErrorMessage(message: String) {
         isShowingError = true
-        tableView.backgroundView = PortfolioErrorView(errorMessage: message) { [weak self] in
-            self?.presenter.didTapRefreshButton()
+        tableView.backgroundView = PortfolioErrorView(errorMessage: message) { [weak presenter] in
+            presenter?.didTapRefreshButton()
         }
     }
 
