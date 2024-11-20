@@ -177,7 +177,7 @@ extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
         let dataSource = portfolio.items.values
             .grouped(
                 by: \.asset.typeData,
-                sortedBy: \.order,
+                sortedBy: \.orderID,
                 elementsSortedBy: \.asset.name
             )
             .map {
@@ -208,7 +208,7 @@ extension Asset.TypeData {
         }
     }
 
-    var order: Int {
+    var orderID: Int {
         switch self {
         case .share: 1
         case .bond: 2
@@ -219,6 +219,18 @@ extension Asset.TypeData {
         case .other: .max - 1
         case .currency: .max
         }
+    }
+}
+
+// MARK: - Asset.TypeData + Hashable
+
+extension Asset.TypeData: Hashable {
+    static func == (lhs: Asset.TypeData, rhs: Asset.TypeData) -> Bool {
+        lhs.orderID == rhs.orderID
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(orderID)
     }
 }
 

@@ -62,31 +62,6 @@ struct Asset {
     var isRuble: Bool { id == C.ID.rubleAsset }
 }
 
-// MARK: - Asset.TypeData + Hashable
-
-extension Asset.TypeData: Hashable {
-    private var rawValue: Int {
-        switch self {
-        case .share: 0
-        case .etf: 1
-        case .option: 2
-        case .structuredProduct: 3
-        case .currency: 4
-        case .other: 5
-        case .bond: 6
-        case .future: 7
-        }
-    }
-
-    static func == (lhs: Asset.TypeData, rhs: Asset.TypeData) -> Bool {
-        lhs.rawValue == rhs.rawValue
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(rawValue)
-    }
-}
-
 // MARK: - Helpers
 
 extension Asset {
