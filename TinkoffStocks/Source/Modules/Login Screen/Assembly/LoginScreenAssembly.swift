@@ -17,21 +17,21 @@ protocol LoginScreenAssembly {
 
 final class LoginScreenAssemblyImpl: LoginScreenAssembly {
     func build(authService: AuthService, showing error: Error?, outputHandler: @escaping Handler<LoginScreenOutput>) -> UIViewController {
-        let view = LoginScreenVC()
-        let presenter = LoginScreenPresenterImpl(
-            view: WeakRefMainQueueProxy(view),
+        let loginVC = LoginViewController()
+        let presenter = LoginPresenterImpl(
+            view: WeakRefMainQueueProxy(loginVC),
             outputHandler: outputHandler,
             authService: authService,
             showing: error
         )
-        view.presenter = presenter
-        return view
+        loginVC.presenter = presenter
+        return loginVC
     }
 }
 
-// MARK: - WeakRefMainQueueProxy + LoginScreenView
+// MARK: - WeakRefMainQueueProxy + LoginView
 
-extension WeakRefMainQueueProxy: LoginScreenView where Subject: LoginScreenView {
+extension WeakRefMainQueueProxy: LoginView where Subject: LoginView {
     func switchState(isLoading: Bool) {
         dispatch { $0.switchState(isLoading: isLoading) }
     }

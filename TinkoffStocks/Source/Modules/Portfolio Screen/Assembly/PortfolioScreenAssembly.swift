@@ -29,11 +29,11 @@ final class PortfolioScreenAssemblyImpl: PortfolioScreenAssembly {
         timerManager: TimerManager,
         outputHandler: @escaping Handler<PortfolioScreenOutput>
     ) -> UIViewController {
-        let portfolioScreen = PortfolioScreenVC()
-        let accountSlider = AccountSliderVC()
-        let presenter = PortfolioScreenPresenterImpl(
-            portfolioScreenView: WeakRefMainQueueProxy(portfolioScreen),
-            accountSliderView: WeakRefMainQueueProxy(accountSlider),
+        let portfolioVC = PortfolioViewController()
+        let accountSliderVC = AccountSliderViewController()
+        let presenter = PortfolioPresenterImpl(
+            portfolioView: WeakRefMainQueueProxy(portfolioVC),
+            accountSliderView: WeakRefMainQueueProxy(accountSliderVC),
             authService: authService,
             portfolioService: portfolioService,
             logoRepository: logoRepository,
@@ -41,17 +41,17 @@ final class PortfolioScreenAssemblyImpl: PortfolioScreenAssembly {
             outputHandler: outputHandler
         )
 
-        portfolioScreen.addChild(accountSlider)
-        portfolioScreen.presenter = presenter
-        accountSlider.presenter = presenter
+        portfolioVC.addChild(accountSliderVC)
+        portfolioVC.presenter = presenter
+        accountSliderVC.presenter = presenter
 
-        return portfolioScreen
+        return portfolioVC
     }
 }
 
-// MARK: - WeakRefMainQueueProxy + PortfolioScreenView
+// MARK: - WeakRefMainQueueProxy + PortfolioView
 
-extension WeakRefMainQueueProxy: PortfolioScreenView where Subject: PortfolioScreenView {
+extension WeakRefMainQueueProxy: PortfolioView where Subject: PortfolioView {
     func updateItemList(with newDataSource: DataSource<PortfolioItemCellModel>, portfolioSummary: PortfolioSummary) {
         dispatch { $0.updateItemList(with: newDataSource, portfolioSummary: portfolioSummary) }
     }
@@ -65,7 +65,7 @@ extension WeakRefMainQueueProxy: PortfolioScreenView where Subject: PortfolioScr
     }
 }
 
-// MARK: - WeakRefMainQueueProxy + PortfolioScreenView
+// MARK: - WeakRefMainQueueProxy + AccountSliderView
 
 extension WeakRefMainQueueProxy: AccountSliderView where Subject: AccountSliderView {
     func updateAccountList(_ newDataSource: [AccountCellModel]) {

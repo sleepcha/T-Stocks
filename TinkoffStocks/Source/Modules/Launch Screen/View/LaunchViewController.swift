@@ -1,5 +1,5 @@
 //
-//  LaunchScreenVC.swift
+//  LaunchViewController.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/13/24.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - LaunchScreenVC
+// MARK: - LaunchViewController
 
-final class LaunchScreenVC: UIViewController {
+final class LaunchViewController: UIViewController {
     private let loader = UIActivityIndicatorView {
         $0.color = .white
         $0.style = .large

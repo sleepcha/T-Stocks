@@ -154,109 +154,7 @@
         }
       }
     },
-    "LoginScreen.loginButton.title" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Login"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Войти"
-          }
-        }
-      }
-    },
-    "LoginScreen.rememberMeLabel.text" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remember me"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Запомнить меня"
-          }
-        }
-      }
-    },
-    "LoginScreen.sandboxLabel.text" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sandbox mode"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Режим песочницы"
-          }
-        }
-      }
-    },
-    "LoginScreen.subtitle" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To login to T-Investments"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Для входа в Т-Инвестиции"
-          }
-        }
-      }
-    },
-    "LoginScreen.title" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter token"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Введите токен"
-          }
-        }
-      }
-    },
-    "LoginScreen.tokenField.placeholder" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Your Invest API token"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Ваш токен Invest API"
-          }
-        }
-      }
-    },
-    "LoginScreenPresenter.helpDialog.cancelButton.title" : {
+    "LoginPresenter.helpDialog.cancelButton.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -273,7 +171,7 @@
         }
       }
     },
-    "LoginScreenPresenter.helpDialog.goButton.title" : {
+    "LoginPresenter.helpDialog.goButton.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -290,7 +188,7 @@
         }
       }
     },
-    "LoginScreenPresenter.helpDialog.text" : {
+    "LoginPresenter.helpDialog.text" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -307,7 +205,7 @@
         }
       }
     },
-    "LoginScreenPresenter.helpDialog.title" : {
+    "LoginPresenter.helpDialog.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -320,6 +218,108 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Токен Invest API"
+          }
+        }
+      }
+    },
+    "LoginViewUI.loginButton.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Войти"
+          }
+        }
+      }
+    },
+    "LoginViewUI.rememberMeLabel.text" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remember me"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Запомнить меня"
+          }
+        }
+      }
+    },
+    "LoginViewUI.sandboxLabel.text" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sandbox mode"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Режим песочницы"
+          }
+        }
+      }
+    },
+    "LoginViewUI.subtitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To login to T-Investments"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Для входа в Т-Инвестиции"
+          }
+        }
+      }
+    },
+    "LoginViewUI.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter token"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Введите токен"
+          }
+        }
+      }
+    },
+    "LoginViewUI.tokenField.placeholder" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Invest API token"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ваш токен Invest API"
           }
         }
       }
@@ -596,7 +596,24 @@
         }
       }
     },
-    "PortfolioScreenPresenter.logoutDialog.cancelButtonTitle" : {
+    "PortfolioFlow.tabBarItem.title" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Portfolio"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Портфель"
+          }
+        }
+      }
+    },
+    "PortfolioPresenter.logoutDialog.cancelButtonTitle" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -613,7 +630,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.logoutDialog.logoutButtonTitle" : {
+    "PortfolioPresenter.logoutDialog.logoutButtonTitle" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -630,7 +647,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.logoutDialog.text" : {
+    "PortfolioPresenter.logoutDialog.text" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -647,7 +664,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.logoutDialog.title" : {
+    "PortfolioPresenter.logoutDialog.title" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -664,7 +681,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.bonds" : {
+    "PortfolioPresenter.sections.bonds" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -681,7 +698,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.currencies" : {
+    "PortfolioPresenter.sections.currencies" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -698,7 +715,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.etfs" : {
+    "PortfolioPresenter.sections.etfs" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -715,7 +732,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.future" : {
+    "PortfolioPresenter.sections.future" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -732,7 +749,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.options" : {
+    "PortfolioPresenter.sections.options" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -749,7 +766,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.other" : {
+    "PortfolioPresenter.sections.other" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -766,7 +783,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.shares" : {
+    "PortfolioPresenter.sections.shares" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -783,7 +800,7 @@
         }
       }
     },
-    "PortfolioScreenPresenter.sections.structuredProducts" : {
+    "PortfolioPresenter.sections.structuredProducts" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
@@ -796,57 +813,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Структурные ноты"
-          }
-        }
-      }
-    },
-    "PortfolioScreenVC.logoutButtonTitle" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log out"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Выйти"
-          }
-        }
-      }
-    },
-    "PortfolioScreenVC.menuTitle" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Menu"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Меню"
-          }
-        }
-      }
-    },
-    "PortfolioScreenViewController.title" : {
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Portfolio"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Портфель"
           }
         }
       }
@@ -864,6 +830,40 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Неизвестный актив"
+          }
+        }
+      }
+    },
+    "PortfolioViewController.logoutButtonTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log out"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Выйти"
+          }
+        }
+      }
+    },
+    "PortfolioViewController.menuTitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Меню"
           }
         }
       }

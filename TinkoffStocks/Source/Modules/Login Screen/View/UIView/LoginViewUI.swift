@@ -1,5 +1,5 @@
 //
-//  LoginScreenUI.swift
+//  LoginViewUI.swift
 //  TinkoffStocks
 //
 //  Created by sleepcha on 8/14/24.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - LoginScreenUI
+// MARK: - LoginViewUI
 
-final class LoginScreenUI: UIView {
+final class LoginViewUI: UIView {
     lazy var tokenField = PaddedTextField {
         $0.placeholder = C.tokenFieldPlaceholder
         $0.tintColor = .brandAccent
@@ -164,12 +164,12 @@ final class LoginScreenUI: UIView {
 // MARK: - Constants
 
 private extension C {
-    static let tokenFieldPlaceholder = String(localized: "LoginScreen.tokenField.placeholder", defaultValue: "Ваш токен Invest API")
-    static let loginButtonTitle = String(localized: "LoginScreen.loginButton.title", defaultValue: "Войти")
-    static let sandboxLabelText = String(localized: "LoginScreen.sandboxLabel.text", defaultValue: "Режим песочницы")
-    static let rememberMeLabelText = String(localized: "LoginScreen.rememberMeLabel.text", defaultValue: "Запомнить меня")
-    static let title = String(localized: "LoginScreen.title", defaultValue: "Введите токен")
-    static let subtitle = String(localized: "LoginScreen.subtitle", defaultValue: "Для входа в Т-Инвестиции")
+    static let tokenFieldPlaceholder = String(localized: "LoginViewUI.tokenField.placeholder", defaultValue: "Ваш токен Invest API")
+    static let loginButtonTitle = String(localized: "LoginViewUI.loginButton.title", defaultValue: "Войти")
+    static let sandboxLabelText = String(localized: "LoginViewUI.sandboxLabel.text", defaultValue: "Режим песочницы")
+    static let rememberMeLabelText = String(localized: "LoginViewUI.rememberMeLabel.text", defaultValue: "Запомнить меня")
+    static let title = String(localized: "LoginViewUI.title", defaultValue: "Введите токен")
+    static let subtitle = String(localized: "LoginViewUI.subtitle", defaultValue: "Для входа в Т-Инвестиции")
 
     static let textFieldHeight: CGFloat = 48
     static let buttonHeight: CGFloat = 60

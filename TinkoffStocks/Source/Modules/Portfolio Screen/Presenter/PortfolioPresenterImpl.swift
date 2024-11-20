@@ -1,5 +1,5 @@
 //
-//  PortfolioScreenPresenterImpl.swift
+//  PortfolioPresenterImpl.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 21.09.2024.
@@ -15,16 +15,16 @@ enum PortfolioScreenOutput {
     case logout
 }
 
-// MARK: - PortfolioScreenPresenterImpl
+// MARK: - PortfolioPresenterImpl
 
-final class PortfolioScreenPresenterImpl {
+final class PortfolioPresenterImpl {
     typealias AccountCellModelMapper = (Portfolio, GainPeriod) -> AccountCellModel
     typealias PortfolioItemCellModelMapper = (Portfolio.Item, GainPeriod) -> PortfolioItemCellModel
     typealias PortfolioSummaryMapper = (Portfolio, GainPeriod) -> PortfolioSummary
 
     // MARK: Dependencies
 
-    private let view: PortfolioScreenView
+    private let view: PortfolioView
     private let accountSliderView: AccountSliderView
     private let authService: AuthService
     private let portfolioService: PortfolioService
@@ -42,7 +42,7 @@ final class PortfolioScreenPresenterImpl {
     private var currentAccountIndex: Int = 0
 
     init(
-        portfolioScreenView: PortfolioScreenView,
+        portfolioView: PortfolioView,
         accountSliderView: AccountSliderView,
         authService: AuthService,
         portfolioService: PortfolioService,
@@ -53,7 +53,7 @@ final class PortfolioScreenPresenterImpl {
         portfolioItemCellMapper: @escaping PortfolioItemCellModelMapper = PortfolioItemFormatter.mapToPortfolioItemCellModel,
         summaryMapper: @escaping PortfolioSummaryMapper = PortfolioFormatter.mapToPortfolioSummary
     ) {
-        self.view = portfolioScreenView
+        self.view = portfolioView
         self.accountSliderView = accountSliderView
         self.authService = authService
         self.portfolioService = portfolioService
@@ -66,9 +66,9 @@ final class PortfolioScreenPresenterImpl {
     }
 }
 
-// MARK: - PortfolioScreenPresenter
+// MARK: - PortfolioPresenter
 
-extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
+extension PortfolioPresenterImpl: PortfolioPresenter {
     func viewReady() {
         updatePortfolios()
     }
@@ -151,7 +151,7 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
 
 // MARK: - AccountSliderPresenter
 
-extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
+extension PortfolioPresenterImpl: AccountSliderPresenter {
     func didTapGainPeriodButton() {
         gainPeriod.toggle()
         updateAccountSlider()
@@ -197,14 +197,14 @@ extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
 extension Asset.TypeData {
     var name: String {
         switch self {
-        case .share: String(localized: "PortfolioScreenPresenter.sections.shares", defaultValue: "Акции")
-        case .bond: String(localized: "PortfolioScreenPresenter.sections.bonds", defaultValue: "Облигации")
-        case .etf: String(localized: "PortfolioScreenPresenter.sections.etfs", defaultValue: "Фонды")
-        case .future: String(localized: "PortfolioScreenPresenter.sections.future", defaultValue: "Фьючерсы")
-        case .option: String(localized: "PortfolioScreenPresenter.sections.options", defaultValue: "Опционы")
-        case .structuredProduct: String(localized: "PortfolioScreenPresenter.sections.structuredProducts", defaultValue: "Структурные ноты")
-        case .other: String(localized: "PortfolioScreenPresenter.sections.other", defaultValue: "Другое")
-        case .currency: String(localized: "PortfolioScreenPresenter.sections.currencies", defaultValue: "Валюта и металлы")
+        case .share: String(localized: "PortfolioPresenter.sections.shares", defaultValue: "Акции")
+        case .bond: String(localized: "PortfolioPresenter.sections.bonds", defaultValue: "Облигации")
+        case .etf: String(localized: "PortfolioPresenter.sections.etfs", defaultValue: "Фонды")
+        case .future: String(localized: "PortfolioPresenter.sections.future", defaultValue: "Фьючерсы")
+        case .option: String(localized: "PortfolioPresenter.sections.options", defaultValue: "Опционы")
+        case .structuredProduct: String(localized: "PortfolioPresenter.sections.structuredProducts", defaultValue: "Структурные ноты")
+        case .other: String(localized: "PortfolioPresenter.sections.other", defaultValue: "Другое")
+        case .currency: String(localized: "PortfolioPresenter.sections.currencies", defaultValue: "Валюта и металлы")
         }
     }
 
@@ -238,10 +238,10 @@ extension Asset.TypeData: Hashable {
 
 private extension C {
     enum LogoutDialog {
-        static let title = String(localized: "PortfolioScreenPresenter.logoutDialog.title", defaultValue: "Вы действительно хотите выйти?")
-        static let text = String(localized: "PortfolioScreenPresenter.logoutDialog.text", defaultValue: "Токен будет удалён с вашего устройства, для входа нужно будет ввести его заново")
-        static let logoutButtonTitle = String(localized: "PortfolioScreenPresenter.logoutDialog.logoutButtonTitle", defaultValue: "Выйти")
-        static let cancelButtonTitle = String(localized: "PortfolioScreenPresenter.logoutDialog.cancelButtonTitle", defaultValue: "Отмена")
+        static let title = String(localized: "PortfolioPresenter.logoutDialog.title", defaultValue: "Вы действительно хотите выйти?")
+        static let text = String(localized: "PortfolioPresenter.logoutDialog.text", defaultValue: "Токен будет удалён с вашего устройства, для входа нужно будет ввести его заново")
+        static let logoutButtonTitle = String(localized: "PortfolioPresenter.logoutDialog.logoutButtonTitle", defaultValue: "Выйти")
+        static let cancelButtonTitle = String(localized: "PortfolioPresenter.logoutDialog.cancelButtonTitle", defaultValue: "Отмена")
     }
 
     static let timerInterval: TimeInterval = 10

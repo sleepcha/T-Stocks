@@ -1,5 +1,5 @@
 //
-//  AccountSliderVC.swift
+//  AccountSliderViewController.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 9/10/24.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-// MARK: - AccountSliderVC
+// MARK: - AccountSliderViewController
 
-class AccountSliderVC: UIViewController {
+class AccountSliderViewController: UIViewController {
     var presenter: AccountSliderPresenter!
-    private lazy var ui = AccountSliderUI()
+    private lazy var ui = AccountSliderViewUI()
 
     private var feedback: UISelectionFeedbackGenerator!
     private var dataSource: [AccountCellModel] = []
@@ -44,13 +44,15 @@ class AccountSliderVC: UIViewController {
     }
 }
 
-extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+
+extension AccountSliderViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: UICollectionViewDelegateFlowLayout
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         ui.pageIndicator.position = scrollView.offsetX
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         guard ui.accountsCollectionView.contentSize.width > 0 else { return }
@@ -108,7 +110,7 @@ extension AccountSliderVC: UICollectionViewDataSource, UICollectionViewDelegateF
 
 // MARK: - AccountSliderView
 
-extension AccountSliderVC: AccountSliderView {
+extension AccountSliderViewController: AccountSliderView {
     func updateAccountList(_ newDataSource: [AccountCellModel]) {
         dataSource = newDataSource
         ui.pageIndicator.setNumberOfPages(newDataSource.count, updatingPosition: !ui.accountsCollectionView.isDragging)

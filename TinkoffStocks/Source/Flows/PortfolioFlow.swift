@@ -5,13 +5,14 @@
 //  Created by sleepcha on 9/9/24.
 //
 
+import SwiftUI
 import UIKit
 
 final class PortfolioFlow: StackFlowCoordinator {
     private let authService: AuthService
     private let error: Error?
     private let tabBarItem = UITabBarItem(
-        title: String(localized: "PortfolioScreenViewController.title", defaultValue: "Портфель"),
+        title: String(localized: "PortfolioFlow.tabBarItem.title", defaultValue: "Портфель"),
         image: UIImage(systemName: "case"),
         selectedImage: UIImage(systemName: "case.fill")
     )
@@ -27,7 +28,12 @@ final class PortfolioFlow: StackFlowCoordinator {
     }
 
     private func pushPortfolioScreen() {
-        guard let networkManager = authService.networkManager else { return }
+        guard let networkManager = authService.networkManager else {
+            #if DEBUG
+            print("PortfolioFlow: unable to create PortfolioScreen, networkManager is not available")
+            #endif
+            return
+        }
 
         let portfolioService = PortfolioServiceImpl(
             accounts: authService.accounts,
@@ -55,7 +61,7 @@ final class PortfolioFlow: StackFlowCoordinator {
         push(screen: portfolioScreen)
     }
 
-    private func pushAssetScreen(assetID: String) {
+    private func pushAssetScreen(assetID: AssetID) {
         // TODO: - push AssetDetailsScreen
         print(assetID)
     }

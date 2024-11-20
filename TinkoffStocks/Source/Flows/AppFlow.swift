@@ -50,13 +50,13 @@ final class AppFlow: AppCoordinator {
 
     private func presentLaunchWindow() {
         launchWindow?.windowLevel = .normal + 1
-        launchWindow?.rootViewController = LaunchScreenVC()
+        launchWindow?.rootViewController = LaunchViewController()
         launchWindow?.makeKeyAndVisible()
     }
 
     private func startLaunchScreenLoader() {
         DispatchQueue.mainSync {
-            (launchWindow?.rootViewController as? LaunchScreenVC)?.startLoader()
+            (launchWindow?.rootViewController as? LaunchViewController)?.startLoader()
         }
     }
 

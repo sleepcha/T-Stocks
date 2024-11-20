@@ -1,5 +1,5 @@
 //
-//  PortfolioScreenVC.swift
+//  PortfolioViewController.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/14/24.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-// MARK: - PortfolioScreenVC
+// MARK: - PortfolioViewController
 
-final class PortfolioScreenVC: UITableViewController {
-    var presenter: PortfolioScreenPresenter!
+final class PortfolioViewController: UITableViewController {
+    var presenter: PortfolioPresenter!
 
     private let summaryView = PortfolioSummaryView()
 
@@ -151,7 +151,7 @@ final class PortfolioScreenVC: UITableViewController {
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 
-extension PortfolioScreenVC {
+extension PortfolioViewController {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentOffset = scrollView.contentOffset.y + view.safeAreaInsets.top
         updateAlphaValues(offset: contentOffset)
@@ -209,7 +209,7 @@ extension PortfolioScreenVC {
 
 // MARK: - ApplicationObserving
 
-extension PortfolioScreenVC: ApplicationObserving {
+extension PortfolioViewController: ApplicationObserving {
     func willResignActive(notification: Notification) {
         guard view.window != nil else { return }
         presenter.viewDisappearing()
@@ -221,9 +221,9 @@ extension PortfolioScreenVC: ApplicationObserving {
     }
 }
 
-// MARK: - PortfolioScreenView
+// MARK: - PortfolioView
 
-extension PortfolioScreenVC: PortfolioScreenView {
+extension PortfolioViewController: PortfolioView {
     func updateItemList(with newDataSource: DataSource<PortfolioItemCellModel>, portfolioSummary: PortfolioSummary) {
         isShowingError = false
         summaryView.update(with: portfolioSummary)
@@ -248,6 +248,6 @@ extension PortfolioScreenVC: PortfolioScreenView {
 private extension C.UI {
     static let defaultFont = UIFont.systemFont(ofSize: 17)
     static let defaultRowHeight: CGFloat = 292 / 3
-    static let logoutButtonTitle = String(localized: "PortfolioScreenVC.logoutButtonTitle", defaultValue: "Выйти")
-    static let menuTitle = String(localized: "PortfolioScreenVC.menuTitle", defaultValue: "Меню")
+    static let logoutButtonTitle = String(localized: "PortfolioViewController.logoutButtonTitle", defaultValue: "Выйти")
+    static let menuTitle = String(localized: "PortfolioViewController.menuTitle", defaultValue: "Меню")
 }

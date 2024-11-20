@@ -1,5 +1,5 @@
 //
-//  LoginScreenPresenterImpl.swift
+//  LoginPresenterImpl.swift
 //  TinkoffStocks
 //
 //  Created by sleepcha on 8/20/24.
@@ -13,16 +13,16 @@ enum LoginScreenOutput {
     case receivedAccounts([AccountData])
 }
 
-// MARK: - LoginScreenPresenterImpl
+// MARK: - LoginPresenterImpl
 
-final class LoginScreenPresenterImpl: LoginScreenPresenter {
-    private let view: LoginScreenView
+final class LoginPresenterImpl: LoginPresenter {
+    private let view: LoginView
     private let authService: AuthService
     private let outputHandler: Handler<LoginScreenOutput>
     private var showError: VoidHandler?
 
     init(
-        view: LoginScreenView,
+        view: LoginView,
         outputHandler: @escaping Handler<LoginScreenOutput>,
         authService: AuthService,
         showing error: Error? = nil
@@ -84,17 +84,17 @@ final class LoginScreenPresenterImpl: LoginScreenPresenter {
     }
 }
 
-// MARK: - Constants
+// MARK: - C.HelpDialog
 
 private extension C {
     enum HelpDialog {
-        static let title = String(localized: "LoginScreenPresenter.helpDialog.title", defaultValue: "Токен Invest API")
+        static let title = String(localized: "LoginPresenter.helpDialog.title", defaultValue: "Токен Invest API")
         static let text = String(
-            localized: "LoginScreenPresenter.helpDialog.text",
+            localized: "LoginPresenter.helpDialog.text",
             defaultValue: "Для получения токена необходимо перейти в личный кабинет Т-Инвестиций"
         )
-        static let goButtonTitle = String(localized: "LoginScreenPresenter.helpDialog.goButton.title", defaultValue: "Перейти")
-        static let cancelButtonTitle = String(localized: "LoginScreenPresenter.helpDialog.cancelButton.title", defaultValue: "Отмена")
+        static let goButtonTitle = String(localized: "LoginPresenter.helpDialog.goButton.title", defaultValue: "Перейти")
+        static let cancelButtonTitle = String(localized: "LoginPresenter.helpDialog.cancelButton.title", defaultValue: "Отмена")
         static let url = URL(string: "https://www.tbank.ru/invest/settings/api/")!
     }
 }

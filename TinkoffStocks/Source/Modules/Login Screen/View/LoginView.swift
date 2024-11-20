@@ -1,5 +1,5 @@
 //
-//  LoginScreenView.swift
+//  LoginView.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/14/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol LoginScreenView {
+protocol LoginView {
     func switchState(isLoading: Bool)
     func highlightInvalidToken()
     func showErrorMessage(message: String)

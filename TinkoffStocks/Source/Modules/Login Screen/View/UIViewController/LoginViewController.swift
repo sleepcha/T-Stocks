@@ -1,5 +1,5 @@
 //
-//  LoginScreenVC.swift
+//  LoginViewController.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 8/14/24.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-// MARK: - LoginScreenVC
+// MARK: - LoginViewController
 
-final class LoginScreenVC: UIViewController {
-    var presenter: LoginScreenPresenter!
-    private let ui = LoginScreenUI()
+final class LoginViewController: UIViewController {
+    var presenter: LoginPresenter!
+    private let ui = LoginViewUI()
 
     override func loadView() {
         view = ui
@@ -55,9 +55,9 @@ final class LoginScreenVC: UIViewController {
     }
 }
 
-// MARK: - LoginScreenVC + LoginScreenView
+// MARK: - LoginView
 
-extension LoginScreenVC: LoginScreenView {
+extension LoginViewController: LoginView {
     func switchState(isLoading: Bool) {
         ui.endEditing(true)
         let controls = [ui.tokenField, ui.sandboxSwitch, ui.rememberMeSwitch, ui.sandboxSwitch]
@@ -84,7 +84,7 @@ extension LoginScreenVC: LoginScreenView {
 
 // MARK: - UITextFieldDelegate
 
-extension LoginScreenVC: UITextFieldDelegate {
+extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

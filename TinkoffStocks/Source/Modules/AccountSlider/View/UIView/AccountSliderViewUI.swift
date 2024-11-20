@@ -7,9 +7,9 @@
 
 import UIKit
 
-// MARK: - AccountSliderUI
+// MARK: - AccountSliderViewUI
 
-final class AccountSliderUI: UIView {
+final class AccountSliderViewUI: UIView {
     lazy var accountsCollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: flowLayout

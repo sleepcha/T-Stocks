@@ -1,5 +1,5 @@
 //
-//  PortfolioScreenPresenter.swift
+//  PortfolioPresenter.swift
 //  T-Stocks
 //
 //  Created by sleepcha on 9/17/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol PortfolioScreenPresenter: AnyObject {
+protocol PortfolioPresenter: AnyObject {
     func viewReady()
     func viewAppearing()
     func viewDisappearing()
