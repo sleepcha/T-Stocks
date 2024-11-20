@@ -8,7 +8,7 @@
 import Foundation
 
 struct AssetID: IdentifiableHashable {
-    enum AssetKind {
+    enum AssetType {
         case share
         case bond
         case etf
@@ -19,5 +19,5 @@ struct AssetID: IdentifiableHashable {
     }
 
     let id: String
-    let kind: AssetKind
+    let assetType: AssetType
 }

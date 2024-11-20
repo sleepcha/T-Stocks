@@ -41,7 +41,7 @@ enum PortfolioItemFormatter {
         let initialPrice = calc.initialPrice.formatted(.number.precision(.fractionLength(0...fractionLength)))
         let marketPrice = calc.marketPrice.formatted(.number.precision(.fractionLength(0...fractionLength)))
 
-        var quantity = switch asset.kind {
+        var quantity = switch asset.typeData {
         case .currency(let currencyData) where currencyData.isMetal:
             item.quantity.asMetal
         case .currency(let currencyData):

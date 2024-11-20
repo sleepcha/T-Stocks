@@ -39,7 +39,7 @@ struct PortfolioItemCalculator {
         self.quantity = item.quantity
         self.pointValue = item.asset.pointValue
 
-        self.accruedInterest = switch item.asset.kind {
+        self.accruedInterest = switch item.asset.typeData {
         case .bond(let bondData): bondData.accruedInterest
         default: 0
         }
@@ -50,7 +50,7 @@ struct PortfolioItemCalculator {
 
 extension Asset {
     var pointValue: Decimal {
-        guard case .future(let futureData) = kind else { return 1 }
+        guard case .future(let futureData) = typeData else { return 1 }
         guard !minPriceIncrement.isZero else { return 0 }
 
         return futureData.priceIncrementValue / minPriceIncrement
@@ -67,7 +67,7 @@ extension Portfolio.Item {
             guard var closePrice else { return currentPrice }
 
             // bonds' closePrice is measured in faceValue percent
-            if case .bond(let bondData) = asset.kind { closePrice *= bondData.faceValue / 100 }
+            if case .bond(let bondData) = asset.typeData { closePrice *= bondData.faceValue / 100 }
             return closePrice
         }
     }

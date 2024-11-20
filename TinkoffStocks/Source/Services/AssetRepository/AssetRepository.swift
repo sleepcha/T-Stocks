@@ -34,7 +34,7 @@ final class AssetRepositoryImpl: AssetRepository {
                 .mapError(RepositoryError.init)
         }
 
-        return switch assetID.kind {
+        return switch assetID.assetType {
         case .share: fetchAsset(API.getShareBy)
         case .bond: fetchAsset(API.getBondBy)
         case .etf: fetchAsset(API.getETFBy)
@@ -54,7 +54,7 @@ final class AssetRepositoryImpl: AssetRepository {
 
 private extension Asset {
     init(from instrument: AnyInstrument) {
-        let assetKind: Asset.Kind
+        let typeData: Asset.TypeData
 
         switch instrument {
         case let bond as Bond:
@@ -67,7 +67,7 @@ private extension Asset {
                 isFloater: bond.floatingCouponFlag,
                 isAmortized: bond.amortizationFlag
             )
-            assetKind = .bond(data)
+            typeData = .bond(data)
 
         case let future as Future:
             let data = FutureData(
@@ -77,26 +77,26 @@ private extension Asset {
                 initialMarginOnBuy: future.initialMarginOnBuy.asDecimal ?? 0,
                 initialMarginOnSell: future.initialMarginOnSell.asDecimal ?? 0
             )
-            assetKind = .future(data)
+            typeData = .future(data)
 
         case is Share:
-            assetKind = .share
+            typeData = .share
 
         case is Etf:
-            assetKind = .etf
+            typeData = .etf
 
         case is Option:
-            assetKind = .option
+            typeData = .option
 
         case let currency as Currency:
             let data = CurrencyData(
                 isoCode: currency.isoCurrencyName,
                 isMetal: (currency.exchange == C.ID.metalExchange)
             )
-            assetKind = .currency(data)
+            typeData = .currency(data)
 
         default:
-            assetKind = .other
+            typeData = .other
         }
 
         self.init(
@@ -112,7 +112,7 @@ private extension Asset {
             lot: instrument.lot,
             minPriceIncrement: instrument.minPriceIncrement?.asDecimal ?? 0,
             isShortAvailable: instrument.shortEnabledFlag,
-            kind: assetKind
+            typeData: typeData
         )
     }
 }

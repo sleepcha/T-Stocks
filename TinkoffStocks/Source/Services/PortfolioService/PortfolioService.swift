@@ -43,7 +43,7 @@ final class PortfolioServiceImpl: PortfolioService {
             .then { portfoliosData in
                 // get rid of duplicate assets (Set) across multiple portfolios (flatMap)
                 let assetIDs: Set<AssetID> = Set(portfoliosData.values.flatMap(\.openPositions).map(\.assetID))
-                return self.getAssets(Array(assetIDs)).map { assets in (assetIDs.map(\.id), portfoliosData, assets) }
+                return self.getAssets(assetIDs).map { assets in (assetIDs.map(\.id), portfoliosData, assets) }
             }.then { (assetIDs, portfoliosData, assets) in
                 self.closePricesRepo.getClosePrices(assetIDs).map { closePrices in (portfoliosData, assets, closePrices) }
             }.onCancel {
@@ -72,7 +72,7 @@ final class PortfolioServiceImpl: PortfolioService {
         return AsyncTask.group(tasks, shouldCancelOnError: .always).map { portfoliosData }
     }
 
-    private func getAssets(_ assetIDs: [AssetID]) -> AsyncTask<[String: Asset], RepositoryError> {
+    private func getAssets(_ assetIDs: any Collection<AssetID>) -> AsyncTask<[String: Asset], RepositoryError> {
         guard !assetIDs.isEmpty else { return .empty(.success([:])) }
 
         var assets = [String: Asset]()
@@ -141,18 +141,18 @@ private extension Asset {
                 bgColor: "",
                 textColor: ""
             ),
-            currency: .other,
+            currency: .rub,
             lot: 1,
             minPriceIncrement: 1,
             isShortAvailable: false,
-            kind: .other
+            typeData: .other
         )
     }
 }
 
 extension PortfolioData.OpenPosition {
     var assetID: AssetID {
-        let assetKind: AssetID.AssetKind = switch instrumentType {
+        let assetType: AssetID.AssetType = switch instrumentType {
         case "share": .share
         case "bond": .bond
         case "etf": .etf
@@ -162,7 +162,7 @@ extension PortfolioData.OpenPosition {
         default: .other
         }
 
-        return AssetID(id: instrumentID, kind: assetKind)
+        return AssetID(id: instrumentID, assetType: assetType)
     }
 }
 

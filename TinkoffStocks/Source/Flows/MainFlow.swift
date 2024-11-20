@@ -7,8 +7,6 @@
 
 import UIKit
 
-// MARK: - MainFlow
-
 final class MainFlow: TabFlowCoordinator, UITabBarControllerDelegate {
     private let authService: AuthService
 

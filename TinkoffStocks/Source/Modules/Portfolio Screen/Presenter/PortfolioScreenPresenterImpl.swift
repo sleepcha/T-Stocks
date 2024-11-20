@@ -11,7 +11,7 @@ import UIKit
 // MARK: - PortfolioScreenOutput
 
 enum PortfolioScreenOutput {
-    case selectedAsset(assetID: String)
+    case selectedAsset(assetID: AssetID)
     case logout
 }
 
@@ -86,7 +86,8 @@ extension PortfolioScreenPresenterImpl: PortfolioScreenPresenter {
     }
 
     func didSelectItem(withID id: String) {
-        outputHandler(.selectedAsset(assetID: id))
+        guard let assetID = portfolios[currentAccountIndex].items[id]?.asset.assetID else { return }
+        outputHandler(.selectedAsset(assetID: assetID))
     }
 
     func willShowLogoForItem(withID id: String, handler: @escaping Handler<UIImage?>) {
@@ -175,7 +176,7 @@ extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
 
         let dataSource = portfolio.items.values
             .grouped(
-                by: \.asset.kind,
+                by: \.asset.typeData,
                 sortedBy: \.order,
                 elementsSortedBy: \.asset.name
             )
@@ -193,7 +194,7 @@ extension PortfolioScreenPresenterImpl: AccountSliderPresenter {
 
 // MARK: - Helpers
 
-extension Asset.Kind {
+extension Asset.TypeData {
     var name: String {
         switch self {
         case .share: String(localized: "PortfolioScreenPresenter.sections.shares", defaultValue: "Акции")

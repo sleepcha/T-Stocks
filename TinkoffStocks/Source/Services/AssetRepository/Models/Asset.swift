@@ -16,7 +16,7 @@ struct Asset {
         let textColor: String
     }
 
-    enum Kind {
+    enum TypeData {
         case share, etf, option, structuredProduct, other
         case currency(CurrencyData)
         case bond(BondData)
@@ -24,7 +24,7 @@ struct Asset {
     }
 
     enum CurrencyType {
-        case rub, cny, usd, eur, hkd, other
+        case rub, cny, usd, eur, hkd, custom(String)
 
         init(isoCode: String) {
             self = switch isoCode.uppercased() {
@@ -33,7 +33,7 @@ struct Asset {
             case "USD": .usd
             case "EUR": .eur
             case "HKD": .hkd
-            default: .other
+            default: .custom(isoCode)
             }
         }
 
@@ -44,7 +44,7 @@ struct Asset {
             case .usd: "USD"
             case .eur: "EUR"
             case .hkd: "HKD"
-            case .other: nil
+            case .custom(let code): code
             }
         }
     }
@@ -57,14 +57,14 @@ struct Asset {
     let lot: Int
     let minPriceIncrement: Decimal
     let isShortAvailable: Bool
-    let kind: Kind
+    let typeData: TypeData
 
     var isRuble: Bool { id == C.ID.rubleAsset }
 }
 
-// MARK: - Asset.Kind + Hashable
+// MARK: - Asset.TypeData + Hashable
 
-extension Asset.Kind: Hashable {
+extension Asset.TypeData: Hashable {
     private var rawValue: Int {
         switch self {
         case .share: 0
@@ -78,11 +78,29 @@ extension Asset.Kind: Hashable {
         }
     }
 
-    static func == (lhs: Asset.Kind, rhs: Asset.Kind) -> Bool {
+    static func == (lhs: Asset.TypeData, rhs: Asset.TypeData) -> Bool {
         lhs.rawValue == rhs.rawValue
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(rawValue)
+    }
+}
+
+// MARK: - Helpers
+
+extension Asset {
+    var assetID: AssetID {
+        let type: AssetID.AssetType = switch typeData {
+        case .share: .share
+        case .etf: .etf
+        case .option: .option
+        case .currency: .currency
+        case .bond: .bond
+        case .future: .future
+        case .structuredProduct, .other: .other
+        }
+
+        return AssetID(id: id, assetType: type)
     }
 }
