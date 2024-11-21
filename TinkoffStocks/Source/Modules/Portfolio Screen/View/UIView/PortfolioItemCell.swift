@@ -24,6 +24,8 @@ struct PortfolioItemCellModel {
 // MARK: - PortfolioItemCell
 
 final class PortfolioItemCell: UITableViewCell {
+    var displayedModelID: String?
+
     private let logoImageView = RoundedImageView {
         $0.contentMode = .scaleAspectFit
         $0.layer.borderColor = UIColor.systemGray.withAlphaComponent(0.5).cgColor
@@ -108,8 +110,6 @@ final class PortfolioItemCell: UITableViewCell {
         spacing: C.UI.logoImageViewSpacing
     )
 
-    private var isRealLogoSet: Bool = false
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -137,13 +137,7 @@ final class PortfolioItemCell: UITableViewCell {
         }
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        logoImageView.image = nil
-        isRealLogoSet = false
-    }
-
-    func configure(with cellModel: PortfolioItemCellModel) {
+    func configure(with cellModel: PortfolioItemCellModel, needsPlaceholder: Bool) {
         tickerLabel.text = cellModel.ticker
         nameLabel.text = cellModel.name
         priceChangeLabel.text = cellModel.priceChange
@@ -151,6 +145,7 @@ final class PortfolioItemCell: UITableViewCell {
         quantityLabel.text = cellModel.quantity
         gainLabel.attributedText = cellModel.gain
 
+        guard needsPlaceholder else { return }
         logoImageView.layer.borderWidth = 1
         logoImageView.image = generatePlaceholderLogo(
             letter: cellModel.name.first ?? "?",
@@ -160,10 +155,8 @@ final class PortfolioItemCell: UITableViewCell {
     }
 
     func setLogo(image: UIImage) {
-        guard !isRealLogoSet else { return }
         logoImageView.layer.borderWidth = 0
         logoImageView.image = image
-        isRealLogoSet = true
     }
 
     private func setupViews() {

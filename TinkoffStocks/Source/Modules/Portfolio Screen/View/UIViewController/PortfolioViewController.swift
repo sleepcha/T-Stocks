@@ -171,7 +171,18 @@ extension PortfolioViewController {
         let model = dataSource[indexPath]
         let cell: PortfolioItemCell = tableView.dequeue(for: indexPath)!
 
-        cell.configure(with: model)
+        var isBeingReused: Bool { cell.displayedModelID != model.id }
+        cell.configure(with: model, needsPlaceholder: isBeingReused)
+
+        // no need to reload the logo if it's an asset with the same ID
+        guard isBeingReused else { return cell }
+
+        cell.displayedModelID = model.id
+        presenter.willShowLogoForItem(withID: model.id) { image in
+            guard !isBeingReused, let image else { return }
+            cell.setLogo(image: image)
+        }
+
         return cell
     }
 
@@ -179,15 +190,6 @@ extension PortfolioViewController {
         let model = dataSource[indexPath]
         presenter.didSelectItem(withID: model.id)
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let model = dataSource[indexPath]
-
-        presenter.willShowLogoForItem(withID: model.id) { image in
-            guard let image else { return }
-            (cell as? PortfolioItemCell)?.setLogo(image: image)
-        }
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
