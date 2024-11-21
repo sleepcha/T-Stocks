@@ -28,7 +28,7 @@ final class PortfolioViewController: UITableViewController {
     }
 
     private lazy var menuButton = UIBarButtonItem {
-        $0.tintColor = .white
+        $0.tintColor = C.UI.menuButtonTintColor
         $0.image = UIImage(systemName: "gearshape.fill")
         $0.menu = UIMenu(title: "", image: nil, identifier: nil, options: [], children: [logoutMenuItem])
     }
@@ -46,7 +46,7 @@ final class PortfolioViewController: UITableViewController {
             tableView.isScrollEnabled = !isShowingError
             tableHeaderView?.isHidden = isShowingError
             bounceAreaView.isHidden = isShowingError
-            menuButton.tintColor = isShowingError ? .brandLabel : .white
+            menuButton.tintColor = isShowingError ? .brandLabel : C.UI.menuButtonTintColor
 
             guard isShowingError else { tableView.backgroundView = nil; return }
             dataSource = DataSource(sections: [])
@@ -169,7 +169,7 @@ extension PortfolioViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = dataSource[indexPath]
-        let cell = tableView.dequeue(PortfolioItemCell.self, for: indexPath)!
+        let cell: PortfolioItemCell = tableView.dequeue(for: indexPath)!
 
         cell.configure(with: model)
         return cell
@@ -193,7 +193,7 @@ extension PortfolioViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard
             let title = dataSource.sections[section].header,
-            let headerView = tableView.dequeue(AssetKindHeaderView.self)
+            let headerView: AssetKindHeaderView = tableView.dequeue()
         else { return nil }
 
         headerView.setTitle(title)
@@ -250,4 +250,5 @@ private extension C.UI {
     static let defaultRowHeight: CGFloat = 292 / 3
     static let logoutButtonTitle = String(localized: "PortfolioViewController.logoutButtonTitle", defaultValue: "Выйти")
     static let menuTitle = String(localized: "PortfolioViewController.menuTitle", defaultValue: "Меню")
+    static let menuButtonTintColor: UIColor = .white
 }

@@ -32,12 +32,12 @@ extension UITableView {
         register(headerFooterViewType, forHeaderFooterViewReuseIdentifier: String(describing: headerFooterViewType))
     }
 
-    func dequeue<T: UITableViewCell>(_ cellType: T.Type, for indexPath: IndexPath) -> T? {
-        dequeueReusableCell(withIdentifier: String(describing: cellType), for: indexPath) as? T
+    func dequeue<T: UITableViewCell>(for indexPath: IndexPath) -> T? {
+        dequeueReusableCell(withIdentifier: String(describing: T.self), for: indexPath) as? T
     }
 
-    func dequeue<T: UITableViewHeaderFooterView>(_ headerFooterViewType: T.Type) -> T? {
-        dequeueReusableHeaderFooterView(withIdentifier: String(describing: headerFooterViewType)) as? T
+    func dequeue<T: UITableViewHeaderFooterView>() -> T? {
+        dequeueReusableHeaderFooterView(withIdentifier: String(describing: T.self)) as? T
     }
 }
 
