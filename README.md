@@ -1,11 +1,14 @@
 # T-Stocks
 Альтернативное iOS приложение Т-Инвестиции.
 
-- MVP + self-deallocated coordinator
-- вёрстка кодом на UIKit с использованием SnapKit
+- DI: constructor injection
+- навигация: self-deallocated coordinator
+- презентационный слой: MVP, вёрстка кодом на UIKit с использованием SnapKit
 - слой доступа к данным: репозитории и сервисы
-- сетевой слой на URLSession с ручным управлением кэширования
+- сетевой слой: менеджер, использующий HTTP клиент на URLSession с ручным управлением кэширования
 - бэкенд: [T‑Bank Invest API](https://www.tbank.ru/invest/open-api/)
+- хранение токена в Keychain с доступом по Face ID
+- русская и английская локализации
 
 Для тестирования можно использовать мой токен для песочницы:
 <details>
