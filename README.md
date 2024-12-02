@@ -1,7 +1,7 @@
 # T-Stocks
 Альтернативное iOS приложение Т-Инвестиции.
 
-- MVP + self-deallocating coordinator
+- MVP + self-deallocated coordinator
 - вёрстка кодом на UIKit с использованием SnapKit
 - слой доступа к данным: репозитории и сервисы
 - сетевой слой на URLSession с ручным управлением кэширования
