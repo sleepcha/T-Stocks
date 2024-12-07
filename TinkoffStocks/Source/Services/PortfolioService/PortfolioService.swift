@@ -25,12 +25,12 @@ final class PortfolioServiceImpl: PortfolioService {
         accounts: [AccountData],
         portfolioDataRepository: PortfolioDataRepository,
         assetRepository: AssetRepository,
-        closePricesRepo: ClosePricesRepository
+        closePricesRepository: ClosePricesRepository
     ) {
         self.accounts = accounts
         self.portfolioDataRepo = portfolioDataRepository
         self.assetRepo = assetRepository
-        self.closePricesRepo = closePricesRepo
+        self.closePricesRepo = closePricesRepository
     }
 
     func getAllPortfolios(completion: @escaping Handler<Result<[Portfolio], RepositoryError>>) {
