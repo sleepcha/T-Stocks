@@ -22,7 +22,7 @@ final class LoginScreenAssemblyImpl: LoginScreenAssembly {
             view: WeakRefMainQueueProxy(loginVC),
             outputHandler: outputHandler,
             authService: authService,
-            showing: error
+            state: error.map(LoginScreenState.showingError) ?? .idle
         )
         loginVC.presenter = presenter
         return loginVC

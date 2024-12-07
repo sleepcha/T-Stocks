@@ -13,31 +13,38 @@ enum LoginScreenOutput {
     case receivedAccounts([AccountData])
 }
 
+// MARK: - LoginScreenState
+
+enum LoginScreenState {
+    case idle
+    case showingError(Error)
+}
+
 // MARK: - LoginPresenterImpl
 
 final class LoginPresenterImpl: LoginPresenter {
     private let view: LoginView
     private let authService: AuthService
     private let outputHandler: Handler<LoginScreenOutput>
-    private var showError: VoidHandler?
+    private var state: LoginScreenState
 
     init(
         view: LoginView,
         outputHandler: @escaping Handler<LoginScreenOutput>,
         authService: AuthService,
-        showing error: Error? = nil
+        state: LoginScreenState
     ) {
         self.view = view
         self.outputHandler = outputHandler
         self.authService = authService
-
-        guard let error else { return }
-        self.showError = { [view] in view.showErrorMessage(message: error.localizedDescription) }
+        self.state = state
     }
 
     func viewReady() {
-        showError?()
-        showError = nil
+        if case .showingError(let error) = state {
+            view.showErrorMessage(message: error.localizedDescription)
+            state = .idle
+        }
     }
 
     func login(token: String, isSandbox: Bool, rememberMe: Bool) {
