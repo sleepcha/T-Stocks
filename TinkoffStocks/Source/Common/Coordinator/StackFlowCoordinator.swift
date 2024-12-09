@@ -20,11 +20,11 @@ class StackFlowCoordinator: BaseCoordinator {
 
 extension StackFlowCoordinator {
     func push(screen: UIViewController) {
-        guard let navigator else { return }
+        guard let parentNavigator = navigator?.topPresentedNavigator else { return }
 
-        flowRootIndex = flowRootIndex ?? navigator.viewControllers.count
-        let isFirstScreen = navigator.viewControllers.isEmpty
-        navigator.topPresentedNavigator.pushViewController(screen, animated: !isFirstScreen)
+        flowRootIndex = flowRootIndex ?? parentNavigator.viewControllers.count
+        let isFirstScreen = parentNavigator.viewControllers.isEmpty
+        parentNavigator.pushViewController(screen, animated: !isFirstScreen)
     }
 
     func present(
@@ -79,9 +79,9 @@ extension StackFlowCoordinator {
     }
 
     func popToRoot() {
-        guard let flowRootIndex else { return }
-        navigator?.dismissPresented()
-        navigator?.popToViewControllerAt(flowRootIndex)
+        guard let navigator, let flowRootIndex else { return }
+        navigator.dismissPresented()
+        navigator.popToViewControllerAt(flowRootIndex)
     }
 }
 
