@@ -15,7 +15,7 @@ final class MainFlow: TabFlowCoordinator, UITabBarControllerDelegate {
     }
 
     override func start() {
-        guard let tabBarController else { return }
+        guard let tabBarController, let networkManager = authService.networkManager else { return }
 
         let appearance = UITabBarAppearance()
         appearance.configureWithDefaultBackground()
@@ -24,7 +24,7 @@ final class MainFlow: TabFlowCoordinator, UITabBarControllerDelegate {
         tabBarController.tabBar.tintColor = .tabBarIcon
         tabBarController.delegate = self
 
-        let portfolioFlow = PortfolioFlow(authService: authService)
+        let portfolioFlow = PortfolioFlow(networkManager: networkManager, authService: authService)
         portfolioFlow.onStopFlow { [weak self] in self?.stop() }
         present(portfolioFlow)
     }

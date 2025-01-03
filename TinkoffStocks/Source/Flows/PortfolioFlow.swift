@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 
 final class PortfolioFlow: StackFlowCoordinator {
+    private let networkManager: NetworkManager
     private let authService: AuthService
     private let error: Error?
     private let tabBarItem = UITabBarItem(
@@ -17,7 +18,8 @@ final class PortfolioFlow: StackFlowCoordinator {
         selectedImage: UIImage(systemName: "case.fill")
     )
 
-    init(authService: AuthService, showing error: Error? = nil) {
+    init(networkManager: NetworkManager, authService: AuthService, showing error: Error? = nil) {
+        self.networkManager = networkManager
         self.authService = authService
         self.error = error
     }
@@ -28,18 +30,11 @@ final class PortfolioFlow: StackFlowCoordinator {
     }
 
     private func pushPortfolioScreen() {
-        guard let networkManager = authService.networkManager else {
-            #if DEBUG
-            print("PortfolioFlow: unable to create PortfolioScreen, networkManager is not available")
-            #endif
-            return
-        }
-
         let portfolioService = PortfolioServiceImpl(
             accounts: authService.accounts,
             portfolioDataRepository: PortfolioDataRepositoryImpl(networkManager: networkManager),
             assetRepository: AssetRepositoryImpl(networkManager: networkManager),
-            closePricesRepo: ClosePricesRepositoryImpl(networkManager: networkManager)
+            closePricesRepository: ClosePricesRepositoryImpl(networkManager: networkManager)
         )
         let logoRepo = LogoRepositoryImpl(logoSize: .x160)
         let timerManager = TimerManagerImpl()
@@ -57,12 +52,18 @@ final class PortfolioFlow: StackFlowCoordinator {
                 stop()
             }
         }
-
         push(screen: portfolioScreen)
     }
 
     private func pushAssetScreen(assetID: AssetID) {
-        // TODO: - push AssetDetailsScreen
+        guard assetID.id != C.ID.rubleAsset else { return }
         print(assetID)
+
+        let assetRepo = AssetRepositoryImpl(networkManager: networkManager)
+        let view = AssetDetailsScreenAssemblyImpl().build(assetID: assetID, assetRepository: assetRepo)
+        let screen = UIHostingController(rootView: view)
+        screen.hidesBottomBarWhenPushed = true
+
+        push(screen: screen)
     }
 }
