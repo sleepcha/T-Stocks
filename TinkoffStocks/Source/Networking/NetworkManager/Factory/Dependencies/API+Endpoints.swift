@@ -14,6 +14,7 @@ extension API {
     static let getPortfolio = TInvestAPIClient.getPortfolio.postProvider
     static let postOrder = TInvestAPIClient.postOrder.postProvider
     static let getClosePrices = TInvestAPIClient.getClosePrices.postProvider
+    static let getCandles = TInvestAPIClient.getCandles.postProvider
     static let getInstrumentBy = TInvestAPIClient.getInstrumentBy.postProvider
     static let getShareBy = TInvestAPIClient.getShareBy.postProvider
     static let getBondBy = TInvestAPIClient.getBondBy.postProvider

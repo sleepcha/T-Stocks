@@ -36,6 +36,7 @@ extension TInvestAPIClient {
     static let getBondCoupons = API<GetBondCouponsRequest, GetBondCouponsResponse>("tinkoff.public.invest.api.contract.v1.InstrumentsService/GetBondCoupons")
     static let findInstrument = API<FindInstrumentRequest, FindInstrumentResponse>("tinkoff.public.invest.api.contract.v1.InstrumentsService/FindInstrument")
     static let getClosePrices = API<GetClosePricesRequest, GetClosePricesResponse>("tinkoff.public.invest.api.contract.v1.MarketDataService/GetClosePrices")
+    static let getCandles = API<GetCandlesRequest, GetCandlesResponse>("tinkoff.public.invest.api.contract.v1.MarketDataService/GetCandles")
     static let getOrders = API<GetOrdersRequest, GetOrdersResponse>("tinkoff.public.invest.api.contract.v1.OrdersService/GetOrders")
     static let postOrder = API<PostOrderRequest, PostOrderResponse>("tinkoff.public.invest.api.contract.v1.OrdersService/PostOrder")
     static let postStopOrder = API<PostStopOrderRequest, PostStopOrderResponse>("tinkoff.public.invest.api.contract.v1.OrdersService/PostStopOrder")
