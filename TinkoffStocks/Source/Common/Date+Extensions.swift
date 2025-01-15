@@ -27,6 +27,24 @@ extension Date {
     func adding(_ value: Int, _ component: Calendar.Component) -> Date {
         Calendar.current.date(byAdding: component, value: value, to: self) ?? self
     }
+    
+    func component(_ unit: Calendar.Component) -> Int {
+        Calendar.current.component(unit, from: self)
+    }
+
+    func interval(to date: Date, measuredIn component: Calendar.Component) -> Int {
+        let components = Calendar.current.dateComponents([component], from: self, to: date)
+        return switch component {
+        case .year: components.year!
+        case .month: components.month!
+        case .day: components.day!
+        case .hour: components.hour!
+        case .minute: components.minute!
+        case .second: components.second!
+        case .nanosecond: components.nanosecond!
+        default: 0
+        }
+    }
 }
 
 extension Calendar {
