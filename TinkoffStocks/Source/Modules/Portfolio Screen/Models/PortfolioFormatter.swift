@@ -45,3 +45,14 @@ enum PortfolioFormatter {
         )
     }
 }
+
+
+extension PortfolioItemCalculator {
+        init(item: Portfolio.Item, gainPeriod: GainPeriod) {
+            self.marketPrice = item.currentPrice
+            self.initialPrice = item.initialPrice(for: gainPeriod)
+            self.quantity = item.quantity
+            self.pointValue = item.asset.pointValue
+            self.accruedInterest = item.asset.accruedInterest
+        }
+}
