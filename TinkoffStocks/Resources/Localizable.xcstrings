@@ -35,6 +35,148 @@
         }
       }
     },
+    "CandleStickInterval.day" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "День"
+          }
+        }
+      }
+    },
+    "CandleStickInterval.hour1" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "H1"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ч1"
+          }
+        }
+      }
+    },
+    "CandleStickInterval.hour4" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "H4"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Ч4"
+          }
+        }
+      }
+    },
+    "CandleStickInterval.min5" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M5"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "М5"
+          }
+        }
+      }
+    },
+    "CandleStickInterval.min15" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M15"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "М15"
+          }
+        }
+      }
+    },
+    "CandleStickInterval.min30" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "M30"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "М30"
+          }
+        }
+      }
+    },
+    "CandleStickInterval.month" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Month"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Месяц"
+          }
+        }
+      }
+    },
+    "CandleStickInterval.week" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Week"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Неделя"
+          }
+        }
+      }
+    },
+    "close" : {
+
+    },
+    "high" : {
+
+    },
     "HTTPClientCacheError.cacheExpired" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -153,6 +295,9 @@
           }
         }
       }
+    },
+    "id" : {
+
     },
     "LoginPresenter.helpDialog.cancelButton.title" : {
       "extractionState" : "extracted_with_value",
@@ -358,6 +503,9 @@
         }
       }
     },
+    "low" : {
+
+    },
     "MoneyFormatter.amountSuffix" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -371,6 +519,23 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "шт"
+          }
+        }
+      }
+    },
+    "MoneyFormatter.futuresSuffix" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pt."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "пт."
           }
         }
       }
@@ -578,6 +743,9 @@
           }
         }
       }
+    },
+    "open" : {
+
     },
     "PortfolioErrorView.refreshButtonTitle" : {
       "extractionState" : "extracted_with_value",
@@ -981,6 +1149,56 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Брокерский счёт"
+          }
+        }
+      }
+    },
+    "В портфеле" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your portfolios"
+          }
+        }
+      }
+    },
+    "Купить" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buy"
+          }
+        }
+      }
+    },
+    "Обновить" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh"
+          }
+        }
+      }
+    },
+    "Продать" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sell"
+          }
+        }
+      }
+    },
+    "Стоимость бумаг в портфеле" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asset value in portfolio"
           }
         }
       }
