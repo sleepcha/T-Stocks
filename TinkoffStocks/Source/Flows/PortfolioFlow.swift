@@ -11,6 +11,7 @@ import UIKit
 final class PortfolioFlow: StackFlowCoordinator {
     private let networkManager: NetworkManager
     private let authService: AuthService
+    private let portfolioDataRepo: PortfolioDataRepository
     private let error: Error?
     private let tabBarItem = UITabBarItem(
         title: String(localized: "PortfolioFlow.tabBarItem.title", defaultValue: "Портфель"),
@@ -22,6 +23,7 @@ final class PortfolioFlow: StackFlowCoordinator {
         self.networkManager = networkManager
         self.authService = authService
         self.error = error
+        self.portfolioDataRepo = PortfolioDataRepositoryImpl(accounts: authService.accounts, networkManager: networkManager)
     }
 
     override func start() {
@@ -32,7 +34,7 @@ final class PortfolioFlow: StackFlowCoordinator {
     private func pushPortfolioScreen() {
         let portfolioService = PortfolioServiceImpl(
             accounts: authService.accounts,
-            portfolioDataRepository: PortfolioDataRepositoryImpl(networkManager: networkManager),
+            portfolioDataRepository: portfolioDataRepo,
             assetRepository: AssetRepositoryImpl(networkManager: networkManager),
             closePricesRepository: ClosePricesRepositoryImpl(networkManager: networkManager)
         )
@@ -46,8 +48,8 @@ final class PortfolioFlow: StackFlowCoordinator {
             timerManager: timerManager
         ) { [self] in
             switch $0 {
-            case .selectedAsset(let assetID):
-                pushAssetScreen(assetID: assetID)
+            case .selectedAsset(let asset):
+                pushAssetScreen(asset: asset)
             case .logout:
                 stop()
             }
@@ -55,15 +57,27 @@ final class PortfolioFlow: StackFlowCoordinator {
         push(screen: portfolioScreen)
     }
 
-    private func pushAssetScreen(assetID: AssetID) {
-        guard assetID.id != C.ID.rubleAsset else { return }
-        print(assetID)
+    private func pushAssetScreen(asset: Asset) {
+        guard asset.id != C.ID.rubleAsset else { return }
 
-        let assetRepo = AssetRepositoryImpl(networkManager: networkManager)
-        let view = AssetDetailsScreenAssemblyImpl().build(assetID: assetID, assetRepository: assetRepo)
-        let screen = UIHostingController(rootView: view)
-        screen.hidesBottomBarWhenPushed = true
+        let candlesRepo = CandlesRepositoryImpl(networkManager: networkManager)
 
-        push(screen: screen)
+        let assetDetailsScreen = AssetDetailsScreenAssemblyImpl().build(
+            asset: asset,
+            candlesRepository: candlesRepo,
+            portfolioDataRepository: portfolioDataRepo
+        ) {
+            _ = self // retain coordinator
+
+            switch $0 {
+            case .buy(let asset):
+                print("push buy screen for asset: \(asset)")
+            case .sell(let asset):
+                print("push sell screen for asset: \(asset)")
+            }
+        }
+
+        navigator?.navigationBar.tintColor = UIColor(hex: asset.brand.textColor)
+        push(screen: assetDetailsScreen)
     }
 }
