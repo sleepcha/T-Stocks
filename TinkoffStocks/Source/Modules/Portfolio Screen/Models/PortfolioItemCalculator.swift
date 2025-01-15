@@ -13,9 +13,9 @@ struct PortfolioItemCalculator {
     let initialPrice: Decimal
     let marketPrice: Decimal
 
-    private let quantity: Decimal
-    private let pointValue: Decimal
-    private let accruedInterest: Decimal
+    let quantity: Decimal
+    let pointValue: Decimal
+    let accruedInterest: Decimal
 
     var value: Decimal {
         quantity * (marketPrice + accruedInterest) * pointValue
@@ -32,23 +32,16 @@ struct PortfolioItemCalculator {
 
         return marketPrice / initialPrice - 1
     }
-
-    init(item: Portfolio.Item, gainPeriod: GainPeriod) {
-        self.marketPrice = item.currentPrice
-        self.initialPrice = item.initialPrice(for: gainPeriod)
-        self.quantity = item.quantity
-        self.pointValue = item.asset.pointValue
-
-        self.accruedInterest = switch item.asset.typeData {
-        case .bond(let bondData): bondData.accruedInterest
-        default: 0
-        }
-    }
 }
 
 // MARK: - Helpers
 
 extension Asset {
+    var accruedInterest: Decimal {
+        guard case .bond(let bondData) = typeData else { return 0 }
+        return bondData.accruedInterest
+    }
+
     var pointValue: Decimal {
         guard case .future(let futureData) = typeData else { return 1 }
         guard !minPriceIncrement.isZero else { return 0 }

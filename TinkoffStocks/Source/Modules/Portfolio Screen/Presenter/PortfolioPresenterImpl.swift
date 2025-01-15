@@ -11,7 +11,7 @@ import UIKit
 // MARK: - PortfolioScreenOutput
 
 enum PortfolioScreenOutput {
-    case selectedAsset(assetID: AssetID)
+    case selectedAsset(asset: Asset)
     case logout
 }
 
@@ -86,8 +86,8 @@ extension PortfolioPresenterImpl: PortfolioPresenter {
     }
 
     func didSelectItem(withID id: String) {
-        guard let assetID = portfolios[currentAccountIndex].items[id]?.asset.assetID else { return }
-        outputHandler(.selectedAsset(assetID: assetID))
+        guard let asset = portfolios[currentAccountIndex].items[id]?.asset else { return }
+        outputHandler(.selectedAsset(asset: asset))
     }
 
     func willShowLogoForItem(withID id: String, handler: @escaping Handler<UIImage?>) {

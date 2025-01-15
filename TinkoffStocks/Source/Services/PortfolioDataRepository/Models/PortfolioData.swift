@@ -20,6 +20,7 @@ struct PortfolioData {
     }
 
     let id: String
+    let name: String
     let totalValue: Decimal
     let openPositions: [OpenPosition]
 }
@@ -27,8 +28,9 @@ struct PortfolioData {
 // MARK: - Model mapping
 
 extension PortfolioData {
-    init(from response: PortfolioResponse) {
+    init(from response: PortfolioResponse, accountName: String) {
         self.id = response.accountId
+        self.name = accountName
         self.totalValue = response.totalAmountPortfolio.asDecimal ?? 0
         self.openPositions = response.positions.map {
             OpenPosition(
