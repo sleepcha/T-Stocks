@@ -54,6 +54,7 @@ final class PortfolioFlow: StackFlowCoordinator {
                 stop()
             }
         }
+
         push(screen: portfolioScreen)
     }
 
@@ -77,7 +78,6 @@ final class PortfolioFlow: StackFlowCoordinator {
             }
         }
 
-        navigator?.navigationBar.tintColor = UIColor(hex: asset.brand.textColor)
         push(screen: assetDetailsScreen)
     }
 }
