@@ -7,31 +7,6 @@
 
 import Foundation
 
-// MARK: - CandleStick
-
-struct CandleStick {
-    let open: Decimal
-    let high: Decimal
-    let low: Decimal
-    let close: Decimal
-    let volume: Decimal
-    let date: Date
-    let isComplete: Bool
-}
-
-// MARK: - CandleStickInterval
-
-enum CandleStickInterval: CaseIterable {
-    case min5
-    case min15
-    case min30
-    case hour1
-    case hour4
-    case day
-    case week
-    case month
-}
-
 // MARK: - CandlesRepository
 
 protocol CandlesRepository {
