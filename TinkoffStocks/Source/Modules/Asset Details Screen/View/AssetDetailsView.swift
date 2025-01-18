@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - AssetDetailsView
 
 struct AssetDetailsView<ViewModel: AssetDetailsViewModel>: View {
-    @StateObject var viewModel: ViewModel
+    @ObservedObject var viewModel: ViewModel
 
     // MARK: - Body
 
