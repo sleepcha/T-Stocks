@@ -42,9 +42,9 @@ final class AssetDetailsViewModelImpl<ChartVM: ChartViewModel>: AssetDetailsView
         asset: Asset,
         candlesRepository: CandlesRepository,
         portfolioDataRepository: PortfolioDataRepository,
-        outputHandler: @escaping Handler<AssetDetailsScreenOutput>,
         assetPositionModelMapper: @escaping AssetPositionModelMapper = PortfolioItemFormatter.mapToAssetPositionModel,
-        candleStickModelFormatter: @escaping CandleStickModelFormatter = PortfolioItemFormatter.formatCandleStickModel
+        candleStickModelFormatter: @escaping CandleStickModelFormatter = PortfolioItemFormatter.formatCandleStickModel,
+        outputHandler: @escaping Handler<AssetDetailsScreenOutput>
     ) {
         self.chartViewModel = chartViewModel
         self.asset = asset
@@ -57,6 +57,7 @@ final class AssetDetailsViewModelImpl<ChartVM: ChartViewModel>: AssetDetailsView
         self.formatCandleStickModel = candleStickModelFormatter
     }
 
+    @MainActor
     func reload() async {
         let interval = selectedInterval
 
@@ -75,19 +76,15 @@ final class AssetDetailsViewModelImpl<ChartVM: ChartViewModel>: AssetDetailsView
 
             let (candles, portfoliosData) = try await (candlesRes, portfoliosDataRes)
 
-            await MainActor.run {
-                defer { state = .idle }
-                guard let lastCandle = candles.last else { return }
-                print(lastCandle.close)
-                (currentPrice, gainString) = formatCandleStickModel(lastCandle, asset)
-                gainState = lastCandle.gainState
-                chartViewModel.candles = candles
-                openPositions = portfoliosData
-            }
+            defer { state = .idle }
+            guard let lastCandle = candles.last else { return }
+
+            (currentPrice, gainString) = formatCandleStickModel(lastCandle, asset)
+            gainState = lastCandle.gainState
+            chartViewModel.candles = candles
+            openPositions = portfoliosData
         } catch {
-            await MainActor.run {
-                state = .showingError(error.localizedDescription)
-            }
+            state = .showingError(error.localizedDescription)
         }
     }
 
