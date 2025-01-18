@@ -35,10 +35,13 @@ final class AssetDetailsScreenAssemblyImpl: AssetDetailsScreenAssembly {
             portfolioDataRepository: portfolioDataRepository,
             outputHandler: outputHandler
         )
-        let view = AssetDetailsView<AssetDetailsViewModelImpl>(viewModel: vm)
+        let view = AssetDetailsView(viewModel: vm)
         let vc = UIHostingController(rootView: view)
 
-        let appearance = UINavigationBarAppearance().configuring {
+        let appearance = UINavigationBarAppearance {
+            let textColor = UIColor(hex: asset.brand.textColor) ?? .white
+            let backButtonImage = $0.backIndicatorImage.withTintColor(textColor, renderingMode: .alwaysOriginal)
+            $0.setBackIndicatorImage(backButtonImage, transitionMaskImage: backButtonImage)
             $0.configureWithOpaqueBackground()
             $0.backgroundColor = UIColor(hex: asset.brand.bgColor)
         }

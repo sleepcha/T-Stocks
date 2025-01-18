@@ -41,6 +41,7 @@ final class PortfolioScreenAssemblyImpl: PortfolioScreenAssembly {
             outputHandler: outputHandler
         )
 
+        portfolioVC.navigationItem.backButtonTitle = ""
         portfolioVC.addChild(accountSliderVC)
         portfolioVC.presenter = presenter
         accountSliderVC.presenter = presenter
