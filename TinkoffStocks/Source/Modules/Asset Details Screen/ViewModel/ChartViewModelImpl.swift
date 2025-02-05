@@ -10,27 +10,22 @@ import Foundation
 // MARK: - ChartViewModelImpl
 
 final class ChartViewModelImpl: ChartViewModel, ObservableObject {
-    @Published var candles = [CandleStickModel]() {
-        didSet { updateValues() }
-    }
+    @Published private(set) var candles = [CandleStickModel]()
+    private(set) var axisIndices = [Int]()
+    private(set) var closePrice: Decimal = 0
+    private(set) var rangeX: ClosedRange<Int> = 0...0
+    private(set) var rangeY: ClosedRange<Decimal> = 0...0
 
-    @Published private(set) var axisIndices = [Int]()
-    @Published private(set) var closePrice: Decimal = 0
-    @Published private(set) var minX: Int = 0
-    @Published private(set) var maxX: Int = 0
-    @Published private(set) var minY: Decimal = 0
-    @Published private(set) var maxY: Decimal = 0
-
-    private func updateValues() {
-        minX = 0
-        maxX = candles.count
-        minY = candles.map(\.low).min() ?? 0
-        maxY = candles.map(\.high).max() ?? 0
+    func update(with newCandles: [CandleStickModel]) {
+        rangeX = 0...newCandles.count
+        let minY = newCandles.map(\.low).min() ?? 0
+        let maxY = newCandles.map(\.high).max() ?? 0
+        rangeY = minY...maxY
 
         var indices: [Int] = []
         var lastIndex: Int = 0
 
-        guard let lastCandle = candles.last else {
+        guard let lastCandle = newCandles.last else {
             closePrice = 0
             axisIndices = []
             return
@@ -39,9 +34,9 @@ final class ChartViewModelImpl: ChartViewModel, ObservableObject {
         let (minPeriod, calendarUnit) = lastCandle.interval.minTimePeriod
         let minCandleCount = 7
 
-        for i in 1..<candles.count {
-            let lastDate = candles[lastIndex].date
-            let date = candles[i].date
+        for i in 1..<newCandles.count {
+            let lastDate = newCandles[lastIndex].date
+            let date = newCandles[i].date
 
             if lastDate.interval(to: date, measuredIn: calendarUnit) >= minPeriod || indices.isEmpty {
                 if i - lastIndex > minCandleCount {
@@ -53,6 +48,7 @@ final class ChartViewModelImpl: ChartViewModel, ObservableObject {
 
         closePrice = lastCandle.close
         axisIndices = indices
+        candles = newCandles
     }
 }
 

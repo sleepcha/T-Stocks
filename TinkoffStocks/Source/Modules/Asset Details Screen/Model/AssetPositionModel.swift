@@ -11,8 +11,6 @@ struct AssetPositionModel: Identifiable {
     var id: UUID = UUID()
     var accountName: String
     var quantity: String
-    var priceChange: String
     var value: String
-    var gain: String
-    var gainState: GainState
+    var priceChange: PriceChange
 }

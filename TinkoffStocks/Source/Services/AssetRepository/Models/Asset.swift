@@ -58,24 +58,21 @@ struct Asset {
     let minPriceIncrement: Decimal
     let isShortAvailable: Bool
     let typeData: TypeData
-
-    var isRuble: Bool { id == C.ID.rubleAsset }
 }
 
-// MARK: - Helpers
-
 extension Asset {
-    var assetID: AssetID {
-        let type: AssetID.AssetType = switch typeData {
-        case .share: .share
-        case .etf: .etf
-        case .option: .option
-        case .currency: .currency
-        case .bond: .bond
-        case .future: .future
-        case .structuredProduct, .other: .other
-        }
+    var isFuture: Bool { if case .future = typeData { true } else { false } }
+    var isRuble: Bool { id == C.ID.rubleAsset }
+    var fractionLength: Int { -minPriceIncrement.exponent }
+    var accruedInterest: Decimal {
+        guard case .bond(let bondData) = typeData else { return 0 }
+        return bondData.accruedInterest
+    }
 
-        return AssetID(id: id, assetType: type)
+    var pointValue: Decimal {
+        guard case .future(let futureData) = typeData else { return 1 }
+        guard !minPriceIncrement.isZero else { return 0 }
+
+        return futureData.priceIncrementValue / minPriceIncrement
     }
 }

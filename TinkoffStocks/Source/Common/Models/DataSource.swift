@@ -11,17 +11,14 @@ struct DataSource<Item> {
     struct Section {
         let header: String?
         let items: [Item]
+        var numberOfItems: Int {
+            items.count
+        }
     }
 
-    var sections: [Section]
-
+    let sections: [Section]
     var numberOfSections: Int {
         sections.count
-    }
-
-    func numberOfItems(in section: Int) -> Int {
-        guard section < sections.count else { return 0 }
-        return sections[section].items.count
     }
 
     subscript(indexPath: IndexPath) -> Item {

@@ -164,7 +164,7 @@ extension PortfolioViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dataSource.numberOfItems(in: section)
+        dataSource.sections[section].numberOfItems
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

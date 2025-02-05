@@ -11,7 +11,6 @@ import SwiftUI
 
 struct IntervalChips: View {
     @Binding var selectedChip: CandleStickInterval
-    var onChangeHandler: VoidHandler?
     private let chipItems: [CandleStickInterval] = CandleStickInterval.allCases
 
     var body: some View {
@@ -21,7 +20,6 @@ struct IntervalChips: View {
                     ChipView(text: item.name, isSelected: selectedChip == item)
                         .onTapGesture {
                             selectedChip = item
-                            onChangeHandler?()
                         }
                 }
             }

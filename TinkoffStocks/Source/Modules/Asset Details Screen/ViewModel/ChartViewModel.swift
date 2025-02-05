@@ -8,11 +8,11 @@
 import Foundation
 
 protocol ChartViewModel: ObservableObject {
-    var candles: [CandleStickModel] { get set }
+    var candles: [CandleStickModel] { get }
     var axisIndices: [Int] { get }
     var closePrice: Decimal { get }
-    var minX: Int { get }
-    var maxX: Int { get }
-    var minY: Decimal { get }
-    var maxY: Decimal { get }
+    var rangeX: ClosedRange<Int> { get }
+    var rangeY: ClosedRange<Decimal> { get }
+    
+    func update(with newCandles: [CandleStickModel])
 }
