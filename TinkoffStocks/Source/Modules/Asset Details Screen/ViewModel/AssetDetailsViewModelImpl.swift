@@ -5,7 +5,8 @@
 //  Created by sleepcha on 11/20/24.
 //
 
-import SwiftUI
+import Combine
+import Foundation
 
 // MARK: - AssetDetailsScreenOutput
 
@@ -18,43 +19,49 @@ enum AssetDetailsScreenOutput {
 
 final class AssetDetailsViewModelImpl<ChartVM: ChartViewModel>: AssetDetailsViewModel, ObservableObject {
     typealias AssetPositionModelMapper = (PortfolioData.OpenPosition, Asset, String) -> AssetPositionModel
-    typealias CandleStickModelFormatter = (CandleStickModel, Asset) -> (price: String, gain: String)
+    typealias PriceFormatter = (Decimal, Asset) -> String
 
     @Published var selectedInterval: CandleStickInterval = .hour1
-    @Published private(set) var openPositions = [AssetPositionModel]()
     @Published private(set) var state: AssetDetailsViewModelState = .idle
-    @Published private(set) var title: String
-    @Published private(set) var subtitle: String
-    @Published private(set) var currentPrice: String = " "
-    @Published private(set) var gainState: GainState = .neutral
-    @Published private(set) var gainString: String = " "
-    @Published private(set) var chartViewModel: ChartVM
+
+    private(set) var openPositions = [AssetPositionModel]()
+    private(set) var currentPrice: String = " "
+    private(set) var priceChange: PriceChange = .zero
+    private(set) var chartViewModel: ChartVM
+
+    var title: String { asset.name }
+    var subtitle: String { asset.ticker }
 
     private let asset: Asset
     private let candlesRepo: CandlesRepository
     private let portfolioDataRepo: PortfolioDataRepository
     private let outputHandler: Handler<AssetDetailsScreenOutput>
     private let mapToAssetPositionModel: AssetPositionModelMapper
-    private let formatCandleStickModel: CandleStickModelFormatter
+    private let formatPrice: PriceFormatter
+    private var cancellables = Set<AnyCancellable>()
 
     init(
         chartViewModel: ChartVM,
         asset: Asset,
         candlesRepository: CandlesRepository,
         portfolioDataRepository: PortfolioDataRepository,
-        assetPositionModelMapper: @escaping AssetPositionModelMapper = PortfolioItemFormatter.mapToAssetPositionModel,
-        candleStickModelFormatter: @escaping CandleStickModelFormatter = PortfolioItemFormatter.formatCandleStickModel,
+        assetPositionModelMapper: @escaping AssetPositionModelMapper = PortfolioFormatters.mapToAssetPositionModel,
+        priceFormatter: @escaping PriceFormatter = PortfolioFormatters.formatPrice,
         outputHandler: @escaping Handler<AssetDetailsScreenOutput>
     ) {
         self.chartViewModel = chartViewModel
         self.asset = asset
-        self.title = asset.name
-        self.subtitle = asset.ticker
         self.candlesRepo = candlesRepository
         self.portfolioDataRepo = portfolioDataRepository
         self.outputHandler = outputHandler
         self.mapToAssetPositionModel = assetPositionModelMapper
-        self.formatCandleStickModel = candleStickModelFormatter
+        self.formatPrice = priceFormatter
+        $selectedInterval
+            .removeDuplicates() // Prevent duplicate calls for the same value
+            .sink { [weak self] _ in
+                Task { await self?.reload() }
+            }
+            .store(in: &cancellables)
     }
 
     @MainActor
@@ -79,9 +86,9 @@ final class AssetDetailsViewModelImpl<ChartVM: ChartViewModel>: AssetDetailsView
             defer { state = .idle }
             guard let lastCandle = candles.last else { return }
 
-            (currentPrice, gainString) = formatCandleStickModel(lastCandle, asset)
-            gainState = lastCandle.gainState
-            chartViewModel.candles = candles
+            currentPrice = formatPrice(lastCandle.close, asset)
+            priceChange = lastCandle.priceChange(asset: asset)
+            chartViewModel.update(with: candles)
             openPositions = portfoliosData
         } catch {
             state = .showingError(error.localizedDescription)
@@ -94,6 +101,21 @@ final class AssetDetailsViewModelImpl<ChartVM: ChartViewModel>: AssetDetailsView
 
     func sellButtonTapped() {
         outputHandler(.sell(asset))
+    }
+}
+
+// MARK: - Helpers
+
+extension CandleStickModel {
+    func priceChange(asset: Asset? = nil) -> PriceChange {
+        guard let asset else { return PriceChange(from: open, to: close) }
+
+        return PriceChange(
+            from: open,
+            to: close,
+            fractionLength: asset.fractionLength,
+            unit: asset.isFuture ? .futurePoints : .currency(asset.currency.isoCode)
+        )
     }
 }
 
