@@ -49,9 +49,9 @@ final class PortfolioPresenterImpl {
         logoRepository: LogoRepository,
         timerManager: TimerManager,
         outputHandler: @escaping Handler<PortfolioScreenOutput>,
-        accountCellMapper: @escaping AccountCellModelMapper = PortfolioFormatter.mapToAccountCellModel,
-        portfolioItemCellMapper: @escaping PortfolioItemCellModelMapper = PortfolioItemFormatter.mapToPortfolioItemCellModel,
-        summaryMapper: @escaping PortfolioSummaryMapper = PortfolioFormatter.mapToPortfolioSummary
+        accountCellMapper: @escaping AccountCellModelMapper = PortfolioFormatters.mapToAccountCellModel,
+        portfolioItemCellMapper: @escaping PortfolioItemCellModelMapper = PortfolioFormatters.mapToPortfolioItemCellModel,
+        summaryMapper: @escaping PortfolioSummaryMapper = PortfolioFormatters.mapToPortfolioSummary
     ) {
         self.view = portfolioView
         self.accountSliderView = accountSliderView

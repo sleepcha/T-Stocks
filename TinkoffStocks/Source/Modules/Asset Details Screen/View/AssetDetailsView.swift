@@ -35,9 +35,9 @@ struct AssetDetailsView<ViewModel: AssetDetailsViewModel>: View {
             Section {
                 VStack(alignment: .leading) {
                     Text(viewModel.currentPrice).font(.title).bold()
-                    Text(viewModel.gainString)
+                    Text(viewModel.priceChange.formattedProfit)
                         .font(.footnote)
-                        .foregroundStyle(viewModel.gainState.foregroundColor)
+                        .foregroundStyle(viewModel.priceChange.foregroundColor)
                 }
             }
             .listRowSeparator(.hidden)
@@ -49,14 +49,9 @@ struct AssetDetailsView<ViewModel: AssetDetailsViewModel>: View {
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
                     .alignmentGuide(.listRowSeparatorLeading, computeValue: { _ in 0 })
 
-                IntervalChips(selectedChip: $viewModel.selectedInterval) {
-                    Task { await viewModel.reload() }
-                }
+                IntervalChips(selectedChip: $viewModel.selectedInterval)
                 .listRowSeparator(.hidden)
                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 16, trailing: 0))
-            }
-            .task {
-                await viewModel.reload()
             }
 
             Section {
@@ -65,6 +60,10 @@ struct AssetDetailsView<ViewModel: AssetDetailsViewModel>: View {
             .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
+        .scrollIndicators(.hidden)
+        .task {
+            await viewModel.reload()
+        }
         .refreshable {
             await viewModel.reload()
         }
@@ -105,9 +104,9 @@ struct AssetDetailsView<ViewModel: AssetDetailsViewModel>: View {
 
 // MARK: - Helpers
 
-extension GainState {
+extension PriceChange {
     var foregroundColor: Color {
-        switch self {
+        switch outcome {
         case .profit: .profit
         case .loss: .loss
         case .neutral: .brandLabel

@@ -24,8 +24,7 @@ protocol AssetDetailsViewModel: ObservableObject {
     var title: String { get }
     var subtitle: String { get }
     var currentPrice: String { get }
-    var gainState: GainState { get }
-    var gainString: String { get }
+    var priceChange: PriceChange { get }
     var openPositions: [AssetPositionModel] { get }
     var chartViewModel: ChartVM { get }
 
