@@ -13,50 +13,23 @@ struct ChartView<ViewModel: ChartViewModel>: View {
 
     var body: some View {
         Chart(viewModel.candles.indices, id: \.self) {
-            let candle = viewModel.candles[$0]
-            let state = candle.gainState
-
-            if state == .neutral {
-                RectangleMark(
-                    x: .value("id", $0),
-                    y: .value("open", candle.open),
-                    width: 4,
-                    height: 1
-                )
-                .foregroundStyle(state.foregroundColor)
-            } else {
-                RectangleMark(
-                    x: .value("id", $0),
-                    yStart: .value("open", candle.open),
-                    yEnd: .value("close", candle.close),
-                    width: 4
-                )
-                .foregroundStyle(state.foregroundColor)
-            }
-
-            RectangleMark(
-                x: .value("id", $0),
-                yStart: .value("high", candle.high),
-                yEnd: .value("low", candle.low),
-                width: 1
-            )
-            .foregroundStyle(state.foregroundColor)
+            CandleChartContent(id: $0, candle: viewModel.candles[$0])
         }
         .chartXAxis {
             AxisMarks(position: .top, values: viewModel.axisIndices) {
-                if let index = $0.as(Int.self) {
+                if let index = $0.as(Int.self), let dateString = viewModel.candles[safe: index]?.formattedDate {
                     AxisGridLine().foregroundStyle(.gray)
                     AxisValueLabel(orientation: .horizontal) {
-                        Text(viewModel.candles[index].formattedDate)
+                        Text(dateString)
                     }
                 }
             }
         }
         .chartYAxis {
-            AxisMarks(values: [viewModel.minY, viewModel.maxY]) { value in
-                if let price = value.as(Decimal.self), viewModel.minY != viewModel.maxY {
+            AxisMarks(values: [viewModel.rangeY.lowerBound, viewModel.rangeY.upperBound]) { value in
+                if let price = value.as(Decimal.self) {
                     AxisValueLabel {
-                        Text(price.formatted()).padding(.bottom, 8)
+                        Text(price.formatted())
                     }
                 }
             }
@@ -64,13 +37,48 @@ struct ChartView<ViewModel: ChartViewModel>: View {
                 if let price = value.as(Decimal.self) {
                     AxisGridLine()
                     AxisValueLabel {
-                        Text(price.formatted())
+                        Text(price.formatted()).background()
                     }
                 }
             }
         }
-        .chartXScale(domain: viewModel.minX...viewModel.maxX)
-        .chartYScale(domain: viewModel.minY * 0.999...viewModel.maxY * 1.001)
+        .chartXScale(domain: viewModel.rangeX)
+        .chartYScale(domain: viewModel.rangeY, range: .plotDimension(padding: 16))
         .frame(height: 333, alignment: .top)
+    }
+
+    struct CandleChartContent: ChartContent {
+        let id: Int
+        let candle: CandleStickModel
+
+        var body: some ChartContent {
+            let priceChange = candle.priceChange()
+
+            if priceChange.outcome == .neutral {
+                RectangleMark(
+                    x: .value("id", id),
+                    y: .value("open", candle.open),
+                    width: 4,
+                    height: 1
+                )
+                .foregroundStyle(priceChange.foregroundColor)
+            } else {
+                RectangleMark(
+                    x: .value("id", id),
+                    yStart: .value("open", candle.open),
+                    yEnd: .value("close", candle.close),
+                    width: 4
+                )
+                .foregroundStyle(priceChange.foregroundColor)
+            }
+
+            RectangleMark(
+                x: .value("id", id),
+                yStart: .value("high", candle.high),
+                yEnd: .value("low", candle.low),
+                width: 1
+            )
+            .foregroundStyle(priceChange.foregroundColor)
+        }
     }
 }
